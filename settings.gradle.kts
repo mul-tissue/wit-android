@@ -21,7 +21,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "wit"
 include(":app")
+include(":build-logic:convention")
 include(":core:designsystem")
+include(":feature:login")
 include(":core:network")
 include(":core:domain")
-include(":feature:login")
