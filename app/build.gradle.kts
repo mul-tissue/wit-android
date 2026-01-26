@@ -56,4 +56,13 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+
+    implementation(project(":feature:home"))
+    implementation(project(":feature:chat"))
+    implementation(project(":core:ui"))
+    implementation(libs.androidx.compose.material3.adaptive.navigation3)
+
+    //TODO for test
+    api(libs.androidx.compose.material.iconsExtended)
 }

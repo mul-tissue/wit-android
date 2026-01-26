@@ -5,7 +5,7 @@ plugins {
 }
 
 android{
-    namespace = "com.multissue.wit.feature.login"
+    namespace = "com.multissue.wit.feature.signup"
     compileSdk = 36
 }
 
