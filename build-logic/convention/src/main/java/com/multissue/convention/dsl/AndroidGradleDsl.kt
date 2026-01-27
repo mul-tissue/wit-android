@@ -1,9 +1,7 @@
-package com.multissue.convention.extensions
+package com.multissue.convention.dsl
 
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.LibraryExtension
-import com.android.build.api.dsl.TestExtension
-import com.android.build.api.dsl.TestedExtension
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -35,7 +33,7 @@ fun Project.configureAndroid() {
         namespace?.let {
             this.namespace = it
         }
-        compileSdkVersion(libs.version("compileSdk").toInt())
+        compileSdk { version = release(libs.version("compileSdk").toInt()) }
 
         defaultConfig {
             minSdk = libs.version("minSdk").toInt()

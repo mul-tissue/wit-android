@@ -1,4 +1,7 @@
+rootProject.name = "wit"
+
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -19,9 +22,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "wit"
 include(":app")
-include(":build-logic:convention")
 include(":core:designsystem")
 include(":core:network")
 include(":core:domain")
@@ -34,3 +35,5 @@ include(":feature:mypage")
 include(":feature:home")
 include(":feature:map")
 include(":core:ui")
+//include(":build-logic")
+//include(":build-logic:convention")

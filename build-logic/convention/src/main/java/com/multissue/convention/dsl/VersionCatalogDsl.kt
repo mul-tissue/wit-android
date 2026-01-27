@@ -1,4 +1,4 @@
-package com.multissue.convention.extensions
+package com.multissue.convention.dsl
 
 import org.gradle.api.Project
 import org.gradle.api.artifacts.ExternalModuleDependencyBundle

@@ -17,6 +17,7 @@
 package com.multissue.convention.extensions
 
 import com.android.build.api.dsl.CommonExtension
+import com.multissue.convention.dsl.libs
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension

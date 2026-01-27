@@ -1,20 +1,19 @@
 package com.multissue.convention.plugins
 
-import com.multissue.convention.extensions.android
-import com.multissue.convention.extensions.androidApplication
-import com.multissue.convention.extensions.libs
-import com.multissue.convention.extensions.version
+import com.multissue.convention.dsl.android
+import com.multissue.convention.dsl.androidApplication
+import com.multissue.convention.dsl.libs
+import com.multissue.convention.dsl.version
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
-import kotlin.plus
 
 class AndroidApplicationPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
-                apply(plugin = "com.android.application")
+                apply("com.android.application")
             }
 
             androidApplication {
@@ -34,15 +33,15 @@ class AndroidApplicationPlugin : Plugin<Project> {
                     composeOptions {
                         kotlinCompilerExtensionVersion = libs.version("compose")
                     }
-                    packaging {
-                        resources {
-                            excludes +=
-                                listOf(
-                                    "/META-INF/{AL2.0,LGPL2.1}",
-                                    "META-INF/INDEX.LIST",
-                                )
-                        }
-                    }
+//                    packaging {
+//                        resources {
+//                            excludes +=
+//                                listOf(
+//                                    "/META-INF/{AL2.0,LGPL2.1}",
+//                                    "META-INF/INDEX.LIST",
+//                                )
+//                        }
+//                    }
                     buildTypes {
                         getByName("release") {
                             isMinifyEnabled = false

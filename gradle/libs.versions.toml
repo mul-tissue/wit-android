@@ -28,6 +28,9 @@ activityCompose = "1.12.2"
 accompanist = "0.37.0"
 androidxMetrics = "1.0.0-beta01"
 androidxComposeMaterial3AdaptiveNavigation3 = "1.3.0-alpha04"
+retrofit = "2.11.0"
+okhttp = "4.12.0"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -80,6 +83,9 @@ kotlinGradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plu
 kotlinxSerializationGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
 composeCompilerGradlePlugin = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
 
+retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-kotlin-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
@@ -90,8 +96,13 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 
 com-multissue-wit-application = { id = "com.multissue.wit.application" }
-com-multissue-wit-application-compose = { id = "com.multissue.wit.application.compose" }
-com-multissue-wit-library-compose = { id = "com.multissue.wit.library.compose" }
+com-multissue-wit-compose = { id = "com.multissue.wit.compose" }
+com-multissue-wit-kotlin = { id = "com.multissue.wit.kotlin" }
+com-multissue-wit-library = { id = "com.multissue.wit.library" }
+com-multissue-wit-hilt = { id = "com.multissue.wit.hilt" }
+
+# Bundle Plugin
+com-multissue-wit-feature = { id = "com.multissue.wit.feature" }
 
 [bundles]
 plugins = [

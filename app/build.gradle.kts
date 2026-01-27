@@ -58,6 +58,8 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
 
+    ksp(libs.hilt.compiler)
+
     implementation(project(":feature:home"))
     implementation(project(":feature:chat"))
     implementation(project(":core:ui"))
