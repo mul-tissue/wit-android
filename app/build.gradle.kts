@@ -8,6 +8,7 @@ plugins {
 
 android {
     namespace = "com.multissue.wit"
+
     compileSdk {
         version = release(36)
     }

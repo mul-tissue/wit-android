@@ -1,6 +1,7 @@
 package com.multissue.convention.plugins
 
 import com.multissue.convention.dsl.android
+import com.multissue.convention.dsl.androidLibrary
 import com.multissue.convention.dsl.implementation
 import com.multissue.convention.dsl.implementationPlatform
 import com.multissue.convention.dsl.kotlin
@@ -8,18 +9,18 @@ import com.multissue.convention.dsl.library
 import com.multissue.convention.dsl.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.invoke
 
 class AndroidComposePlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            with(pluginManager) {
-                apply("com.android.library")
-                apply("org.jetbrains.kotlin.plugin.compose")
-            }
+            apply(plugin = "com.android.library")
+            apply(plugin = "org.jetbrains.kotlin.plugin.compose")
+
             if (plugins.hasPlugin("com.android.library")) {
-                android {
+                androidLibrary {
                     buildFeatures.compose = true
                 }
             }

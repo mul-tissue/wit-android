@@ -2,6 +2,7 @@ package com.multissue.convention.plugins
 
 import com.multissue.convention.dsl.android
 import com.multissue.convention.dsl.implementation
+import com.multissue.convention.dsl.kotlin
 import com.multissue.convention.dsl.kotlinAndroidOptions
 import com.multissue.convention.dsl.library
 import com.multissue.convention.dsl.libs
@@ -15,7 +16,7 @@ class AndroidKotlinPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             with(pluginManager) {
-                apply("org.jetbrains.kotlin.android")
+                apply("org.jetbrains.kotlin.plugin.serialization")
             }
             tasks.withType(KotlinCompile::class.java) {
                 compilerOptions {
@@ -30,11 +31,9 @@ class AndroidKotlinPlugin : Plugin<Project> {
                 }
             }
 
-            android {
-                kotlinAndroidOptions {
-                    compilerOptions {
-                        jvmTarget.set(JvmTarget.JVM_17)
-                    }
+            kotlinAndroidOptions {
+                compilerOptions {
+                    jvmTarget.set(JvmTarget.JVM_17)
                 }
             }
             dependencies {
