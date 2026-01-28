@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation3.runtime.NavKey
 import com.multissue.wit.core.navigation.NavigationState
+import com.multissue.wit.core.navigation.Navigator
 import com.multissue.wit.core.navigation.rememberNavigationState
 import com.multissue.wit.core.ui.TrackDisposableJank
 import com.multissue.wit.feature.home.navigation.HomeNavKey
@@ -38,7 +39,6 @@ import kotlin.takeIf
 @Composable
 fun rememberWitAppState(
 //    networkMonitor: NetworkMonitor,
-//    userNewsResourceRepository: UserNewsResourceRepository,
 //    timeZoneMonitor: TimeZoneMonitor,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
 ): WitAppState {
@@ -50,14 +50,12 @@ fun rememberWitAppState(
         navigationState,
         coroutineScope,
 //        networkMonitor,
-//        userNewsResourceRepository,
 //        timeZoneMonitor,
     ) {
         WitAppState(
             navigationState = navigationState,
             coroutineScope = coroutineScope,
 //            networkMonitor = networkMonitor,
-//            userNewsResourceRepository = userNewsResourceRepository,
 //            timeZoneMonitor = timeZoneMonitor,
         )
     }
@@ -68,7 +66,6 @@ class WitAppState(
     val navigationState: NavigationState,
     coroutineScope: CoroutineScope,
 //    networkMonitor: NetworkMonitor,
-//    userNewsResourceRepository: UserNewsResourceRepository,
 //    timeZoneMonitor: TimeZoneMonitor,
 ) {
     /* TODO 구현

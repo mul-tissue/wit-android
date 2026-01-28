@@ -8,13 +8,12 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
+import org.gradle.kotlin.dsl.support.kotlinCompilerOptions
 
 class AndroidApplicationPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            with(pluginManager) {
-                apply("com.android.application")
-            }
+            apply(plugin = "com.android.application")
 
             androidApplication {
                 android {
@@ -33,15 +32,15 @@ class AndroidApplicationPlugin : Plugin<Project> {
                     composeOptions {
                         kotlinCompilerExtensionVersion = libs.version("compose")
                     }
-//                    packaging {
-//                        resources {
-//                            excludes +=
-//                                listOf(
-//                                    "/META-INF/{AL2.0,LGPL2.1}",
-//                                    "META-INF/INDEX.LIST",
-//                                )
-//                        }
-//                    }
+                    packaging {
+                        resources {
+                            excludes +=
+                                listOf(
+                                    "/META-INF/{AL2.0,LGPL2.1}",
+                                    "META-INF/INDEX.LIST",
+                                )
+                        }
+                    }
                     buildTypes {
                         getByName("release") {
                             isMinifyEnabled = false

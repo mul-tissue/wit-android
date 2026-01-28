@@ -1,28 +1,12 @@
-plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.kotlin.compose)
-}
+android.namespace = "com.multissue.wit.feature.signup"
 
-android{
-    namespace = "com.multissue.wit.feature.signup"
-    compileSdk = 36
+plugins {
+    alias(libs.plugins.com.multissue.wit.feature)
 }
 
 kotlin {
     sourceSets {
         dependencies {
-            api(project(":core:navigation"))
-            implementation(libs.androidx.lifecycle.runtimeCompose)
-            implementation(libs.androidx.lifecycle.viewModelCompose)
-            implementation(libs.androidx.hilt.lifecycle.viewModelCompose)
-            implementation(libs.androidx.navigation3.runtime)
-//            "implementation"(libs.findLibrary("androidx.tracing.ktx").get())
-
-            implementation(platform(libs.androidx.compose.bom))
-            implementation(libs.androidx.compose.ui)
-            implementation(libs.androidx.compose.ui.graphics)
-            implementation(libs.androidx.compose.ui.tooling.preview)
             implementation(libs.androidx.compose.material3)
         }
     }
