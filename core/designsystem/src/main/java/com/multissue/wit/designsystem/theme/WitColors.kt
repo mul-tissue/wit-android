@@ -12,6 +12,7 @@ val blueLighter = Color(0xFFD5E8FF)
 val mint = Color(0xFF6BDDD2)
 val gray100 = Color(0xFFF7F8FE)
 val gray200 = Color(0xFFe6e8ec)
+val gray300 = Color(0xFFE0E1E6)
 val gray600 = Color(0xFF999999)
 val gray1000 = Color(0xFF777777)
 val gray1200 = Color(0xFF474747)
@@ -24,7 +25,7 @@ val white500 = Color(0xFFcacaca)
 val yellow200 = Color(0xFFFFD21E)
 val green200 = Color(0xFF22C55E)
 val red100 = Color(0xFFFF5e5e)
-val red200 = Color(0xFFEF4444)
+val red200 = Color(0xFFFD4157)
 val red300 = Color (0xFFF04248)
 val darkGray200 = Color(0xFF303746)
 val darkGray300 = Color(0xFF242c32)
@@ -46,6 +47,7 @@ class WitColors(
     subText: Color,
     disabledText: Color,
     disabledButton: Color,
+    disableButtonText: Color,
     error: Color,
     warning: Color,
     success: Color,
@@ -96,6 +98,8 @@ class WitColors(
     var disabledText by mutableStateOf(disabledText)
         private set
     var disabledButton by mutableStateOf(disabledButton)
+        private set
+    var disableButtonText by mutableStateOf(disableButtonText)
         private set
     var error by mutableStateOf(error)
         private set
@@ -154,6 +158,7 @@ class WitColors(
         subText = subText,
         disabledText = disabledText,
         disabledButton = disabledButton,
+        disableButtonText = disableButtonText,
         error = error,
         warning = warning,
         success = success,
@@ -192,6 +197,7 @@ class WitColors(
         subText = other.subText
         disabledText = other.disabledText
         disabledButton = other.disabledButton
+        disableButtonText = other.disableButtonText
         error = other.error
         warning = other.warning
         success = other.success
@@ -228,9 +234,10 @@ fun lightColorScheme(): WitColors = WitColors(
     text = black100,
     grayText = gray1000,
     buttonText = white100,
-    subText = gray600,
-    disabledText = white100,
-    disabledButton = gray600,
+    subText = gray1000,
+    disabledText = gray600,
+    disabledButton = gray300,
+    disableButtonText = black100,
     error = red200,
     warning = yellow200,
     success = green200,
@@ -269,9 +276,10 @@ fun darkColorScheme(): WitColors = WitColors(
     text = black100,
     grayText = gray1000,
     buttonText = white100,
-    subText = gray600,
-    disabledText = white100,
-    disabledButton = gray600,
+    subText = gray1000,
+    disabledText = gray600,
+    disabledButton = gray300,
+    disableButtonText = black100,
     error = red200,
     warning = yellow200,
     success = green200,
