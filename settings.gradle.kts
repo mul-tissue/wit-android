@@ -22,6 +22,7 @@ dependencyResolutionManagement {
     }
 }
 
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
 include(":core:designsystem")
 include(":core:network")
@@ -35,5 +36,3 @@ include(":feature:mypage")
 include(":feature:home")
 include(":feature:map")
 include(":core:ui")
-//include(":build-logic")
-//include(":build-logic:convention")
