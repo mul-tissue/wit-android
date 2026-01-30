@@ -15,22 +15,22 @@ android {
     buildFeatures {
         compose = true
     }
-    sourceSets {
-        dependencies {implementation(libs.androidx.activity.compose)
-            implementation(platform(libs.androidx.compose.bom))
-            implementation(libs.androidx.compose.ui)
-            implementation(libs.androidx.compose.ui.graphics)
-            implementation(libs.androidx.compose.ui.tooling.preview)
-            implementation(libs.androidx.compose.material3)
-            debugImplementation(libs.androidx.compose.ui.tooling)
-            debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-            implementation(libs.androidx.compose.material3.adaptive.navigation3)
-            implementation(libs.androidx.compose.material3.adaptive)
-            implementation(libs.androidx.compose.material3.adaptive.layout)
-            implementation(libs.androidx.compose.material3.adaptive.navigation)
-            implementation(libs.androidx.compose.material3.adaptive.navigation3)
-            implementation(libs.androidx.compose.material3.navigationSuite)
-        }
+    dependencies {
+        implementation(libs.androidx.activity.compose)
+        implementation(platform(libs.androidx.compose.bom))
+        implementation(libs.androidx.compose.ui)
+        implementation(libs.androidx.compose.ui.graphics)
+        implementation(libs.androidx.compose.ui.tooling.preview)
+        implementation(libs.androidx.compose.material3)
+        debugImplementation(libs.androidx.compose.ui.tooling)
+        debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+        implementation(libs.androidx.compose.material3.adaptive.navigation3)
+        implementation(libs.androidx.compose.material3.adaptive)
+        implementation(libs.androidx.compose.material3.adaptive.layout)
+        implementation(libs.androidx.compose.material3.adaptive.navigation)
+        implementation(libs.androidx.compose.material3.adaptive.navigation3)
+        implementation(libs.androidx.compose.material3.navigationSuite)
     }
 }

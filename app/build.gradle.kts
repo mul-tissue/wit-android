@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -44,6 +42,13 @@ android {
 }
 
 dependencies {
+    // Modules
+    implementation(projects.feature.login)
+    implementation(projects.feature.home)
+    implementation(projects.feature.chat)
+    implementation(projects.core.ui)
+    implementation(projects.core.designsystem)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -64,11 +69,6 @@ dependencies {
 
     ksp(libs.hilt.compiler)
 
-    implementation(project(":feature:home"))
-    implementation(project(":feature:chat"))
-    implementation(project(":feature:login"))
-    implementation(project(":core:ui"))
-    implementation(project(":core:designsystem"))
     implementation(libs.androidx.compose.material3.adaptive.navigation3)
     implementation(libs.androidx.compose.material3.adaptive)
     implementation(libs.androidx.compose.material3.adaptive.layout)
