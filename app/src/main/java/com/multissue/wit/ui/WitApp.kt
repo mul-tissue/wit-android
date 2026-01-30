@@ -21,17 +21,29 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
-import com.multissue.wit.core.designsystem.component.navigation.WitNavItem
-import com.multissue.wit.core.designsystem.component.navigation.WitNavigationRail
+import com.multissue.wit.designsystem.component.navigation.WitNavItem
+import com.multissue.wit.designsystem.component.navigation.WitNavigationRail
 import com.multissue.wit.core.navigation.Navigator
 import com.multissue.wit.core.navigation.toEntries
+import com.multissue.wit.designsystem.theme.WitColors
+import com.multissue.wit.designsystem.theme.WitTheme
+import com.multissue.wit.feature.chat.navigation.ChatNavKey
 import com.multissue.wit.feature.chat.navigation.chatEntry
+import com.multissue.wit.feature.home.navigation.HomeNavKey
 import com.multissue.wit.feature.home.navigation.homeEntry
 import com.multissue.wit.feature.login.navigation.LoginNavKey
+import com.multissue.wit.feature.login.navigation.loginEntry
+import com.multissue.wit.feature.map.navigation.mapEntry
+import com.multissue.wit.feature.mypage.navigation.myPageEntry
+import com.multissue.wit.feature.onboarding.navigation.onboardingEntry
+import com.multissue.wit.feature.signup.navigation.signupEntry
+import com.multissue.wit.feature.upload.navigation.UploadNavKey
+import com.multissue.wit.feature.upload.navigation.uploadEntry
 import com.multissue.wit.navigation.TOP_LEVEL_NAV_ITEMS
 
 @Composable
@@ -74,8 +86,14 @@ internal fun WitApp(
                 val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>()
 
                 val entryProvider = entryProvider {
+                    onboardingEntry(navigator)
+                    signupEntry(navigator)
+                    loginEntry(navigator)
                     homeEntry(navigator)
                     chatEntry(navigator)
+                    mapEntry(navigator)
+                    myPageEntry(navigator)
+                    uploadEntry(navigator)
                 }
 
                 NavDisplay(
@@ -84,43 +102,45 @@ internal fun WitApp(
                     onBack = { navigator.goBack() },
                 )
             }
-            WitNavigationRail(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(64.dp) //TODO
-                    .background(color = Color.White), //TODO
-                onCenterButtonClicked = { navigator.navigate(LoginNavKey) },
-                navItems = {
-                    TOP_LEVEL_NAV_ITEMS.forEach { (navKey, navItem) ->
-//                        val hasUnread = unreadNavKeys.contains(navKey) //TODO
-                        val selected = navKey == appState.navigationState.currentTopLevelKey
-                        WitNavItem(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .aspectRatio(2f),
-//                                .then(if (hasUnread) Modifier.notificationDot() else Modifier), //TODO
-                            selected = selected,
-                            onClick = { navigator.navigate(navKey) },
-                            icon = {
-                                Icon(
-                                    modifier = Modifier.size(28.dp),
-                                    imageVector = navItem.unselectedIcon,
-                                    contentDescription = null,
-                                    tint = Color.Black
-                                )
-                            },
-                            selectedIcon = {
-                                Icon(
-                                    modifier = Modifier.size(28.dp),
-                                    imageVector = navItem.selectedIcon,
-                                    contentDescription = null,
-                                    tint = Color.Black
-                                )
-                            },
-                        )
+            if (appState.navigationState.currentKey == HomeNavKey || appState.navigationState.currentKey == ChatNavKey) {
+                WitNavigationRail(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(64.dp) //TODO
+                        .background(color = Color.White), //TODO
+                    onCenterButtonClicked = { navigator.navigate(UploadNavKey) },
+                    navItems = {
+                        TOP_LEVEL_NAV_ITEMS.forEach { (navKey, navItem) ->
+    //                        val hasUnread = unreadNavKeys.contains(navKey) //TODO
+                            val selected = navKey == appState.navigationState.currentTopLevelKey
+                            WitNavItem(
+                                modifier = Modifier
+                                    .fillMaxHeight()
+                                    .aspectRatio(2f),
+    //                                .then(if (hasUnread) Modifier.notificationDot() else Modifier), //TODO
+                                selected = selected,
+                                onClick = { navigator.navigate(navKey) },
+                                icon = {
+                                    Icon(
+                                        modifier = Modifier.size(28.dp),
+                                        painter = painterResource(navItem.unselectedIconId),
+                                        contentDescription = null,
+                                        tint = WitTheme.colors.primary
+                                    )
+                                },
+                                selectedIcon = {
+                                    Icon(
+                                        modifier = Modifier.size(28.dp),
+                                        painter = painterResource(navItem.selectedIconId),
+                                        contentDescription = null,
+                                        tint = WitTheme.colors.primary
+                                    )
+                                },
+                            )
+                        }
                     }
-                }
-            )
+                )
+            }
         }
     }
 }

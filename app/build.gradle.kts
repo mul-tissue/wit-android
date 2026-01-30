@@ -46,6 +46,11 @@ dependencies {
     implementation(projects.feature.login)
     implementation(projects.feature.home)
     implementation(projects.feature.chat)
+    implementation(projects.feature.map)
+    implementation(projects.feature.mypage)
+    implementation(projects.feature.onboarding)
+    implementation(projects.feature.signup)
+    implementation(projects.feature.upload)
     implementation(projects.core.ui)
     implementation(projects.core.designsystem)
 

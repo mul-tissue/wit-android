@@ -1,4 +1,4 @@
-package com.multissue.wit.core.designsystem.component.navigation
+package com.multissue.wit.designsystem.component.navigation
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -29,7 +29,7 @@ fun WitNavigationRail(
     onCenterButtonClicked: () -> Unit,
 ) {
     Box(
-        modifier = modifier.padding(horizontal = 32.dp),
+        modifier = modifier.padding(horizontal = 16.dp),
         contentAlignment = Alignment.Center
     ) {
         Row(
