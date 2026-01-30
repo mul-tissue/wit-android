@@ -1,4 +1,4 @@
-package com.multissue.wit.designsystem.background
+package com.multissue.wit.designsystem.component.background
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

@@ -1,4 +1,4 @@
-package com.multissue.wit.designsystem.searchbar
+package com.multissue.wit.designsystem.component.searchbar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
