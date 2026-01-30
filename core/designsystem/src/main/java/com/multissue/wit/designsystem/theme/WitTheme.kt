@@ -14,6 +14,9 @@ private val LocalWitColors =
 private val LocalWitTypography =
     staticCompositionLocalOf<WitTypography> { error("All typography must be Provided") }
 
+private val LocalWitBackground =
+    staticCompositionLocalOf { WitBackgroundTheme() }
+
 @Composable
 fun WitTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -22,6 +25,7 @@ fun WitTheme(
     } else {
         lightColorScheme()
     },
+    background: WitBackgroundTheme = WitBackgroundTheme.defaultBackground(darkTheme),
     typography: WitTypography = WitTypography.defaultTypography(),
     content: @Composable () -> Unit
 ) {
@@ -30,6 +34,7 @@ fun WitTheme(
     CompositionLocalProvider(
         LocalWitColors provides colors,
         LocalWitTypography provides typography,
+        LocalWitBackground provides background
     ) {
         MaterialTheme(content = content)
     }
@@ -45,4 +50,9 @@ object WitTheme {
         @Composable
         @ReadOnlyComposable
         get() = LocalWitTypography.current
+
+    val background: WitBackgroundTheme
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalWitBackground.current
 }

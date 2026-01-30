@@ -9,6 +9,8 @@ import androidx.compose.ui.graphics.Color
 val blue = Color(0xFF74B1FF)
 val blueDarker = Color(0xFF539FFF)
 val blueLighter = Color(0xFFD5E8FF)
+val gradientColor2 = Color(0xFFF7FBFF)
+val gradientColor3 = Color(0xFFEFF6FF)
 val mint = Color(0xFF6BDDD2)
 val gray100 = Color(0xFFF7F8FE)
 val gray200 = Color(0xFFe6e8ec)
@@ -35,6 +37,8 @@ class WitColors(
     primary: Color,
     primaryDark: Color,
     primaryLighter: Color,
+    gradientColor2: Color,
+    gradientColor3: Color,
     pointColor: Color,
     background: Color,
     containerColor: Color,
@@ -74,6 +78,10 @@ class WitColors(
     var primaryDark by mutableStateOf(primaryDark)
         private set
     var primaryLighter by mutableStateOf(primaryLighter)
+        private set
+    var gradientColor2 by mutableStateOf(gradientColor2)
+        private set
+    var gradientColor3 by mutableStateOf(gradientColor3)
         private set
     var background by mutableStateOf(background)
         private set
@@ -146,6 +154,8 @@ class WitColors(
         primary = primary,
         primaryDark = primaryDark,
         primaryLighter = primaryLighter,
+        gradientColor2 = gradientColor2,
+        gradientColor3 = gradientColor3,
         pointColor = pointColor,
         background = background,
         containerColor = containerColor,
@@ -185,6 +195,8 @@ class WitColors(
         primary = other.primary
         primaryDark = other.primaryDark
         primaryLighter = other.primaryLighter
+        gradientColor2 = other.gradientColor2
+        gradientColor3 = other.gradientColor3
         pointColor = other.pointColor
         background = other.background
         containerColor = other.containerColor
@@ -225,6 +237,8 @@ fun lightColorScheme(): WitColors = WitColors(
     primary = blue,
     primaryDark = blueDarker,
     primaryLighter = blueLighter,
+    gradientColor2 = gradientColor2,
+    gradientColor3 = gradientColor3,
     pointColor = mint,
     background = white100,
     containerColor = white100,
@@ -267,6 +281,8 @@ fun darkColorScheme(): WitColors = WitColors(
     primary = blue,
     primaryDark = blueDarker,
     primaryLighter = blueLighter,
+    gradientColor2 = gradientColor2,
+    gradientColor3 = gradientColor3,
     pointColor = mint,
     background = white100,
     containerColor = white100,
