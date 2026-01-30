@@ -1,17 +1,8 @@
 package com.multissue.wit.ui
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
@@ -40,40 +31,27 @@ internal fun WitApp(
 ) {
     val navigator = remember { Navigator(appState.navigationState) }
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize()
-    ) { padding ->
-        Column(
-            Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .consumeWindowInsets(padding)
-                .windowInsetsPadding(
-                    WindowInsets.safeDrawing.only(
-                        WindowInsetsSides.Horizontal,
-                    ),
-                ),
-        ) {
-            // TODO TOP BAR
-            Box(
-                modifier = Modifier
-                    .consumeWindowInsets(
-                        WindowInsets(0, 0, 0, 0)
-                    )
-            ) {
-                val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>()
-
-                val entryProvider = entryProvider {
-                    homeEntry(navigator)
-                    chatEntry(navigator)
-                }
-
-                NavDisplay(
-                    entries = appState.navigationState.toEntries(entryProvider),
-                    sceneStrategy = listDetailStrategy,
-                    onBack = { navigator.goBack() },
+    WitNavigationSuiteScaffold(appState) {
+        // TODO TOP BAR
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .consumeWindowInsets(
+                    WindowInsets(0, 0, 0, 0)
                 )
+        ) {
+            val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>()
+
+            val entryProvider = entryProvider {
+                homeEntry(navigator)
+                chatEntry(navigator)
             }
+
+            NavDisplay(
+                entries = appState.navigationState.toEntries(entryProvider),
+                sceneStrategy = listDetailStrategy,
+                onBack = { navigator.goBack() },
+            )
         }
     }
 }

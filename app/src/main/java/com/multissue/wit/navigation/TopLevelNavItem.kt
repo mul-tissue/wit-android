@@ -41,21 +41,18 @@ import com.multissue.wit.feature.home.navigation.HomeNavKey
 data class TopLevelNavItem(
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
-    @StringRes val iconTextId: Int,
     @StringRes val titleTextId: Int,
 )
 
 val HOME = TopLevelNavItem(
     selectedIcon = Icons.Rounded.Upcoming, // TODO 변경
     unselectedIcon = Icons.Outlined.Upcoming, // TODO 변경
-    iconTextId = R.string.home_title,
     titleTextId = R.string.home_title,
 )
 
 val CHAT = TopLevelNavItem(
     selectedIcon = Icons.Rounded.Bookmarks, // TODO 변경
     unselectedIcon = Icons.Outlined.Bookmarks, // TODO 변경
-    iconTextId = R.string.chat_title,
     titleTextId = R.string.chat_title,
 )
 
