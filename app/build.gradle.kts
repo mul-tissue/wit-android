@@ -66,7 +66,9 @@ dependencies {
 
     implementation(project(":feature:home"))
     implementation(project(":feature:chat"))
+    implementation(project(":feature:login"))
     implementation(project(":core:ui"))
+    implementation(project(":core:designsystem"))
     implementation(libs.androidx.compose.material3.adaptive.navigation3)
     implementation(libs.androidx.compose.material3.adaptive)
     implementation(libs.androidx.compose.material3.adaptive.layout)
