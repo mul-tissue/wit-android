@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
@@ -8,6 +10,7 @@ plugins {
 
 android {
     namespace = "com.multissue.wit"
+
     compileSdk {
         version = release(36)
     }
@@ -56,4 +59,15 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+
+    ksp(libs.hilt.compiler)
+
+    implementation(project(":feature:home"))
+    implementation(project(":feature:chat"))
+    implementation(project(":core:ui"))
+    implementation(libs.androidx.compose.material3.adaptive.navigation3)
+
+    //TODO for test
+    api(libs.androidx.compose.material.iconsExtended)
 }
