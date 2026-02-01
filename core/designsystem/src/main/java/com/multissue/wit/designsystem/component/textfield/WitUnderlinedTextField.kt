@@ -51,7 +51,7 @@ fun WitUnderlinedTextField(
     CompositionLocalProvider(
         LocalTextSelectionColors provides TextSelectionColors(
             handleColor = WitTheme.colors.text,
-            backgroundColor = Color.Transparent
+            backgroundColor = WitTheme.colors.text.copy(alpha = 0.4f)
         )
     ) {
         Column(modifier = modifier) {
@@ -74,7 +74,9 @@ fun WitUnderlinedTextField(
                         onValueChange = onValueChange,
                         enabled = enabled,
                         singleLine = singleLine,
-                        textStyle = WitTheme.typography.titleXL,
+                        textStyle = WitTheme.typography.titleXL.copy(
+                            color = WitTheme.colors.text
+                        ),
                         keyboardOptions = keyboardOptions,
                         keyboardActions = keyboardActions,
                         cursorBrush = cursorBrush,

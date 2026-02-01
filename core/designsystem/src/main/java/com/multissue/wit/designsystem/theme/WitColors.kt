@@ -4,6 +4,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 val blue = Color(0xFF74B1FF)
@@ -39,6 +40,7 @@ class WitColors(
     primaryLighter: Color,
     gradientColor2: Color,
     gradientColor3: Color,
+    gradientBackground: Brush,
     pointColor: Color,
     background: Color,
     containerColor: Color,
@@ -51,7 +53,7 @@ class WitColors(
     subText: Color,
     disabledText: Color,
     disabledButton: Color,
-    disableButtonText: Color,
+    disabledButtonText: Color,
     error: Color,
     warning: Color,
     success: Color,
@@ -83,6 +85,8 @@ class WitColors(
         private set
     var gradientColor3 by mutableStateOf(gradientColor3)
         private set
+    var gradientBackground by mutableStateOf(gradientBackground)
+        private set
     var background by mutableStateOf(background)
         private set
     var pointColor by mutableStateOf(pointColor)
@@ -107,7 +111,7 @@ class WitColors(
         private set
     var disabledButton by mutableStateOf(disabledButton)
         private set
-    var disableButtonText by mutableStateOf(disableButtonText)
+    var disabledButtonText by mutableStateOf(disabledButtonText)
         private set
     var error by mutableStateOf(error)
         private set
@@ -156,6 +160,7 @@ class WitColors(
         primaryLighter = primaryLighter,
         gradientColor2 = gradientColor2,
         gradientColor3 = gradientColor3,
+        gradientBackground = gradientBackground,
         pointColor = pointColor,
         background = background,
         containerColor = containerColor,
@@ -168,7 +173,7 @@ class WitColors(
         subText = subText,
         disabledText = disabledText,
         disabledButton = disabledButton,
-        disableButtonText = disableButtonText,
+        disabledButtonText = disabledButtonText,
         error = error,
         warning = warning,
         success = success,
@@ -197,6 +202,7 @@ class WitColors(
         primaryLighter = other.primaryLighter
         gradientColor2 = other.gradientColor2
         gradientColor3 = other.gradientColor3
+        gradientBackground = other.gradientBackground
         pointColor = other.pointColor
         background = other.background
         containerColor = other.containerColor
@@ -209,7 +215,7 @@ class WitColors(
         subText = other.subText
         disabledText = other.disabledText
         disabledButton = other.disabledButton
-        disableButtonText = other.disableButtonText
+        disabledButtonText = other.disabledButtonText
         error = other.error
         warning = other.warning
         success = other.success
@@ -239,6 +245,14 @@ fun lightColorScheme(): WitColors = WitColors(
     primaryLighter = blueLighter,
     gradientColor2 = gradientColor2,
     gradientColor3 = gradientColor3,
+    gradientBackground = Brush.linearGradient(
+        colorStops = arrayOf(
+            0.0f to blueLighter,
+            0.52f to gradientColor2,
+            0.96f to gradientColor3,
+            1.0f to gradientColor3,
+        )
+    ),
     pointColor = mint,
     background = white100,
     containerColor = white100,
@@ -251,7 +265,7 @@ fun lightColorScheme(): WitColors = WitColors(
     subText = gray1000,
     disabledText = gray600,
     disabledButton = gray300,
-    disableButtonText = white100,
+    disabledButtonText = white100,
     error = red200,
     warning = yellow200,
     success = green200,
@@ -283,6 +297,14 @@ fun darkColorScheme(): WitColors = WitColors(
     primaryLighter = blueLighter,
     gradientColor2 = gradientColor2,
     gradientColor3 = gradientColor3,
+    gradientBackground = Brush.linearGradient(
+        colorStops = arrayOf(
+            0.0f to blueLighter,
+            0.52f to gradientColor2,
+            0.96f to gradientColor3,
+            1.0f to gradientColor3,
+        )
+    ),
     pointColor = mint,
     background = white100,
     containerColor = white100,
@@ -295,7 +317,7 @@ fun darkColorScheme(): WitColors = WitColors(
     subText = gray1000,
     disabledText = gray600,
     disabledButton = gray300,
-    disableButtonText = black100,
+    disabledButtonText = black100,
     error = red200,
     warning = yellow200,
     success = green200,
