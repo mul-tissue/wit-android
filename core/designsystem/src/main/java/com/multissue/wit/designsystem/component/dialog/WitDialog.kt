@@ -44,16 +44,16 @@ fun WitDialog(
 ) {
     if (!showDialog) return
 
-    val scope = remember(title, message, rightButtonText, rightButtonColor, leftButtonText, onLeftButtonClick, onRightButtonClick, bodyContent) {
+    val scope = remember(title, message, rightButtonText, rightButtonColor, leftButtonText) {
         DefaultWitDialogScope(
             title = title,
             message = message,
-            bodyContent = bodyContent,
+            bodyContent = { bodyContent() },
             rightButtonText = rightButtonText,
             rightButtonColor = rightButtonColor,
             leftButtonText = leftButtonText,
-            onLeftButtonClick = onLeftButtonClick,
-            onRightButtonClick = onRightButtonClick
+            onLeftButtonClick = { onLeftButtonClick() },
+            onRightButtonClick = { onRightButtonClick() }
         )
     }
     Dialog(
@@ -128,7 +128,7 @@ fun WitDialogScope.WitDialogLeftButton(
         shape = RoundedCornerShape(8.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = WitTheme.colors.disabledButton,
-            contentColor = WitTheme.colors.disableButtonText
+            contentColor = WitTheme.colors.disabledButtonText
         ),
         onClick = onLeftButtonClick
     ) {

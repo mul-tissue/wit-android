@@ -32,7 +32,7 @@ fun WitTheme(
     val provideColors = remember { colors.copy() }
     provideColors.update(colors)
     CompositionLocalProvider(
-        LocalWitColors provides colors,
+        LocalWitColors provides provideColors,
         LocalWitTypography provides typography,
         LocalWitBackground provides background
     ) {
