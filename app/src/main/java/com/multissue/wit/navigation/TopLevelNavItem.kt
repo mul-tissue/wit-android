@@ -20,6 +20,7 @@ import androidx.annotation.StringRes
 import com.multissue.wit.R.string
 import com.multissue.wit.feature.chat.navigation.ChatNavKey
 import com.multissue.wit.feature.home.navigation.HomeNavKey
+import com.multissue.wit.feature.onboarding.navigation.OnboardingNavKey
 
 /**
  * Type for the top level navigation items in the application. Contains UI information about the
@@ -50,7 +51,17 @@ val CHAT = TopLevelNavItem(
     titleTextId = string.chat_title,
 )
 
+val ONBOARDING = TopLevelNavItem(
+    selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_chat_selected,
+    unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_chat,
+    titleTextId = string.chat_title,
+)
+
 val TOP_LEVEL_NAV_ITEMS = mapOf(
     HomeNavKey to HOME,
-    ChatNavKey to CHAT
+    ChatNavKey to CHAT,
+)
+
+val SUB_LEVEL_NAV_ITEMS = mapOf(
+    OnboardingNavKey to ONBOARDING
 )

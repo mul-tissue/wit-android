@@ -40,6 +40,7 @@ import com.multissue.wit.feature.login.navigation.LoginNavKey
 import com.multissue.wit.feature.login.navigation.loginEntry
 import com.multissue.wit.feature.map.navigation.mapEntry
 import com.multissue.wit.feature.mypage.navigation.myPageEntry
+import com.multissue.wit.feature.onboarding.navigation.OnboardingNavKey
 import com.multissue.wit.feature.onboarding.navigation.onboardingEntry
 import com.multissue.wit.feature.signup.navigation.signupEntry
 import com.multissue.wit.feature.upload.navigation.UploadNavKey
@@ -108,7 +109,7 @@ internal fun WitApp(
                         .fillMaxWidth()
                         .height(64.dp) //TODO
                         .background(color = Color.White), //TODO
-                    onCenterButtonClicked = { navigator.navigate(UploadNavKey) },
+                    onCenterButtonClicked = { navigator.navigate(OnboardingNavKey) },
                     navItems = {
                         TOP_LEVEL_NAV_ITEMS.forEach { (navKey, navItem) ->
     //                        val hasUnread = unreadNavKeys.contains(navKey) //TODO

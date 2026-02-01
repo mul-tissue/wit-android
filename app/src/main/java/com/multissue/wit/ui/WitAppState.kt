@@ -26,6 +26,8 @@ import com.multissue.wit.core.navigation.Navigator
 import com.multissue.wit.core.navigation.rememberNavigationState
 import com.multissue.wit.core.ui.TrackDisposableJank
 import com.multissue.wit.feature.home.navigation.HomeNavKey
+import com.multissue.wit.feature.onboarding.navigation.OnboardingNavKey
+import com.multissue.wit.navigation.SUB_LEVEL_NAV_ITEMS
 import com.multissue.wit.navigation.TOP_LEVEL_NAV_ITEMS
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
@@ -42,7 +44,7 @@ fun rememberWitAppState(
 //    timeZoneMonitor: TimeZoneMonitor,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
 ): WitAppState {
-    val navigationState = rememberNavigationState(HomeNavKey, TOP_LEVEL_NAV_ITEMS.keys)
+    val navigationState = rememberNavigationState(OnboardingNavKey, TOP_LEVEL_NAV_ITEMS.keys + SUB_LEVEL_NAV_ITEMS.keys)
 
     NavigationTrackingSideEffect(navigationState)
 
