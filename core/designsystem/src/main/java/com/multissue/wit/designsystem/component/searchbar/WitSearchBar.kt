@@ -24,7 +24,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -44,7 +43,7 @@ fun WitSearchBar(
     CompositionLocalProvider(
         LocalTextSelectionColors provides TextSelectionColors(
             handleColor = WitTheme.colors.text,
-            backgroundColor = Color.Transparent
+            backgroundColor = WitTheme.colors.text.copy(alpha = 0.4f)
         )
     ) {
         Row(
@@ -77,7 +76,9 @@ fun WitSearchBar(
                 keyboardActions = KeyboardActions(
                     onSearch = { onSearch() }
                 ),
-                textStyle = WitTheme.typography.titleS,
+                textStyle = WitTheme.typography.titleS.copy(
+                    color = WitTheme.colors.text
+                ),
                 cursorBrush = SolidColor(WitTheme.colors.text),
                 modifier = Modifier
                     .weight(1f)
