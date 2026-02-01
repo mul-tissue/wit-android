@@ -43,8 +43,14 @@ android {
 
 dependencies {
     // Modules
+    implementation(projects.feature.login)
     implementation(projects.feature.home)
     implementation(projects.feature.chat)
+    implementation(projects.feature.map)
+    implementation(projects.feature.mypage)
+    implementation(projects.feature.onboarding)
+    implementation(projects.feature.signup)
+    implementation(projects.feature.upload)
     implementation(projects.core.ui)
     implementation(projects.core.designsystem)
 
@@ -67,7 +73,11 @@ dependencies {
 
     ksp(libs.hilt.compiler)
 
+    implementation(libs.androidx.compose.material3.adaptive)
+    implementation(libs.androidx.compose.material3.adaptive.layout)
+    implementation(libs.androidx.compose.material3.adaptive.navigation)
     implementation(libs.androidx.compose.material3.adaptive.navigation3)
+    implementation(libs.androidx.compose.material3.navigationSuite)
 
     //TODO for test
     api(libs.androidx.compose.material.iconsExtended)

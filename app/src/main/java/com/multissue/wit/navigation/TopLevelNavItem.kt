@@ -17,13 +17,7 @@
 package com.multissue.wit.navigation
 
 import androidx.annotation.StringRes
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Bookmarks
-import androidx.compose.material.icons.outlined.Upcoming
-import androidx.compose.material.icons.rounded.Bookmarks
-import androidx.compose.material.icons.rounded.Upcoming
-import androidx.compose.ui.graphics.vector.ImageVector
-import com.multissue.wit.R
+import com.multissue.wit.R.string
 import com.multissue.wit.feature.chat.navigation.ChatNavKey
 import com.multissue.wit.feature.home.navigation.HomeNavKey
 
@@ -39,24 +33,21 @@ import com.multissue.wit.feature.home.navigation.HomeNavKey
  * @param titleTextId Text that is displayed on the top app bar.
  */
 data class TopLevelNavItem(
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector,
-    @StringRes val iconTextId: Int,
+    val selectedIconId: Int,
+    val unselectedIconId: Int,
     @StringRes val titleTextId: Int,
 )
 
 val HOME = TopLevelNavItem(
-    selectedIcon = Icons.Rounded.Upcoming, // TODO 변경
-    unselectedIcon = Icons.Outlined.Upcoming, // TODO 변경
-    iconTextId = R.string.home_title,
-    titleTextId = R.string.home_title,
+    selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_home_selected,
+    unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_home,
+    titleTextId = string.home_title,
 )
 
 val CHAT = TopLevelNavItem(
-    selectedIcon = Icons.Rounded.Bookmarks, // TODO 변경
-    unselectedIcon = Icons.Outlined.Bookmarks, // TODO 변경
-    iconTextId = R.string.chat_title,
-    titleTextId = R.string.chat_title,
+    selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_chat_selected,
+    unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_chat,
+    titleTextId = string.chat_title,
 )
 
 val TOP_LEVEL_NAV_ITEMS = mapOf(
