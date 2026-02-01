@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -33,7 +35,8 @@ fun WitNavigationRail(
         contentAlignment = Alignment.Center
     ) {
         Row(
-            modifier = modifier,
+            modifier = Modifier
+                .fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -109,7 +112,7 @@ fun CenterButton(
         Icon(
             modifier = Modifier
                 .size(24.dp),
-            contentDescription = null,
+            contentDescription = "업로드 페이지 이동 버튼",
             painter = painterResource(R.drawable.icon_plus),
             tint = Color.White
         )

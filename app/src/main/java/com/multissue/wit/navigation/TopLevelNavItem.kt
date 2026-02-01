@@ -17,9 +17,6 @@
 package com.multissue.wit.navigation
 
 import androidx.annotation.StringRes
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Bookmarks
-import androidx.compose.material.icons.rounded.Bookmarks
 import com.multissue.wit.R.string
 import com.multissue.wit.feature.chat.navigation.ChatNavKey
 import com.multissue.wit.feature.home.navigation.HomeNavKey
@@ -42,13 +39,13 @@ data class TopLevelNavItem(
 )
 
 val HOME = TopLevelNavItem(
-    selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_home_seleted,
+    selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_home_selected,
     unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_home,
     titleTextId = string.home_title,
 )
 
 val CHAT = TopLevelNavItem(
-    selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_chat_seleted,
+    selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_chat_selected,
     unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_chat,
     titleTextId = string.chat_title,
 )
