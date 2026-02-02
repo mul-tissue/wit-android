@@ -11,11 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,31 +20,25 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.multissue.wit.designsystem.component.button.WitButton
 import com.multissue.wit.designsystem.theme.WitTheme
-import com.multissue.wit.feature.onboarding.component.AgreePage
 import com.multissue.wit.feature.onboarding.component.OnboardingPage
 import com.multissue.wit.feature.onboarding.component.PagerIndicator
-import com.multissue.wit.feature.onboarding.state.OnboardingPageState
 import kotlinx.coroutines.launch
 
 @Composable
 fun OnboardingScreen(
     modifier: Modifier = Modifier,
-//    viewModel: OnboardingViewModel = hiltViewModel()
+    navigateToLogin: () -> Unit,
+//    viewModel: OnboardingViewModel = hiltViewModel<OnboardingViewModel>()
 ) {
-    var onboardingPageState: OnboardingPageState by remember { mutableStateOf(OnboardingPageState.IntroducePage) }
-
     OnboardingScreen(
-        modifier = modifier.background(WitTheme.background.color),
-        onboardingPageState = onboardingPageState,
-        onAgreeNextButtonClicked = { onboardingPageState = OnboardingPageState.AgreePage }
+        navigateToLogin = navigateToLogin
     )
 }
 
 @Composable
-internal fun OnboardingScreen(
-    onboardingPageState: OnboardingPageState,
-    onAgreeNextButtonClicked: () -> Unit,
-    modifier: Modifier = Modifier,
+private fun OnboardingScreen(
+//    modifier: Modifier = Modifier,
+    navigateToLogin: () -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState(
@@ -56,50 +46,47 @@ internal fun OnboardingScreen(
         pageCount = { 3 }
     )
 
-    when(onboardingPageState) {
-        OnboardingPageState.IntroducePage -> {
-            AgreePage(
-                modifier = modifier,
-                onNextButtonClicked = onAgreeNextButtonClicked
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 28.dp)
+            .background(Color(0xFFF7F8FE))
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) { page ->
+                OnboardingPage(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    page = page
+                )
+            }
+            PagerIndicator(
+                pageCount = pagerState.pageCount,
+                currentPage = pagerState.currentPage
             )
         }
-        OnboardingPageState.AgreePage -> {
-            Column(
-                modifier = Modifier
-                    .padding(horizontal = 28.dp)
-                    .background(Color(0xFFF7F8FE))
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    HorizontalPager(
-                        state = pagerState,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) { page ->
-                        OnboardingPage(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            page = page
-                        )
-                    }
-                    PagerIndicator(
-                        pageCount = pagerState.pageCount,
-                        currentPage = pagerState.currentPage
-                    )
-                }
 
-                WitButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    onClick = {
+        WitButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
+            onClick = {
+                when(pagerState.currentPage) {
+                    2 -> {
+                        navigateToLogin()
+                    }
+                    else -> {
                         scope.launch {
                             pagerState.animateScrollToPage(
                                 page = pagerState.currentPage + 1,
@@ -108,14 +95,14 @@ internal fun OnboardingScreen(
                                 )
                             )
                         }
-                    },
-                    title = when(pagerState.currentPage) {
-                        2 -> stringResource(R.string.signup_button)
-                        else -> stringResource(R.string.next_button)
                     }
-                )
+                }
+            },
+            title = when(pagerState.currentPage) {
+                2 -> stringResource(R.string.signup_button)
+                else -> stringResource(R.string.next_button)
             }
-        }
+        )
     }
 
 }

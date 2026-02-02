@@ -7,7 +7,7 @@
     <string name="onboarding_page_3_content">반응을 남기고 채팅으로 자연스럽게 이어져요</string>
 
     <string name="next_button">다음</string>
-    <string name="signup_button">회원가입 하러가기</string>
+    <string name="signup_button">떠나기</string>
 
     <string name="terms_of_service_title">서비스 이용을 위해\n약관 동의가 필요해요</string>
     <string name="terms_of_service_sub_title">필수 항목에 동의하셔야 가입이 완료돼요</string>

@@ -7,6 +7,7 @@ plugins {
 kotlin {
     sourceSets {
         dependencies {
+            implementation(projects.feature.login)
             implementation(libs.androidx.compose.material3)
         }
     }
