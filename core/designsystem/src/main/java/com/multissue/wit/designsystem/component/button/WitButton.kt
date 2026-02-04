@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.multissue.wit.designsystem.R
@@ -30,6 +31,7 @@ fun WitButton(
     ),
     shape: Shape = RoundedCornerShape(12.dp),
     title: String,
+    textStyle: TextStyle = WitTheme.typography.titleM,
     enabled: Boolean = true,
     leadingIcon: @Composable () -> Unit = {},
     trailingIcon: @Composable () -> Unit = {},
@@ -45,7 +47,7 @@ fun WitButton(
         leadingIcon()
         Text(
             text = title,
-            style = WitTheme.typography.titleM
+            style = textStyle
         )
         trailingIcon()
     }
