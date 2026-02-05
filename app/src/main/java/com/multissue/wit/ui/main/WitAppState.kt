@@ -14,27 +14,18 @@
  * limitations under the License.
  */
 
-package com.multissue.wit.ui
+package com.multissue.wit.ui.main
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.navigation3.runtime.NavKey
 import com.multissue.wit.core.navigation.NavigationState
-import com.multissue.wit.core.navigation.Navigator
 import com.multissue.wit.core.navigation.rememberNavigationState
 import com.multissue.wit.core.ui.TrackDisposableJank
 import com.multissue.wit.feature.home.navigation.HomeNavKey
-import com.multissue.wit.navigation.TOP_LEVEL_NAV_ITEMS
+import com.multissue.wit.navigation.MAIN_LEVEL_NAV_ITEMS
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
-import kotlin.collections.any
-import kotlin.takeIf
 
 @Composable
 fun rememberWitAppState(
@@ -42,7 +33,7 @@ fun rememberWitAppState(
 //    timeZoneMonitor: TimeZoneMonitor,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
 ): WitAppState {
-    val navigationState = rememberNavigationState(HomeNavKey, TOP_LEVEL_NAV_ITEMS.keys)
+    val navigationState = rememberNavigationState(HomeNavKey, MAIN_LEVEL_NAV_ITEMS.keys)
 
     NavigationTrackingSideEffect(navigationState)
 
@@ -108,7 +99,7 @@ class WitAppState(
  * Stores information about navigation events to be used with JankStats
  */
 @Composable
-private fun NavigationTrackingSideEffect(navigationState: NavigationState) {
+fun NavigationTrackingSideEffect(navigationState: NavigationState) {
     TrackDisposableJank(navigationState.currentKey) { metricsHolder ->
         metricsHolder.state?.putState("Navigation", navigationState.currentKey.toString())
         onDispose {}

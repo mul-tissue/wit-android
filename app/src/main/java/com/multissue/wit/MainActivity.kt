@@ -5,18 +5,18 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.multissue.wit.designsystem.theme.WitTheme
-import com.multissue.wit.ui.WitApp
-import com.multissue.wit.ui.rememberWitAppState
+import com.multissue.wit.ui.root.RootApp
+import com.multissue.wit.ui.root.rememberRootAppState
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val appState = rememberWitAppState()
+            val appState = rememberRootAppState()
 
             WitTheme {
-                WitApp(appState)
+                RootApp(appState)
             }
         }
     }
