@@ -6,8 +6,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import com.multissue.wit.core.navigation.NavigationState
 import com.multissue.wit.core.navigation.rememberNavigationState
+import com.multissue.wit.feature.onboarding.navigation.OnboardingNavKey
 import com.multissue.wit.navigation.Auth_LEVEL_NAV_ITEMS
-import com.multissue.wit.navigation.auth.AuthNavKey
 import com.multissue.wit.ui.main.NavigationTrackingSideEffect
 import kotlinx.coroutines.CoroutineScope
 
@@ -15,7 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 fun rememberAuthAppState(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
 ): AuthAppState {
-    val navigationState = rememberNavigationState(AuthNavKey, Auth_LEVEL_NAV_ITEMS.keys)
+    val navigationState = rememberNavigationState(OnboardingNavKey, Auth_LEVEL_NAV_ITEMS.keys)
 
     NavigationTrackingSideEffect(navigationState)
 

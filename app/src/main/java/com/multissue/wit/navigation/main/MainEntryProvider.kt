@@ -12,9 +12,6 @@ fun EntryProviderScope<NavKey>.mainEntry(navigator: Navigator) {
     // TODO SnackBar
     entry<MainNavKey> {
         val appState = rememberWitAppState()
-
-        WitTheme {
-            WitApp(appState)
-        }
+        WitApp(appState)
     }
 }

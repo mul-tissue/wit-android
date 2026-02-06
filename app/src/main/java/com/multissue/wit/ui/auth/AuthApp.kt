@@ -17,10 +17,10 @@ import com.multissue.wit.feature.signup.navigation.signupEntry
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 fun AuthApp(
-    appState: AuthAppState,
+    authState: AuthAppState,
     modifier: Modifier = Modifier,
 ) {
-    val navigator = remember { Navigator(appState.navigationState) }
+    val navigator = remember { Navigator(authState.navigationState) }
     val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>()
 
     val entryProvider = entryProvider {
@@ -30,7 +30,7 @@ fun AuthApp(
     }
 
     NavDisplay(
-        entries = appState.navigationState.toEntries(entryProvider),
+        entries = authState.navigationState.toEntries(entryProvider),
         sceneStrategy = listDetailStrategy,
         onBack = { navigator.goBack() },
     )
