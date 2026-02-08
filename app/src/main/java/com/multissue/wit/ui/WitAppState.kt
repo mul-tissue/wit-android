@@ -40,8 +40,6 @@ import kotlin.takeIf
 
 @Composable
 fun rememberWitAppState(
-//    networkMonitor: NetworkMonitor,
-//    timeZoneMonitor: TimeZoneMonitor,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
 ): WitAppState {
     val navigationState = rememberNavigationState(OnboardingNavKey, TOP_LEVEL_NAV_ITEMS.keys + SUB_LEVEL_NAV_ITEMS.keys)
@@ -51,14 +49,10 @@ fun rememberWitAppState(
     return remember(
         navigationState,
         coroutineScope,
-//        networkMonitor,
-//        timeZoneMonitor,
     ) {
         WitAppState(
             navigationState = navigationState,
             coroutineScope = coroutineScope,
-//            networkMonitor = networkMonitor,
-//            timeZoneMonitor = timeZoneMonitor,
         )
     }
 }
@@ -67,18 +61,8 @@ fun rememberWitAppState(
 class WitAppState(
     val navigationState: NavigationState,
     coroutineScope: CoroutineScope,
-//    networkMonitor: NetworkMonitor,
-//    timeZoneMonitor: TimeZoneMonitor,
 ) {
     /* TODO 구현
-    val isOffline = networkMonitor.isOnline
-        .map(Boolean::not)
-        .stateIn(
-            scope = coroutineScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = false,
-        )
-
     /**
      * The top level nav keys that have unread news resources.
      */
@@ -95,14 +79,6 @@ class WitAppState(
                 SharingStarted.WhileSubscribed(5_000),
                 initialValue = emptySet(),
             )
-
-    val currentTimeZone = timeZoneMonitor.currentTimeZone
-        .stateIn(
-            coroutineScope,
-            SharingStarted.WhileSubscribed(5_000),
-            TimeZone.currentSystemDefault(),
-        )
-
      */
 }
 
