@@ -54,14 +54,14 @@ data class WitTypography(
                     fontSize = 18.sp,
                     lineHeight = (18 * 1.32).sp,
                     letterSpacing = (-0.25).sp,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.SemiBold
                 ),
                 titleM = TextStyle(
                     fontFamily = pretendardFontFamily,
                     fontSize = 16.sp,
                     lineHeight = (16 * 1.32).sp,
                     letterSpacing = (-0.25).sp,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.SemiBold
                 ),
                 titleS = TextStyle(
                     fontFamily = pretendardFontFamily,

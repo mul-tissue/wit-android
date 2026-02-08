@@ -3,6 +3,7 @@ package com.multissue.wit.ui.auth
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavKey
@@ -25,6 +26,10 @@ fun AuthApp(
 ) {
     val navigator = remember { Navigator(authState.navigationState) }
     val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>()
+
+    LaunchedEffect(Unit) {
+        navigateToMain()
+    }
 
     val entryProvider = entryProvider {
         onboardingEntry {

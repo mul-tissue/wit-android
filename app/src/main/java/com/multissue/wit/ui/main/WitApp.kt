@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
@@ -36,6 +37,7 @@ import com.multissue.wit.feature.chat.navigation.chatEntry
 import com.multissue.wit.feature.home.navigation.HomeNavKey
 import com.multissue.wit.feature.home.navigation.homeEntry
 import com.multissue.wit.feature.login.navigation.loginEntry
+import com.multissue.wit.feature.map.navigation.MapNavKey
 import com.multissue.wit.feature.map.navigation.mapEntry
 import com.multissue.wit.feature.mypage.navigation.myPageEntry
 import com.multissue.wit.feature.onboarding.navigation.OnboardingNavKey
@@ -72,7 +74,7 @@ internal fun WitApp(
                 .fillMaxSize()
                 .padding(padding)
                 .consumeWindowInsets(padding)
-                .navigationBarsPadding(),
+//                .navigationBarsPadding(),
         ) {
             // TODO TopBar
             Box( // Display Main
@@ -85,7 +87,10 @@ internal fun WitApp(
                 val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>()
 
                 val entryProvider = entryProvider {
-                    homeEntry(navigator)
+                    homeEntry(
+                        navigator,
+                        navigateToMap = { navigator.navigate(MapNavKey) }
+                    )
                     chatEntry(navigator)
                     mapEntry(navigator)
                     myPageEntry(navigator)
@@ -98,7 +103,10 @@ internal fun WitApp(
                     onBack = { navigator.goBack() },
                 )
             }
-            if (appState.navigationState.currentKey == HomeNavKey || appState.navigationState.currentKey == ChatNavKey) {
+            if (appState.navigationState.currentKey == HomeNavKey
+                || appState.navigationState.currentKey == ChatNavKey
+                || appState.navigationState.currentKey == MapNavKey) {
+
                 WitNavigationRail(
                     modifier = Modifier
                         .fillMaxWidth()
