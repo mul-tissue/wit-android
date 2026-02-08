@@ -104,7 +104,7 @@ internal fun WitApp(
                         .fillMaxWidth()
                         .height(64.dp) //TODO
                         .background(color = Color.White), //TODO
-                    onCenterButtonClicked = { navigator.navigate(OnboardingNavKey) },
+                    onCenterButtonClicked = { navigator.navigate(UploadNavKey) },
                     navItems = {
                         MAIN_LEVEL_NAV_ITEMS.forEach { (navKey, navItem) ->
     //                        val hasUnread = unreadNavKeys.contains(navKey) //TODO

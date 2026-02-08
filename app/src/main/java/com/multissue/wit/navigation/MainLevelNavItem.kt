@@ -60,8 +60,10 @@ val NOTIFICATION = MainLevelNavItem(
 val MAIN_LEVEL_NAV_ITEMS = mapOf(
     HomeNavKey to HOME,
     ChatNavKey to CHAT,
+)
+
+val SUB_LEVEL_NAV_ITEMS = mapOf(
     UploadNavKey to UPLOAD,
     MyPageNavKey to MYPAGE,
     MapNavKey to MAP,
-    //TODO Notification?
 )

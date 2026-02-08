@@ -26,13 +26,17 @@ import com.multissue.wit.core.ui.TrackDisposableJank
 import com.multissue.wit.feature.home.navigation.HomeNavKey
 import com.multissue.wit.feature.onboarding.navigation.OnboardingNavKey
 import com.multissue.wit.navigation.MAIN_LEVEL_NAV_ITEMS
+import com.multissue.wit.navigation.SUB_LEVEL_NAV_ITEMS
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun rememberWitAppState(
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
 ): WitAppState {
-    val navigationState = rememberNavigationState(HomeNavKey, MAIN_LEVEL_NAV_ITEMS.keys)
+    val navigationState = rememberNavigationState(
+        startKey = HomeNavKey,
+        topLevelKeys = MAIN_LEVEL_NAV_ITEMS.keys + SUB_LEVEL_NAV_ITEMS.keys
+    )
 
     NavigationTrackingSideEffect(navigationState)
 
