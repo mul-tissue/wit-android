@@ -7,8 +7,10 @@ import androidx.activity.enableEdgeToEdge
 import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.ui.root.RootApp
 import com.multissue.wit.ui.root.rememberRootAppState
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : ComponentActivity() {
+@AndroidEntryPoint
+class WitActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
