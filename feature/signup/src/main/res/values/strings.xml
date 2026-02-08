@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nickname_title">닉네임을\n입력해 주세요</string>
+    <string name="nickname_placeholder">닉네임 입력 (2-12자)</string>
+    <string name="check_duplicate">중복 확인</string>
+    <string name="nickname_duplicated">사용할 수 없는 닉네임입니다</string>
+    <string name="nickname_available">사용 가능한 닉네임입니다</string>
+
+    <string name="button_next">다음</string>
+</resources>

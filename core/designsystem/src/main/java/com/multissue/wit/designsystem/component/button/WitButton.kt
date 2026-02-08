@@ -2,6 +2,7 @@ package com.multissue.wit.designsystem.component.button
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,6 +31,7 @@ fun WitButton(
         disabledContentColor = WitTheme.colors.background
     ),
     shape: Shape = RoundedCornerShape(12.dp),
+    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
     title: String,
     textStyle: TextStyle = WitTheme.typography.titleM,
     enabled: Boolean = true,
@@ -42,6 +44,7 @@ fun WitButton(
         enabled = enabled,
         shape = shape,
         colors = colors,
+        contentPadding = contentPadding,
         onClick = onClick
     ) {
         leadingIcon()

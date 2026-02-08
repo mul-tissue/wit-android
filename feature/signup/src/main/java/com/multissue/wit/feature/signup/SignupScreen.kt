@@ -16,27 +16,37 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.multissue.wit.designsystem.component.background.WitGradientBackground
 import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.feature.signup.component.AgreementPage
 import com.multissue.wit.feature.signup.component.BirthAndGenderPage
 import com.multissue.wit.feature.signup.component.NicknamePage
 import com.multissue.wit.feature.signup.state.SignUpStep
+import com.multissue.wit.feature.signup.state.SignupUiIntent
+import com.multissue.wit.feature.signup.state.SignupUiState
 import kotlinx.coroutines.launch
 
 @Composable
 fun SignupRoute(
     modifier: Modifier = Modifier,
+    signupViewModel: SignupViewModel = hiltViewModel(),
     navigateToLogin: () -> Unit,
     navigateToHome: () -> Unit
 ) {
+    val uiState by signupViewModel.uiState.collectAsStateWithLifecycle()
+
     SignupScreen(
         modifier = modifier,
+        signupUiState = uiState,
+        onIntent = signupViewModel::onIntent,
         navigateToMain = navigateToHome,
         navigateToLogin = navigateToLogin
     )
@@ -44,6 +54,8 @@ fun SignupRoute(
 @Composable
 fun SignupScreen(
     modifier: Modifier = Modifier,
+    signupUiState: SignupUiState,
+    onIntent: (SignupUiIntent) -> Unit,
     navigateToLogin: () -> Unit,
     navigateToMain: () -> Unit
 ) {
@@ -106,7 +118,15 @@ fun SignupScreen(
                 ) { page ->
                     when (SignUpStep.entries[page]) {
                         SignUpStep.NICKNAME -> {
-                            NicknamePage()
+                            NicknamePage(
+                                modifier = Modifier.weight(1f),
+                                pagerState = pagerState,
+                                isCheckedNickname = signupUiState.isCheckedNickname,
+                                nickName = signupUiState.nickname,
+                                isNickNameDuplicated = signupUiState.isNickNameDuplicated,
+                                onNickNameChange = { onIntent(SignupUiIntent.SetNickname(it)) },
+                                onCheckNickNameDuplicate = { onIntent(SignupUiIntent.CheckNickNameDuplicate) }
+                            )
                         }
                         SignUpStep.BIRTH_GENDER -> {
                             BirthAndGenderPage()
