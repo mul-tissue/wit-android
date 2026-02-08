@@ -21,36 +21,25 @@ import com.multissue.wit.R.string
 import com.multissue.wit.feature.chat.navigation.ChatNavKey
 import com.multissue.wit.feature.home.navigation.HomeNavKey
 
-/**
- * Type for the top level navigation items in the application. Contains UI information about the
- * current route that is used in the top app bar and common navigation UI.
- *
- * @param selectedIcon The icon to be displayed in the navigation UI when this destination is
- * selected.
- * @param unselectedIcon The icon to be displayed in the navigation UI when this destination is
- * not selected.
- * @param iconTextId Text that to be displayed in the navigation UI.
- * @param titleTextId Text that is displayed on the top app bar.
- */
-data class TopLevelNavItem(
+data class MainLevelNavItem(
     val selectedIconId: Int,
     val unselectedIconId: Int,
     @StringRes val titleTextId: Int,
 )
 
-val HOME = TopLevelNavItem(
+val HOME = MainLevelNavItem(
     selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_home_selected,
     unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_home,
     titleTextId = string.home_title,
 )
 
-val CHAT = TopLevelNavItem(
+val CHAT = MainLevelNavItem(
     selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_chat_selected,
     unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_chat,
     titleTextId = string.chat_title,
 )
 
-val TOP_LEVEL_NAV_ITEMS = mapOf(
+val MAIN_LEVEL_NAV_ITEMS = mapOf(
     HomeNavKey to HOME,
     ChatNavKey to CHAT
 )
