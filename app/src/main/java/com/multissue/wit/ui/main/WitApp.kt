@@ -35,14 +35,17 @@ import com.multissue.wit.feature.chat.navigation.ChatNavKey
 import com.multissue.wit.feature.chat.navigation.chatEntry
 import com.multissue.wit.feature.home.navigation.HomeNavKey
 import com.multissue.wit.feature.home.navigation.homeEntry
+import com.multissue.wit.feature.login.navigation.LoginNavKey
 import com.multissue.wit.feature.login.navigation.loginEntry
 import com.multissue.wit.feature.map.navigation.mapEntry
 import com.multissue.wit.feature.mypage.navigation.myPageEntry
 import com.multissue.wit.feature.onboarding.navigation.onboardingEntry
+import com.multissue.wit.feature.signup.navigation.SignupNavKey
 import com.multissue.wit.feature.signup.navigation.signupEntry
 import com.multissue.wit.feature.upload.navigation.UploadNavKey
 import com.multissue.wit.feature.upload.navigation.uploadEntry
 import com.multissue.wit.navigation.MAIN_LEVEL_NAV_ITEMS
+import com.multissue.wit.navigation.main.MainNavKey
 
 @Composable
 fun WitApp(
@@ -85,8 +88,13 @@ internal fun WitApp(
 
                 val entryProvider = entryProvider {
                     onboardingEntry(navigator)
-                    signupEntry(navigator)
-                    loginEntry(navigator)
+                    signupEntry(
+                        navigateToLogin = { navigator.navigate(LoginNavKey) },
+                        navigateToMain = { navigator.navigate(MainNavKey) }
+                    )
+                    loginEntry(
+                        navigateToSignUp = { navigator.navigate(SignupNavKey) }
+                    )
                     homeEntry(navigator)
                     chatEntry(navigator)
                     mapEntry(navigator)

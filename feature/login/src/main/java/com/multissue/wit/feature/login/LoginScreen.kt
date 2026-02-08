@@ -3,10 +3,13 @@ package com.multissue.wit.feature.login
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,10 +26,14 @@ import com.multissue.wit.feature.login.component.SocialLoginButton
 @Composable
 internal fun LoginScreen(
     modifier: Modifier = Modifier,
+    navigateToSignUp: () -> Unit,
 ) {
     WitGradientBackground {
         Column(
             modifier = modifier
+                .fillMaxSize()
+                .statusBarsPadding()
+                .navigationBarsPadding()
                 .padding(horizontal = 26.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -59,7 +66,8 @@ internal fun LoginScreen(
                     contentColor = WitTheme.colors.text
                 )
             ) {
-                TODO("카카오 로그인")
+                navigateToSignUp()
+                // TODO("카카오 로그인")
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -83,7 +91,8 @@ internal fun LoginScreen(
                     contentColor = WitTheme.colors.text
                 )
             ) {
-                TODO("구글 로그인")
+                navigateToSignUp()
+                // TODO("구글 로그인")
             }
             
             Spacer(modifier = Modifier.height(26.dp))

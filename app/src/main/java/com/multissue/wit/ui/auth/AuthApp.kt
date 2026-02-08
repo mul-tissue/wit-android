@@ -10,9 +10,12 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.multissue.wit.core.navigation.Navigator
 import com.multissue.wit.core.navigation.toEntries
+import com.multissue.wit.feature.login.navigation.LoginNavKey
 import com.multissue.wit.feature.login.navigation.loginEntry
 import com.multissue.wit.feature.onboarding.navigation.onboardingEntry
+import com.multissue.wit.feature.signup.navigation.SignupNavKey
 import com.multissue.wit.feature.signup.navigation.signupEntry
+import com.multissue.wit.navigation.main.MainNavKey
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
@@ -25,8 +28,13 @@ fun AuthApp(
 
     val entryProvider = entryProvider {
         onboardingEntry(navigator)
-        loginEntry(navigator)
-        signupEntry(navigator)
+        loginEntry(
+            navigateToSignUp = { navigator.navigate(SignupNavKey) }
+        )
+        signupEntry(
+            navigateToLogin = { navigator.navigate(LoginNavKey) },
+            navigateToMain = { navigator.navigate(MainNavKey) },
+        )
     }
 
     NavDisplay(

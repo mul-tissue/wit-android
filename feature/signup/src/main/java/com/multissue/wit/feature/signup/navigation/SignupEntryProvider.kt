@@ -2,14 +2,16 @@ package com.multissue.wit.feature.signup.navigation
 
 import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
-import com.multissue.wit.core.navigation.Navigator
-import com.multissue.wit.feature.signup.SignupScreen
+import com.multissue.wit.feature.signup.SignupRoute
 
-fun EntryProviderScope<NavKey>.signupEntry(navigator: Navigator) {
-    // TODO SnackBar
+fun EntryProviderScope<NavKey>.signupEntry(
+    navigateToLogin: () -> Unit,
+    navigateToMain: () -> Unit,
+) {
     entry<SignupNavKey> {
-        SignupScreen(
-
+        SignupRoute(
+            navigateToLogin = navigateToLogin,
+            navigateToHome = navigateToMain
         )
     }
 }
