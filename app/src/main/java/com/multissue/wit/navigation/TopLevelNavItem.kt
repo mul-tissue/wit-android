@@ -16,41 +16,51 @@
 
 package com.multissue.wit.navigation
 
-import androidx.annotation.StringRes
-import com.multissue.wit.R.string
 import com.multissue.wit.feature.chat.navigation.ChatNavKey
 import com.multissue.wit.feature.home.navigation.HomeNavKey
+import com.multissue.wit.feature.map.navigation.MapNavKey
+import com.multissue.wit.feature.mypage.navigation.MyPageNavKey
+import com.multissue.wit.feature.upload.navigation.UploadNavKey
 
-/**
- * Type for the top level navigation items in the application. Contains UI information about the
- * current route that is used in the top app bar and common navigation UI.
- *
- * @param selectedIcon The icon to be displayed in the navigation UI when this destination is
- * selected.
- * @param unselectedIcon The icon to be displayed in the navigation UI when this destination is
- * not selected.
- * @param iconTextId Text that to be displayed in the navigation UI.
- * @param titleTextId Text that is displayed on the top app bar.
- */
 data class TopLevelNavItem(
     val selectedIconId: Int,
     val unselectedIconId: Int,
-    @StringRes val titleTextId: Int,
 )
 
 val HOME = TopLevelNavItem(
     selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_home_selected,
     unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_home,
-    titleTextId = string.home_title,
 )
 
 val CHAT = TopLevelNavItem(
     selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_chat_selected,
     unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_chat,
-    titleTextId = string.chat_title,
+)
+
+val UPLOAD = TopLevelNavItem(
+    selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_plus,
+    unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_plus,
+)
+
+val MYPAGE = TopLevelNavItem(
+    selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_user,
+    unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_user,
+)
+
+val MAP = TopLevelNavItem(
+    selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_home,
+    unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_home,
+)
+val NOTIFICATION = TopLevelNavItem(
+    selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_notification,
+    unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_notification,
 )
 
 val TOP_LEVEL_NAV_ITEMS = mapOf(
     HomeNavKey to HOME,
-    ChatNavKey to CHAT
+    ChatNavKey to CHAT,
+    UploadNavKey to UPLOAD,
+    MyPageNavKey to MYPAGE,
+    MapNavKey to MAP,
+    //TODO Notification?
 )
