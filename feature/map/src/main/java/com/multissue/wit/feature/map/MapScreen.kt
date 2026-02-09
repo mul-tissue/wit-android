@@ -66,7 +66,7 @@ internal fun MapScreen(
         )
 
         BottomSheetScaffold(
-            modifier = Modifier.navigationBarsPadding(),
+            modifier = Modifier,
             scaffoldState = scaffoldState,
             sheetPeekHeight = 60.dp, // 👈 최소화 높이
             sheetContainerColor = WitTheme.colors.white100,

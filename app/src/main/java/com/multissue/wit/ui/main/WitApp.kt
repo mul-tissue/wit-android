@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -68,13 +70,13 @@ internal fun WitApp(
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
+            .systemBarsPadding()
+            .navigationBarsPadding()
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
                 .consumeWindowInsets(padding)
-//                .navigationBarsPadding(),
         ) {
             // TODO TopBar
             Box( // Display Main
@@ -112,6 +114,7 @@ internal fun WitApp(
                         .fillMaxWidth()
                         .height(64.dp) //TODO
                         .background(color = Color.White), //TODO
+//                        .padding(bottom = WindowInsets.systemBars.asPaddingValues().calculateBottomPadding()),
                     onCenterButtonClicked = { navigator.navigate(UploadNavKey) },
                     navItems = {
                         MAIN_LEVEL_NAV_ITEMS.forEach { (navKey, navItem) ->
