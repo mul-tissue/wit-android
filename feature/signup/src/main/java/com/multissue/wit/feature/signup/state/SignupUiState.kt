@@ -15,6 +15,7 @@ data class SignupUiState (
     val gender: GenderType = GenderType.NONE,
     val showAgreementBottomSheet: Boolean = false,
     val agreementState: AgreementState = AgreementState(),
+    val showTermsDialog: Boolean = false,
     val signupComplete: Boolean = false
 ): UiState {
     data class AgreementState(
@@ -39,6 +40,8 @@ sealed class SignupUiIntent: UiIntent {
         val type: AgreementType,
         val checked: Boolean
     ): SignupUiIntent()
+    data object ShowTermsDialog: SignupUiIntent()
+    data object HideTermsDialog: SignupUiIntent()
     data object SignupComplete: SignupUiIntent()
 }
 

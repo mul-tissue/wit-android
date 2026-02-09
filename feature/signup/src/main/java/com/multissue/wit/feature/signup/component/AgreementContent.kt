@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -23,15 +24,16 @@ import com.multissue.wit.feature.signup.state.agreement.AgreementType
 fun AgreementContent(
     state: SignupUiState.AgreementState,
     onStateChange: (AgreementType, Boolean) -> Unit,
+    onShowTermsDialog: () -> Unit,
     onConfirm: () -> Unit
 ) {
-    val isAllChecked by remember(
-        state.terms,
-        state.location,
-        state.marketing
-    ) {
+    val terms by rememberUpdatedState(state.terms)
+    val location by rememberUpdatedState(state.location)
+    val marketing by rememberUpdatedState(state.marketing)
+
+    val isAllChecked by remember {
         derivedStateOf {
-            state.terms && state.location && state.marketing
+            terms && location && marketing
         }
     }
 
@@ -66,7 +68,8 @@ fun AgreementContent(
             title = stringResource(R.string.agreement_terms_title),
             checked = state.terms,
             onShowAgreementDescription = {
-
+                // TODO("API 연결 시 약관 Type에 따라 분기")
+                onShowTermsDialog()
             },
             onCheckedChange = { onStateChange(AgreementType.TERMS, it) }
         )
@@ -76,7 +79,8 @@ fun AgreementContent(
             title = stringResource(R.string.agreement_location_title),
             checked = state.location,
             onShowAgreementDescription = {
-
+                // TODO("API 연결 시 약관 Type에 따라 분기")
+                onShowTermsDialog()
             },
             onCheckedChange = { onStateChange(AgreementType.LOCATION, it) }
         )
@@ -86,7 +90,8 @@ fun AgreementContent(
             title = stringResource(R.string.agreement_marketing_title),
             checked = state.marketing,
             onShowAgreementDescription = {
-
+                // TODO("API 연결 시 약관 Type에 따라 분기")
+                onShowTermsDialog()
             },
             onCheckedChange = { onStateChange(AgreementType.MARKETING, it) }
         )

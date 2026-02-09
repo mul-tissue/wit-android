@@ -36,6 +36,7 @@ import com.multissue.wit.feature.signup.component.BirthAndGenderPage
 import com.multissue.wit.feature.signup.component.CompletePage
 import com.multissue.wit.feature.signup.component.NicknamePage
 import com.multissue.wit.feature.signup.component.SignupAgreementBottomSheet
+import com.multissue.wit.feature.signup.component.TermsDialog
 import com.multissue.wit.feature.signup.state.SignUpStep
 import com.multissue.wit.feature.signup.state.SignupUiIntent
 import com.multissue.wit.feature.signup.state.SignupUiState
@@ -174,6 +175,9 @@ fun SignupScreen(
                     onStateChange = { type, checked ->
                         onIntent(SignupUiIntent.CheckAgreement(type, checked))
                     },
+                    onShowTermsDialog = {
+                        onIntent(SignupUiIntent.ShowTermsDialog)
+                    },
                     onConfirm = {
                         onIntent(SignupUiIntent.SignupComplete)
                     },
@@ -181,6 +185,12 @@ fun SignupScreen(
                     visible = signupUiState.showAgreementBottomSheet
                 )
             }
+            TermsDialog(
+                showDialog = signupUiState.showTermsDialog,
+                onDismiss = {
+                    onIntent(SignupUiIntent.HideTermsDialog)
+                }
+            )
         }
     }
 }

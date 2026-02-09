@@ -25,6 +25,8 @@ class SignupViewModel @Inject constructor(
             is SignupUiIntent.ShowAgreementBottomSheet -> onShowAgreementBottomSheet()
             is SignupUiIntent.HideAgreementBottomSheet -> onHideAgreementBottomSheet()
             is SignupUiIntent.CheckAgreement -> onCheckAgreement(intent.type, intent.checked)
+            is SignupUiIntent.ShowTermsDialog -> onShowTermsDialog()
+            is SignupUiIntent.HideTermsDialog -> onHideTermsDialog()
             is SignupUiIntent.SignupComplete -> onSignupComplete()
         }
     }
@@ -110,6 +112,22 @@ class SignupViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    private fun onShowTermsDialog() {
+        setState {
+            copy(
+                showTermsDialog = true
+            )
+        }
+    }
+
+    private fun onHideTermsDialog() {
+        setState {
+            copy(
+                showTermsDialog = false
+            )
         }
     }
 

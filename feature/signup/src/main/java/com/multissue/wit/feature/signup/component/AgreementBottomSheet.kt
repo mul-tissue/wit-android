@@ -25,6 +25,7 @@ fun SignupAgreementBottomSheet(
     state: SignupUiState.AgreementState,
     visible: Boolean,
     onStateChange: (AgreementType, Boolean) -> Unit,
+    onShowTermsDialog: () -> Unit,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -55,6 +56,7 @@ fun SignupAgreementBottomSheet(
         AgreementContent(
             state = state,
             onStateChange = onStateChange,
+            onShowTermsDialog = onShowTermsDialog,
             onConfirm = onConfirm
         )
     }
