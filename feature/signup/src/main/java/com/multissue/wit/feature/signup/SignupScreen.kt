@@ -22,6 +22,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -29,6 +31,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.multissue.wit.designsystem.component.background.WitGradientBackground
 import com.multissue.wit.designsystem.theme.WitTheme
+import com.multissue.wit.designsystem.util.addFocusCleaner
 import com.multissue.wit.feature.signup.component.BirthAndGenderPage
 import com.multissue.wit.feature.signup.component.CompletePage
 import com.multissue.wit.feature.signup.component.NicknamePage
@@ -69,12 +72,15 @@ fun SignupScreen(
         pageCount = { SignUpStep.entries.size }
     )
     val scope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
+    val keyboardManager = LocalSoftwareKeyboardController.current
 
     WitGradientBackground {
         Column(
             modifier = modifier
                 .statusBarsPadding()
                 .navigationBarsPadding()
+                .addFocusCleaner(focusManager)
         ) {
             AnimatedVisibility(
                 visible = signupUiState.signupComplete,
@@ -142,7 +148,11 @@ fun SignupScreen(
                                     nickName = signupUiState.nickname,
                                     isNickNameDuplicated = signupUiState.isNickNameDuplicated,
                                     onNickNameChange = { onIntent(SignupUiIntent.SetNickname(it)) },
-                                    onCheckNickNameDuplicate = { onIntent(SignupUiIntent.CheckNickNameDuplicate) }
+                                    onCheckNickNameDuplicate = {
+                                        onIntent(SignupUiIntent.CheckNickNameDuplicate)
+                                        focusManager.clearFocus()
+                                        keyboardManager?.hide()
+                                    }
                                 )
                             }
 
@@ -171,6 +181,6 @@ fun SignupScreen(
                     visible = signupUiState.showAgreementBottomSheet
                 )
             }
-            }
+        }
     }
 }
