@@ -81,6 +81,7 @@ fun NicknamePage(
             Spacer(modifier = Modifier.weight(1f))
 
             SignupBottomButton(
+                modifier = Modifier.padding(bottom = 22.dp),
                 enabled = isCheckedNickname && nickName.isNotBlank(),
                 onClick = {
                     scope.launch {

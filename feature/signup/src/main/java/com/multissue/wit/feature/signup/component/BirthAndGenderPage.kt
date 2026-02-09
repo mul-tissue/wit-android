@@ -67,6 +67,7 @@ fun BirthAndGenderPage(
         Spacer(modifier = Modifier.weight(1f))
 
         SignupBottomButton(
+            modifier = Modifier.padding(bottom = 22.dp),
             enabled = gender != GenderType.NONE && birth.isNotBlank(),
             onClick = onShowAgreementBottomSheet
         )

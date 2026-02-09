@@ -12,12 +12,12 @@ import com.multissue.wit.feature.signup.R
 
 @Composable
 fun SignupBottomButton(
+    modifier: Modifier = Modifier,
     enabled: Boolean,
     onClick: () -> Unit
 ) {
     WitButton(
-        modifier = Modifier
-            .padding(bottom = 22.dp)
+        modifier = modifier
             .fillMaxWidth()
             .height(50.dp),
         onClick = onClick,
