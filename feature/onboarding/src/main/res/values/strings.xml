@@ -1,0 +1,19 @@
+<resources>
+    <string name="onboarding_page_1_title">하고 싶은 활동을 글로 남겨보세요</string>
+    <string name="onboarding_page_1_content">간단한 소개만으로도 동행이 시작돼요</string>
+    <string name="onboarding_page_2_title">만날 장소와 시간을 정해보세요</string>
+    <string name="onboarding_page_2_content">지도에서 직접 선택하고 일정에 맞게 조율할 수 있어요</string>
+    <string name="onboarding_page_3_title">관심 있는 동행에 참여해보세요</string>
+    <string name="onboarding_page_3_content">반응을 남기고 채팅으로 자연스럽게 이어져요</string>
+
+    <string name="next_button">다음</string>
+    <string name="signup_button">떠나기</string>
+
+    <string name="terms_of_service_title">서비스 이용을 위해\n약관 동의가 필요해요</string>
+    <string name="terms_of_service_sub_title">필수 항목에 동의하셔야 가입이 완료돼요</string>
+    <string name="agree_whole_title">전체 동의</string>
+    <string name="agree_1_title">이용약관 및 개인정보취급방침 (필수)</string>
+    <string name="agree_2_title">위치기반서비스 이용약관 (필수)</string>
+    <string name="agree_3_title">만 14세 이상 확인 (필수)</string>
+    <string name="agree_4_title">마케팅 활용 동의 (선택)</string>
+</resources>

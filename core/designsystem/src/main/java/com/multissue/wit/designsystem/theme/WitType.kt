@@ -68,7 +68,7 @@ data class WitTypography(
                     fontSize = 14.sp,
                     lineHeight = (14 * 1.32).sp,
                     letterSpacing = (-0.25).sp,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
                 ),
                 bodyL = TextStyle(
                     fontFamily = pretendardFontFamily,
