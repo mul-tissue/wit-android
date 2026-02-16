@@ -49,5 +49,4 @@ internal fun GraphicsLayerScope.graphic3DEffect(
         diffY
     }
     this.cameraDistance = layoutInfo.viewportSize.height.toFloat() / 25f
-    this.transformOrigin = transformOrigin
 }

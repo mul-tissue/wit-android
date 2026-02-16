@@ -30,13 +30,13 @@ abstract class BaseViewModel<STATE : UiState, EFFECT : UiSideEffect, INTENT : Ui
     abstract fun onIntent(intent: INTENT)
 
     protected fun setState(reduce: STATE.() -> STATE) {
-        _uiState.update { currentState.reduce() }
+        _uiState.update { it.reduce() }
     }
 
     protected fun postSideEffect(vararg effects: EFFECT) {
         viewModelScope.launch {
-            effects.forEach { effects ->
-                _sideEffect.send(effects)
+            effects.forEach { effect ->
+                _sideEffect.send(effect)
             }
         }
     }

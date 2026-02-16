@@ -1,11 +1,8 @@
 package com.multissue.wit.feature.signup.state
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
 import com.multissue.wit.core.ui.base.UiIntent
 import com.multissue.wit.core.ui.base.UiSideEffect
 import com.multissue.wit.core.ui.base.UiState
-import com.multissue.wit.feature.signup.R
 import com.multissue.wit.feature.signup.state.agreement.AgreementType
 
 data class SignupUiState(
@@ -24,17 +21,8 @@ data class SignupUiState(
     val showTermsDialog: Boolean = false,
     val signupComplete: Boolean = false
 ) : UiState {
-    @get:Composable
-    val birthDate: String
-        get() = if (birthYear != 0 && birthMonth != 0 && birthDay != 0) {
-            stringResource(
-                R.string.birth_format_date_selected,
-                birthYear,
-                birthMonth,
-                birthDay
-            )
-        } else ""
-
+    val hasBirthDate: Boolean
+        get() = birthYear != 0 && birthMonth != 0 && birthDay != 0
 
     data class AgreementState(
         val terms: Boolean = false,       // 필수

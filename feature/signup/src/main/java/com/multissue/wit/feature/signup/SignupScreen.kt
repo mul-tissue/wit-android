@@ -1,6 +1,5 @@
 package com.multissue.wit.feature.signup
 
-import SelectDateDialog
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -8,6 +7,7 @@ import androidx.compose.animation.slideIn
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -36,6 +37,7 @@ import com.multissue.wit.designsystem.util.addFocusCleaner
 import com.multissue.wit.feature.signup.component.BirthAndGenderPage
 import com.multissue.wit.feature.signup.component.CompletePage
 import com.multissue.wit.feature.signup.component.NicknamePage
+import com.multissue.wit.feature.signup.component.SelectDateDialog
 import com.multissue.wit.feature.signup.component.SignupAgreementBottomSheet
 import com.multissue.wit.feature.signup.component.TermsDialog
 import com.multissue.wit.feature.signup.state.SignUpStep
@@ -92,7 +94,7 @@ fun SignupScreen(
                 }
             ) {
                 CompletePage(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.fillMaxSize(),
                     navigateToMain = navigateToMain
                 )
             }
@@ -131,7 +133,7 @@ fun SignupScreen(
                     }
                 }
                 Column(
-                    modifier = modifier
+                    modifier = Modifier
                         .weight(1f),
                 ) {
                     Spacer(modifier = Modifier.height(32.dp))
@@ -145,7 +147,7 @@ fun SignupScreen(
                         when (SignUpStep.entries[page]) {
                             SignUpStep.NICKNAME -> {
                                 NicknamePage(
-                                    modifier = Modifier.weight(1f),
+                                    modifier = Modifier.fillMaxSize(),
                                     pagerState = pagerState,
                                     isCheckedNickname = signupUiState.isCheckedNickname,
                                     nickName = signupUiState.nickname,
@@ -160,10 +162,19 @@ fun SignupScreen(
                             }
 
                             SignUpStep.BIRTH_GENDER -> {
+                                val birthDateText = if (signupUiState.hasBirthDate) {
+                                    stringResource(
+                                        R.string.birth_format_date_selected,
+                                        signupUiState.birthYear,
+                                        signupUiState.birthMonth,
+                                        signupUiState.birthDay
+                                    )
+                                } else ""
+
                                 BirthAndGenderPage(
-                                    modifier = Modifier.weight(1f),
+                                    modifier = Modifier.fillMaxSize(),
                                     gender = signupUiState.gender,
-                                    birth = signupUiState.birthDate,
+                                    birth = birthDateText,
                                     onSelectBirth = { onIntent(SignupUiIntent.ShowBirthSelectDialog) },
                                     onGenderChange = { onIntent(SignupUiIntent.SetGender(it)) },
                                     onShowAgreementBottomSheet = { onIntent(SignupUiIntent.ShowAgreementBottomSheet) }

@@ -27,7 +27,7 @@ fun TermsDialogContent(
     content: @Composable ColumnScope.() -> Unit
 ) {
     AnimatedVisibility(
-        visible = true,
+        visible = true, // TODO("API 연결 시 하드 코딩 변경")
         enter = slideInVertically(
             initialOffsetY = { it },
             animationSpec = tween(800)
@@ -46,7 +46,7 @@ fun TermsDialogContent(
                     IconButton(onClick = onDismiss) {
                         Icon(
                             painter = painterResource(R.drawable.icon_back),
-                            contentDescription = "navigationIconContentDescription"
+                            contentDescription = "뒤로가기"
                         )
                     }
                 }

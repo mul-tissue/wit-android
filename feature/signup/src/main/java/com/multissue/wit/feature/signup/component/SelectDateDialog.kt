@@ -1,3 +1,5 @@
+package com.multissue.wit.feature.signup.component
+
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

@@ -54,10 +54,11 @@ fun BirthSelectableField(
                 tint = WitTheme.colors.subText
             )
         }
+
+        HorizontalDivider(
+            thickness = 1.dp,
+            color = WitTheme.colors.disabledText
+        )
     }
 
-    HorizontalDivider(
-        thickness = 1.dp,
-        color = WitTheme.colors.disabledText
-    )
 }
