@@ -16,30 +16,54 @@
 
 package com.multissue.wit.navigation
 
-import androidx.annotation.StringRes
-import com.multissue.wit.R.string
 import com.multissue.wit.feature.chat.navigation.ChatNavKey
 import com.multissue.wit.feature.home.navigation.HomeNavKey
+import com.multissue.wit.feature.map.navigation.MapNavKey
+import com.multissue.wit.feature.mypage.navigation.MyPageNavKey
+import com.multissue.wit.feature.upload.navigation.UploadNavKey
 
 data class MainLevelNavItem(
     val selectedIconId: Int,
     val unselectedIconId: Int,
-    @StringRes val titleTextId: Int,
 )
 
 val HOME = MainLevelNavItem(
     selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_home_selected,
     unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_home,
-    titleTextId = string.home_title,
 )
 
 val CHAT = MainLevelNavItem(
     selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_chat_selected,
     unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_chat,
-    titleTextId = string.chat_title,
+)
+
+val UPLOAD = MainLevelNavItem(
+    selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_plus,
+    unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_plus,
+)
+
+val MYPAGE = MainLevelNavItem(
+    selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_user,
+    unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_user,
+)
+
+val MAP = MainLevelNavItem(
+    selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_home,
+    unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_home,
+)
+
+val NOTIFICATION = MainLevelNavItem(
+    selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_notification,
+    unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_notification,
 )
 
 val MAIN_LEVEL_NAV_ITEMS = mapOf(
     HomeNavKey to HOME,
-    ChatNavKey to CHAT
+    ChatNavKey to CHAT,
+)
+
+val SUB_LEVEL_NAV_ITEMS = mapOf(
+    UploadNavKey to UPLOAD,
+    MyPageNavKey to MYPAGE,
+    MapNavKey to MAP,
 )

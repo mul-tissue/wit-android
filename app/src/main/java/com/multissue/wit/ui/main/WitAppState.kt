@@ -24,30 +24,29 @@ import com.multissue.wit.core.navigation.NavigationState
 import com.multissue.wit.core.navigation.rememberNavigationState
 import com.multissue.wit.core.ui.TrackDisposableJank
 import com.multissue.wit.feature.home.navigation.HomeNavKey
+import com.multissue.wit.feature.onboarding.navigation.OnboardingNavKey
 import com.multissue.wit.navigation.MAIN_LEVEL_NAV_ITEMS
+import com.multissue.wit.navigation.SUB_LEVEL_NAV_ITEMS
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun rememberWitAppState(
-//    networkMonitor: NetworkMonitor,
-//    timeZoneMonitor: TimeZoneMonitor,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
 ): WitAppState {
-    val navigationState = rememberNavigationState(HomeNavKey, MAIN_LEVEL_NAV_ITEMS.keys)
+    val navigationState = rememberNavigationState(
+        startKey = HomeNavKey,
+        topLevelKeys = MAIN_LEVEL_NAV_ITEMS.keys + SUB_LEVEL_NAV_ITEMS.keys
+    )
 
     NavigationTrackingSideEffect(navigationState)
 
     return remember(
         navigationState,
         coroutineScope,
-//        networkMonitor,
-//        timeZoneMonitor,
     ) {
         WitAppState(
             navigationState = navigationState,
             coroutineScope = coroutineScope,
-//            networkMonitor = networkMonitor,
-//            timeZoneMonitor = timeZoneMonitor,
         )
     }
 }
@@ -56,18 +55,8 @@ fun rememberWitAppState(
 class WitAppState(
     val navigationState: NavigationState,
     coroutineScope: CoroutineScope,
-//    networkMonitor: NetworkMonitor,
-//    timeZoneMonitor: TimeZoneMonitor,
 ) {
     /* TODO 구현
-    val isOffline = networkMonitor.isOnline
-        .map(Boolean::not)
-        .stateIn(
-            scope = coroutineScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = false,
-        )
-
     /**
      * The top level nav keys that have unread news resources.
      */
@@ -84,14 +73,6 @@ class WitAppState(
                 SharingStarted.WhileSubscribed(5_000),
                 initialValue = emptySet(),
             )
-
-    val currentTimeZone = timeZoneMonitor.currentTimeZone
-        .stateIn(
-            coroutineScope,
-            SharingStarted.WhileSubscribed(5_000),
-            TimeZone.currentSystemDefault(),
-        )
-
      */
 }
 

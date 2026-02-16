@@ -4,6 +4,7 @@ import androidx.navigation3.runtime.EntryProviderScope
 import androidx.navigation3.runtime.NavKey
 import com.multissue.wit.core.navigation.Navigator
 import com.multissue.wit.feature.onboarding.OnboardingScreen
+import com.multissue.wit.navigation.main.MainNavKey
 import com.multissue.wit.ui.auth.AuthApp
 import com.multissue.wit.ui.auth.rememberAuthAppState
 import com.multissue.wit.ui.main.WitApp
@@ -14,7 +15,8 @@ fun EntryProviderScope<NavKey>.authEntry(navigator: Navigator) {
     entry<AuthNavKey> {
         val authState = rememberAuthAppState()
         AuthApp(
-            authState =  authState
+            authState =  authState,
+            navigateToMain = { navigator.navigate(MainNavKey) }
         )
     }
 }

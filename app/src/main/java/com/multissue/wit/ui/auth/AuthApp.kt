@@ -21,13 +21,16 @@ import com.multissue.wit.navigation.main.MainNavKey
 @Composable
 fun AuthApp(
     authState: AuthAppState,
+    navigateToMain: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val navigator = remember { Navigator(authState.navigationState) }
     val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>()
 
     val entryProvider = entryProvider {
-        onboardingEntry(navigator)
+        onboardingEntry {
+            navigator.navigate(LoginNavKey)
+        }
         loginEntry(
             navigateToSignUp = { navigator.navigate(SignupNavKey) }
         )

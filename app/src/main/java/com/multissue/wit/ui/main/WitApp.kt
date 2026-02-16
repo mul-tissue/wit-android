@@ -39,6 +39,7 @@ import com.multissue.wit.feature.login.navigation.LoginNavKey
 import com.multissue.wit.feature.login.navigation.loginEntry
 import com.multissue.wit.feature.map.navigation.mapEntry
 import com.multissue.wit.feature.mypage.navigation.myPageEntry
+import com.multissue.wit.feature.onboarding.navigation.OnboardingNavKey
 import com.multissue.wit.feature.onboarding.navigation.onboardingEntry
 import com.multissue.wit.feature.signup.navigation.SignupNavKey
 import com.multissue.wit.feature.signup.navigation.signupEntry
