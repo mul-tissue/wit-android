@@ -36,7 +36,7 @@ fun AuthApp(
         )
         signupEntry(
             navigateToLogin = { navigator.navigate(LoginNavKey) },
-            navigateToMain = { navigator.navigate(MainNavKey) },
+            navigateToMain = navigateToMain,
         )
     }
 

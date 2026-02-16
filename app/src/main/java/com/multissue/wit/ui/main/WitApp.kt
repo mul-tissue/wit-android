@@ -88,14 +88,6 @@ internal fun WitApp(
                 val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>()
 
                 val entryProvider = entryProvider {
-                    onboardingEntry(navigator)
-                    signupEntry(
-                        navigateToLogin = { navigator.navigate(LoginNavKey) },
-                        navigateToMain = { navigator.navigate(MainNavKey) }
-                    )
-                    loginEntry(
-                        navigateToSignUp = { navigator.navigate(SignupNavKey) }
-                    )
                     homeEntry(navigator)
                     chatEntry(navigator)
                     mapEntry(navigator)
