@@ -21,6 +21,7 @@ class SignupViewModel @Inject constructor(
             is SignupUiIntent.CheckNickNameDuplicate -> onCheckNickNameDuplicate()
             is SignupUiIntent.ShowBirthSelectDialog -> onShowBirthSettingDialog()
             is SignupUiIntent.HideBirthSelectDialog -> onHideBirthSettingDialog()
+            is SignupUiIntent.SelectBirthDate -> onSelectBirthDate(intent.year, intent.month, intent.day)
             is SignupUiIntent.SetGender -> onGenderChange(intent.gender)
             is SignupUiIntent.ShowAgreementBottomSheet -> onShowAgreementBottomSheet()
             is SignupUiIntent.HideAgreementBottomSheet -> onHideAgreementBottomSheet()
@@ -47,6 +48,20 @@ class SignupViewModel @Inject constructor(
             copy(
                 isNickNameDuplicated = false,
                 isCheckedNickname = true
+            )
+        }
+    }
+
+    private fun onSelectBirthDate(
+        year: Int,
+        month: Int,
+        day: Int
+    ) {
+        setState {
+            copy(
+                birthYear = year,
+                birthMonth = month,
+                birthDay = day
             )
         }
     }

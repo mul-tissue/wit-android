@@ -13,7 +13,13 @@
     <string name="user_gender_male">남성</string>
     <string name="user_gender_female">여성</string>
     <string name="birth_date_title">생년월일</string>
+    <string name="birth_format_date_selected">%d년 %d월 %d일</string>
+    <string name="birth_format_date_year">%d년</string>
+    <string name="birth_format_date_month">%d월</string>
+    <string name="birth_format_date_day">%d일</string>
 
+    <string name="button_close">닫기</string>
+    <string name="button_select">선택</string>
     <string name="button_next">다음</string>
     <string name="button_complete">가입 완료</string>
 

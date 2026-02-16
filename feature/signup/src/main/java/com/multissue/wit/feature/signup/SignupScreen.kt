@@ -1,5 +1,6 @@
 package com.multissue.wit.feature.signup
 
+import SelectDateDialog
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -40,6 +41,7 @@ import com.multissue.wit.feature.signup.component.TermsDialog
 import com.multissue.wit.feature.signup.state.SignUpStep
 import com.multissue.wit.feature.signup.state.SignupUiIntent
 import com.multissue.wit.feature.signup.state.SignupUiState
+import com.multissue.wit.feature.signup.util.DateUtils
 import kotlinx.coroutines.launch
 
 @Composable
@@ -161,7 +163,7 @@ fun SignupScreen(
                                 BirthAndGenderPage(
                                     modifier = Modifier.weight(1f),
                                     gender = signupUiState.gender,
-                                    birth = signupUiState.birth,
+                                    birth = signupUiState.birthDate,
                                     onSelectBirth = { onIntent(SignupUiIntent.ShowBirthSelectDialog) },
                                     onGenderChange = { onIntent(SignupUiIntent.SetGender(it)) },
                                     onShowAgreementBottomSheet = { onIntent(SignupUiIntent.ShowAgreementBottomSheet) }
@@ -185,6 +187,20 @@ fun SignupScreen(
                     visible = signupUiState.showAgreementBottomSheet
                 )
             }
+
+            SelectDateDialog(
+                showDialog = signupUiState.showBirthSelectDialog,
+                selectedYear = if (signupUiState.birthYear == 0) DateUtils.currentYear() else signupUiState.birthYear,
+                selectedMonth = if (signupUiState.birthMonth == 0) DateUtils.currentMonth() else signupUiState.birthMonth,
+                selectedDay = if (signupUiState.birthDay == 0) DateUtils.currentDay() else signupUiState.birthDay,
+                onDismissRequest = {
+                    onIntent(SignupUiIntent.HideBirthSelectDialog)
+                },
+                onDateSelected = { year, month, day ->
+                    onIntent(SignupUiIntent.SelectBirthDate(year, month, day))
+                }
+            )
+
             TermsDialog(
                 showDialog = signupUiState.showTermsDialog,
                 onDismiss = {
