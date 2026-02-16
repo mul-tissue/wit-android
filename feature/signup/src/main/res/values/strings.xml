@@ -28,4 +28,7 @@
     <string name="agreement_terms_title">이용약관 및 개인정보처리방침 (필수)</string>
     <string name="agreement_location_title">위치기반서비스 이용약관 (필수)</string>
     <string name="agreement_marketing_title">마케팅 활용 동의 (선택)</string>
+
+    <string name="complete_signup_title">여행 피드와 동행까지, Wit</string>
+    <string name="complete_signup_content">회원가입이 완료되었어요</string>
 </resources>

@@ -41,16 +41,16 @@ fun CompletePage(
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            text = "여행피드와 동행까지, Wit",
+            text = stringResource(R.string.complete_signup_title),
             style = WitTheme.typography.titleXL
         )
 
         Spacer(modifier = Modifier.height(6.dp))
 
         Text(
-            text = "회원가입이 완료되었어요",
+            text = stringResource(R.string.complete_signup_content),
             style = WitTheme.typography.titleS,
-            color = WitTheme.colors.disabledText
+            color = WitTheme.colors.subText
         )
 
         Spacer(modifier = Modifier.weight(1f))

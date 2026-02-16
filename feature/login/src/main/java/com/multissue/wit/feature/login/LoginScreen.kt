@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -40,12 +41,14 @@ internal fun LoginScreen(
             Spacer(modifier = Modifier.weight(1f))
 
             Image(
-                modifier = Modifier.size(322.dp),
-                painter = painterResource(R.drawable.image_globe),
+                modifier = Modifier
+                    .width(200.dp)
+                    .height(146.dp),
+                painter = painterResource(R.drawable.image_login_logo),
                 contentDescription = "지구 이미지"
             )
 
-            Spacer(modifier = Modifier.height(90.dp))
+            Spacer(modifier = Modifier.height(156.dp))
 
             SocialLoginButton(
                 modifier = Modifier
