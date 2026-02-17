@@ -1,23 +1,17 @@
 package com.multissue.wit.feature.map
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.BottomSheetDefaults
-import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
@@ -34,9 +28,11 @@ import com.multissue.wit.designsystem.component.searchbar.WitSearchBar
 import com.multissue.wit.designsystem.component.selectable.WitSelectType
 import com.multissue.wit.designsystem.component.selectable.WitTextSwitch
 import com.multissue.wit.designsystem.component.topbar.WitCenterAlignedTopAppBar
-import com.multissue.wit.designsystem.theme.WitTheme
-import com.multissue.wit.feature.map.component.BottomSheetContent
+import com.multissue.wit.feature.map.component.MapBottomSheetScaffold
 import com.multissue.wit.feature.map.component.MapTest
+import com.multissue.wit.feature.map.component.feed.FeedBottomSheetContent
+import com.multissue.wit.feature.map.dummy.placeDummyList
+import com.multissue.wit.feature.map.state.FeedFilterType
 import com.multissue.wit.feature.map.util.permission.LocationPermission
 
 @Composable
@@ -52,6 +48,8 @@ fun MapScreen(
 internal fun MapScreen(
     modifier: Modifier = Modifier,
 ) {
+    var filter by remember { mutableStateOf(FeedFilterType.POPULAR) }
+
     LocationPermission {
         var selected by remember { mutableStateOf(WitSelectType.Feed) }
         var searchText by remember { mutableStateOf("") }
@@ -65,23 +63,22 @@ internal fun MapScreen(
             )
         )
 
-        BottomSheetScaffold(
+        MapBottomSheetScaffold(
             modifier = Modifier,
             scaffoldState = scaffoldState,
-            sheetPeekHeight = 60.dp, // 👈 최소화 높이
-            sheetContainerColor = WitTheme.colors.white100,
-            sheetShadowElevation = 8.dp,
-            sheetDragHandle = {
-                BottomSheetDefaults.DragHandle(
-                    modifier = Modifier.clickable(enabled = false){},
-                    height = 3.dp,
-                    color = WitTheme.colors.gray200
-                )
-            },
             sheetContent = {
-                BottomSheetContent()
+                FeedBottomSheetContent(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
+                    title = "${placeDummyList[0].cityName} 핫플 모아보기 🔥",
+                    placeList = placeDummyList,
+                    onFeedItemClicked = {  },
+                    filterType = filter,
+                    onFilterClicked = { filter = it },
+                )
             }
-        ) { padding ->
+        ) { paddingValues ->
             Column(
                 modifier = modifier,
             ) {
@@ -121,7 +118,7 @@ internal fun MapScreen(
                     modifier = Modifier.weight(1f)
                 ) {
                     MapTest(
-                        locationButtonPadding = padding.calculateBottomPadding()
+                        locationButtonPadding = paddingValues.calculateBottomPadding()
                     )
 
                     Row(

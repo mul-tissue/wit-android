@@ -11,6 +11,8 @@ kotlin {
 
             implementation("com.google.maps.android:maps-compose:4.4.1")
             implementation(libs.accompanist.permissions)
+            implementation(libs.coil.kt)
+            implementation(libs.coil.kt.compose)
         }
     }
 }
