@@ -20,23 +20,18 @@ class WitActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        WindowCompat.getInsetsController(window, window.decorView)
+            .isAppearanceLightStatusBars = true //TODO 다크모드 대응 시 교체 필요
+        setNavigationBarColorCompat(
+            color = Color.White.toArgb(),
+            isLightBar = true
+        )
+        setStatusBarColorCompat(
+            color = Color.White.toArgb(),
+            isLightBar = true
+        )
+
         setContent {
-            window.statusBarColor = Color.Transparent.toArgb()
-            window.navigationBarColor = Color.Transparent.toArgb()
-
-            WindowCompat.getInsetsController(window, window.decorView)
-                .isAppearanceLightStatusBars = true //TODO 다크모드 대응 시 교체 필요
-
-            setNavigationBarColorCompat(
-                color = Color.White.toArgb(),
-                isLightBar = true
-            )
-
-            setStatusBarColorCompat(
-                color = Color.White.toArgb(),
-                isLightBar = true
-            )
-
             val appState = rememberRootAppState()
 
             WitTheme {

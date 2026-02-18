@@ -6,13 +6,24 @@ import com.google.android.gms.maps.model.LatLng
 
 fun getCurrentLocation(
     context: Context,
-    onLocation: (LatLng) -> Unit
+    onLocation: (LatLng) -> Unit,
+    onFailure: (Exception) -> Unit = {}
 ) {
     val client = LocationServices.getFusedLocationProviderClient(context)
 
-    client.lastLocation.addOnSuccessListener { location ->
-        location?.let {
-            onLocation(LatLng(it.latitude, it.longitude))
-        }
+    try {
+        client.lastLocation
+            .addOnSuccessListener { location ->
+                if (location != null) {
+                    onLocation(LatLng(location.latitude, location.longitude))
+                } else {
+                    onFailure(IllegalStateException("Location is null"))
+                }
+            }
+            .addOnFailureListener { exception ->
+                onFailure(exception)
+            }
+    } catch (e: SecurityException) {
+        onFailure(e)
     }
 }

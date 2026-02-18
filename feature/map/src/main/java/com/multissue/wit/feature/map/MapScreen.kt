@@ -43,7 +43,10 @@ fun MapScreen(
     viewModel: MapViewModel = hiltViewModel(),
     onFeedItemClicked: (feedId: Int) -> Unit,
 ) {
-
+    MapScreen(
+        modifier = modifier,
+        onFeedItemClicked = onFeedItemClicked
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -58,7 +58,8 @@ fun FeedListRow(
             )
         }
         LazyRow(
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             when (filterType) {
                 FeedFilterType.POPULAR -> {
@@ -69,7 +70,6 @@ fun FeedListRow(
                                 .noRippleClickable { onFeedItemClicked(feedList[it]) },
                             feedItemState = feedList[it]
                         )
-                        SpW(16.dp)
                     }
                 }
                 FeedFilterType.LIVE -> {
@@ -78,9 +78,8 @@ fun FeedListRow(
                             modifier = Modifier
                                 .fillMaxHeight()
                                 .noRippleClickable { onFeedItemClicked(feedList[0]) },
-                            feedItemState = feedList[0]
+                            feedItemState = feedList.firstOrNull() ?: FeedItemState()
                         )
-                        SpW(16.dp)
                     }
                     item {
                         FeedViewMoreBox(

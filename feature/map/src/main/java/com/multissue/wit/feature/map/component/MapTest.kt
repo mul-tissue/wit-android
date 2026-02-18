@@ -41,6 +41,7 @@ import com.multissue.wit.feature.map.util.location.distanceMeters
 import com.multissue.wit.feature.map.util.location.getCurrentLocation
 import kotlinx.coroutines.launch
 
+const val initialZoomLevel = 12f
 @Composable
 fun MapTest(
     modifier: Modifier = Modifier,
@@ -53,9 +54,10 @@ fun MapTest(
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
-        getCurrentLocation(context) {
-            myLocation = it
-        }
+        getCurrentLocation(
+            context = context,
+            onLocation = { myLocation = it }
+        )
     }
 
     val cameraPositionState = rememberCameraPositionState()
@@ -115,20 +117,20 @@ fun MapTest(
                         shape = CircleShape
                     ),
                 onClick = {
-                    getCurrentLocation(context) {
-                        myLocation = it
-                    }
-
-                    scope.launch {
-                        myLocation?.let { location ->
-                            cameraPositionState.animate(
-                                CameraUpdateFactory.newLatLngZoom(
-                                    location,
-                                    12f
+                    getCurrentLocation(
+                        context = context,
+                        onLocation = {
+                            myLocation = it
+                            scope.launch {
+                                cameraPositionState.animate(
+                                    CameraUpdateFactory.newLatLngZoom(
+                                        it,
+                                        initialZoomLevel
+                                    )
                                 )
-                            )
+                            }
                         }
-                    }
+                    )
                 }
             ) {
                 Icon(
