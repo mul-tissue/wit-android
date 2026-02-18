@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.feature.map.component.SpH
 import com.multissue.wit.feature.map.dummy.feedDummyList
+import com.multissue.wit.feature.map.dummy.placeDummyList
 import com.multissue.wit.feature.map.state.FeedFilterType
 import com.multissue.wit.feature.map.state.FeedItemState
 import com.multissue.wit.feature.map.state.PlaceItemState
@@ -37,7 +38,13 @@ fun FeedBottomSheetContent(
             onFilterClicked = onFilterClicked,
         )
         SpH(16.dp)
-        Text(title, style = WitTheme.typography.titleL)
+        Text(
+            text = when (filterType) {
+                FeedFilterType.POPULAR -> "$title 핫플 모아보기 🔥"
+                FeedFilterType.LIVE -> "실시간 $title 피드 📸"
+            },
+            style = WitTheme.typography.titleL
+        )
         SpH(16.dp)
         LazyColumn(
             modifier = Modifier.height(440.dp),

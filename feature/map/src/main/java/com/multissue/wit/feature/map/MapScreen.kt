@@ -77,7 +77,7 @@ internal fun MapScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 24.dp),
-                    title = "${placeDummyList[0].cityName} 핫플 모아보기 🔥",
+                    title = placeDummyList[0].cityName,
                     placeList = placeDummyList,
                     onFeedItemClicked = { onFeedItemClicked(it.id) },
                     filterType = filter,
