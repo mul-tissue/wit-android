@@ -14,6 +14,7 @@ kotlin {
             api(libs.androidx.metrics)
 
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
             implementation(platform(libs.androidx.compose.bom))
             implementation(libs.androidx.compose.ui)
