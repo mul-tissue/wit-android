@@ -28,8 +28,10 @@ import com.multissue.wit.designsystem.component.searchbar.WitSearchBar
 import com.multissue.wit.designsystem.component.selectable.WitSelectType
 import com.multissue.wit.designsystem.component.selectable.WitTextSwitch
 import com.multissue.wit.designsystem.component.topbar.WitCenterAlignedTopAppBar
+import com.multissue.wit.feature.map.component.FilterSearchRow
 import com.multissue.wit.feature.map.component.MapBottomSheetScaffold
 import com.multissue.wit.feature.map.component.MapTest
+import com.multissue.wit.feature.map.component.MapTopAppBar
 import com.multissue.wit.feature.map.component.feed.FeedBottomSheetContent
 import com.multissue.wit.feature.map.dummy.placeDummyList
 import com.multissue.wit.feature.map.state.FeedFilterType
@@ -50,9 +52,11 @@ internal fun MapScreen(
     modifier: Modifier = Modifier,
     onFeedItemClicked: (feedId: Int) -> Unit,
 ) {
+    // TODO UI STATE
     var filter by remember { mutableStateOf(FeedFilterType.POPULAR) }
 
     LocationPermission {
+        // TODO UI STATE
         var selected by remember { mutableStateOf(WitSelectType.Feed) }
         var searchText by remember { mutableStateOf("") }
 
@@ -84,36 +88,10 @@ internal fun MapScreen(
             Column(
                 modifier = modifier,
             ) {
-                WitCenterAlignedTopAppBar(
-                    title = "",
-                    navigationIcon = {
-                        IconButton(
-                            onClick = {}
-                        ) {
-                            Icon(
-                                painter = painterResource(com.multissue.wit.designsystem.R.drawable.icon_back),
-                                contentDescription = "navigationIconContentDescription"
-                            )
-                        }
-                    },
-                    actions = {
-                        IconButton(
-                            onClick = {}
-                        ) {
-                            Icon(
-                                painter = painterResource(com.multissue.wit.designsystem.R.drawable.icon_notification),
-                                contentDescription = ""
-                            )
-                        }
-                        IconButton(
-                            onClick = {}
-                        ) {
-                            Icon(
-                                painter = painterResource(com.multissue.wit.designsystem.R.drawable.icon_profile),
-                                contentDescription = ""
-                            )
-                        }
-                    }
+                MapTopAppBar(
+                    onBackButtonClicked = {},
+                    onNotificationButtonClicked = {},
+                    onProfileButtonClicked = {},
                 )
 
                 Box(
@@ -123,37 +101,17 @@ internal fun MapScreen(
                         locationButtonPadding = paddingValues.calculateBottomPadding()
                     )
 
-                    Row(
+                    FilterSearchRow(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 24.dp, vertical = 6.dp)
-                            .height(44.dp)
-                    ) {
-                        WitTextSwitch(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .width(118.dp),
-                            selected = selected,
-                            leftText = "피드",
-                            rightText = "동행",
-                            onLeftClick = {
-                                selected = WitSelectType.Feed
-                            },
-                            onRightClick = {
-                                selected = WitSelectType.Travel
-                            }
-                        )
-                        Spacer(modifier = Modifier.width(12.dp))
-                        WitSearchBar(
-                            modifier = Modifier
-                                .weight(1f)
-                                .fillMaxHeight(),
-                            value = searchText,
-                            placeholder = "어디로 떠날까요?",
-                            onValueChange = { searchText = it },
-                            onSearch = {}
-                        )
-                    }
+                            .height(44.dp),
+                        type = selected,
+                        onToggle = { selected = it },
+                        searchText = searchText,
+                        onSearchTextChanged = { searchText = it },
+                        onSearch = { }, // TODO
+                    )
                 }
             }
         }
