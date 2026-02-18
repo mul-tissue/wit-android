@@ -16,7 +16,9 @@
 
 package com.multissue.wit.navigation
 
+import com.multissue.wit.designsystem.R
 import com.multissue.wit.feature.chat.navigation.ChatNavKey
+import com.multissue.wit.feature.feed.navigation.FeedNavKey
 import com.multissue.wit.feature.home.navigation.HomeNavKey
 import com.multissue.wit.feature.map.navigation.MapNavKey
 import com.multissue.wit.feature.mypage.navigation.MyPageNavKey
@@ -28,33 +30,38 @@ data class MainLevelNavItem(
 )
 
 val HOME = MainLevelNavItem(
-    selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_home_selected,
-    unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_home,
+    selectedIconId = R.drawable.icon_nav_home_selected,
+    unselectedIconId = R.drawable.icon_nav_home,
 )
 
 val CHAT = MainLevelNavItem(
-    selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_chat_selected,
-    unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_chat,
+    selectedIconId = R.drawable.icon_nav_chat_selected,
+    unselectedIconId = R.drawable.icon_nav_chat,
 )
 
 val UPLOAD = MainLevelNavItem(
-    selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_plus,
-    unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_plus,
+    selectedIconId = R.drawable.icon_plus,
+    unselectedIconId = R.drawable.icon_plus,
 )
 
 val MYPAGE = MainLevelNavItem(
-    selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_user,
-    unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_user,
+    selectedIconId = R.drawable.icon_user,
+    unselectedIconId = R.drawable.icon_user,
 )
 
 val MAP = MainLevelNavItem(
-    selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_home,
-    unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_home,
+    selectedIconId = R.drawable.icon_nav_home,
+    unselectedIconId = R.drawable.icon_nav_home,
 )
 
 val NOTIFICATION = MainLevelNavItem(
-    selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_notification,
-    unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_notification,
+    selectedIconId = R.drawable.icon_notification,
+    unselectedIconId = R.drawable.icon_notification,
+)
+
+val FEED = MainLevelNavItem(
+    selectedIconId = R.drawable.icon_nav_home,
+    unselectedIconId = R.drawable.icon_nav_home,
 )
 
 val MAIN_LEVEL_NAV_ITEMS = mapOf(
@@ -66,4 +73,5 @@ val SUB_LEVEL_NAV_ITEMS = mapOf(
     UploadNavKey to UPLOAD,
     MyPageNavKey to MYPAGE,
     MapNavKey to MAP,
+    FeedNavKey(null) to FEED,
 )

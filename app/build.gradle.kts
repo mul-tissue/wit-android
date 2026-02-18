@@ -1,9 +1,16 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.com.multissue.wit.hilt)
+}
+
+val localProperties = Properties().apply {
+    load(rootProject.file("local.properties").inputStream())
 }
 
 android {
@@ -21,6 +28,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders["MAPS_API_KEY"] = localProperties.getProperty("MAPS_API_KEY")
     }
 
     buildTypes {
@@ -51,6 +60,7 @@ dependencies {
     implementation(projects.feature.onboarding)
     implementation(projects.feature.signup)
     implementation(projects.feature.upload)
+    implementation(projects.feature.feed)
     implementation(projects.core.ui)
     implementation(projects.core.designsystem)
 
@@ -69,7 +79,6 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-
 
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.android)

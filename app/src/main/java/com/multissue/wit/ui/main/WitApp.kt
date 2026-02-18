@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -13,6 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
@@ -33,10 +36,12 @@ import com.multissue.wit.designsystem.component.navigation.WitNavigationRail
 import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.feature.chat.navigation.ChatNavKey
 import com.multissue.wit.feature.chat.navigation.chatEntry
+import com.multissue.wit.feature.feed.navigation.feedEntry
 import com.multissue.wit.feature.home.navigation.HomeNavKey
 import com.multissue.wit.feature.home.navigation.homeEntry
 import com.multissue.wit.feature.login.navigation.LoginNavKey
 import com.multissue.wit.feature.login.navigation.loginEntry
+import com.multissue.wit.feature.map.navigation.MapNavKey
 import com.multissue.wit.feature.map.navigation.mapEntry
 import com.multissue.wit.feature.mypage.navigation.myPageEntry
 import com.multissue.wit.feature.onboarding.navigation.OnboardingNavKey
@@ -69,13 +74,13 @@ internal fun WitApp(
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
+            .systemBarsPadding()
+            .navigationBarsPadding()
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
                 .consumeWindowInsets(padding)
-                .navigationBarsPadding(),
         ) {
             // TODO TopBar
             Box( // Display Main
@@ -88,11 +93,15 @@ internal fun WitApp(
                 val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>()
 
                 val entryProvider = entryProvider {
-                    homeEntry(navigator)
+                    homeEntry(
+                        navigator,
+                        navigateToMap = { navigator.navigate(MapNavKey) }
+                    )
                     chatEntry(navigator)
                     mapEntry(navigator)
                     myPageEntry(navigator)
                     uploadEntry(navigator)
+                    feedEntry(navigator)
                 }
 
                 NavDisplay(
@@ -101,12 +110,16 @@ internal fun WitApp(
                     onBack = { navigator.goBack() },
                 )
             }
-            if (appState.navigationState.currentKey == HomeNavKey || appState.navigationState.currentKey == ChatNavKey) {
+            if (appState.navigationState.currentKey == HomeNavKey
+                || appState.navigationState.currentKey == ChatNavKey
+                || appState.navigationState.currentKey == MapNavKey) {
+
                 WitNavigationRail(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(64.dp) //TODO
                         .background(color = Color.White), //TODO
+//                        .padding(bottom = WindowInsets.systemBars.asPaddingValues().calculateBottomPadding()),
                     onCenterButtonClicked = { navigator.navigate(UploadNavKey) },
                     navItems = {
                         MAIN_LEVEL_NAV_ITEMS.forEach { (navKey, navItem) ->

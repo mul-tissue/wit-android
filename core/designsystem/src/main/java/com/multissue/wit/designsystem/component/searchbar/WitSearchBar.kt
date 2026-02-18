@@ -55,7 +55,7 @@ fun WitSearchBar(
                 )
                 .border(
                     width = 1.dp,
-                    color = WitTheme.colors.disabledText,
+                    color = WitTheme.colors.border,
                     shape = RoundedCornerShape(50)
                 ),
             verticalAlignment = Alignment.CenterVertically
