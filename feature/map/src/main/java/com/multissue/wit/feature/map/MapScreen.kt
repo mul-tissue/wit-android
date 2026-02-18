@@ -38,7 +38,8 @@ import com.multissue.wit.feature.map.util.permission.LocationPermission
 @Composable
 fun MapScreen(
     modifier: Modifier = Modifier,
-    viewModel: MapViewModel = hiltViewModel()
+    viewModel: MapViewModel = hiltViewModel(),
+    onFeedItemClicked: (feedId: Int) -> Unit,
 ) {
 
 }
@@ -47,6 +48,7 @@ fun MapScreen(
 @Composable
 internal fun MapScreen(
     modifier: Modifier = Modifier,
+    onFeedItemClicked: (feedId: Int) -> Unit,
 ) {
     var filter by remember { mutableStateOf(FeedFilterType.POPULAR) }
 
@@ -73,7 +75,7 @@ internal fun MapScreen(
                         .padding(horizontal = 24.dp),
                     title = "${placeDummyList[0].cityName} 핫플 모아보기 🔥",
                     placeList = placeDummyList,
-                    onFeedItemClicked = {  },
+                    onFeedItemClicked = { onFeedItemClicked(it.id) },
                     filterType = filter,
                     onFilterClicked = { filter = it },
                 )

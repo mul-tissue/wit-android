@@ -1,0 +1,21 @@
+package com.multissue.wit.feature.feed.state
+
+import com.multissue.wit.core.ui.base.UiIntent
+import com.multissue.wit.core.ui.base.UiSideEffect
+import com.multissue.wit.core.ui.base.UiState
+
+data class FeedUiState(
+    val title: String = ""
+): UiState
+
+interface FeedUiSideEffect: UiSideEffect
+
+sealed interface FeedUiIntent: UiIntent {
+    data object Loading : FeedUiIntent
+
+    data class FeedDetail(
+        val feedUiState: FeedUiState
+    ) : FeedUiIntent
+
+    data object Empty : FeedUiIntent
+}

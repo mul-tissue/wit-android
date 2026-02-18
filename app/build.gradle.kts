@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 //    alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.com.multissue.wit.hilt)
 }
 
 val localProperties = Properties().apply {
@@ -59,6 +60,7 @@ dependencies {
     implementation(projects.feature.onboarding)
     implementation(projects.feature.signup)
     implementation(projects.feature.upload)
+    implementation(projects.feature.feed)
     implementation(projects.core.ui)
     implementation(projects.core.designsystem)
 
@@ -77,7 +79,6 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-
 
     ksp(libs.hilt.compiler)
 

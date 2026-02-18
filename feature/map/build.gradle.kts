@@ -7,6 +7,8 @@ plugins {
 kotlin {
     sourceSets {
         dependencies {
+            implementation(projects.feature.feed)
+
             implementation(libs.androidx.compose.material3)
 
             implementation("com.google.maps.android:maps-compose:4.4.1")

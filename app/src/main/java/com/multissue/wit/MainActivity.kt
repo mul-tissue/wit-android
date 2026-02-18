@@ -13,7 +13,9 @@ import androidx.core.view.WindowCompat
 import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.ui.root.RootApp
 import com.multissue.wit.ui.root.rememberRootAppState
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

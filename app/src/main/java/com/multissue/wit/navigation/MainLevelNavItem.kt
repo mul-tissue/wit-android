@@ -17,6 +17,7 @@
 package com.multissue.wit.navigation
 
 import com.multissue.wit.feature.chat.navigation.ChatNavKey
+import com.multissue.wit.feature.feed.navigation.FeedNavKey
 import com.multissue.wit.feature.home.navigation.HomeNavKey
 import com.multissue.wit.feature.map.navigation.MapNavKey
 import com.multissue.wit.feature.mypage.navigation.MyPageNavKey
@@ -57,6 +58,11 @@ val NOTIFICATION = MainLevelNavItem(
     unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_notification,
 )
 
+val FEED = MainLevelNavItem(
+    selectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_home,
+    unselectedIconId = com.multissue.wit.designsystem.R.drawable.icon_nav_home,
+)
+
 val MAIN_LEVEL_NAV_ITEMS = mapOf(
     HomeNavKey to HOME,
     ChatNavKey to CHAT,
@@ -66,4 +72,5 @@ val SUB_LEVEL_NAV_ITEMS = mapOf(
     UploadNavKey to UPLOAD,
     MyPageNavKey to MYPAGE,
     MapNavKey to MAP,
+    FeedNavKey(null) to FEED,
 )

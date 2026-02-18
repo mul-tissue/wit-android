@@ -18,7 +18,7 @@ androidxHiltLifecycleViewModelCompose = "1.3.0"
 androidxSavedStateCompose = "1.3.1"
 androidxLifecycle = "2.10.0"
 coil = "2.7.0"
-hilt = "2.57.2"
+hilt = "2.59.1"
 coreKtx = "1.17.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
@@ -96,6 +96,7 @@ kspGradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtoo
 
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-kotlin-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-vectordrawable = { group = "androidx.vectordrawable", name = "vectordrawable", version.ref = "vectordrawable" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 
