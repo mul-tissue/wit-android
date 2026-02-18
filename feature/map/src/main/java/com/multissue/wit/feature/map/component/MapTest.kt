@@ -36,6 +36,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import com.multissue.wit.designsystem.component.button.WitButton
 import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.feature.map.R
+import com.multissue.wit.feature.map.dummy.deoksu
 import com.multissue.wit.feature.map.util.location.distanceMeters
 import com.multissue.wit.feature.map.util.location.getCurrentLocation
 import kotlinx.coroutines.launch
@@ -57,7 +58,6 @@ fun MapTest(
         }
     }
 
-    val seoul = LatLng(37.57, 126.98)
     val cameraPositionState = rememberCameraPositionState()
 
     LaunchedEffect(cameraPositionState.isMoving) {
@@ -76,9 +76,6 @@ fun MapTest(
         GoogleMap(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState,
-            properties = MapProperties(
-                isMyLocationEnabled = true // 🔵 파란 점
-            ),
             uiSettings = MapUiSettings(
                 myLocationButtonEnabled = false,
                 zoomControlsEnabled = false,
@@ -93,13 +90,13 @@ fun MapTest(
                         )
                     )
                 }
+
+                WitMarker(location)
             }
 
-            WitMarker(
-                position = seoul,
-                title = "Seoul",
-                snippet = "Marker in Seoul",
-                iconResourceId = R.drawable.icon_marker
+            PlaceMarker(
+                position = deoksu.location,
+                imageUrl = deoksu.imageUrl
             )
         }
 
