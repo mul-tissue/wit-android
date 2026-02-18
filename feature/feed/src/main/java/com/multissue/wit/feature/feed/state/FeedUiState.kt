@@ -5,7 +5,9 @@ import com.multissue.wit.core.ui.base.UiSideEffect
 import com.multissue.wit.core.ui.base.UiState
 
 data class FeedUiState(
-    val title: String = ""
+    val user: UserState = UserState(),
+    val reactionState: ReactionState = ReactionState(),
+    val feedState: FeedState = FeedState(),
 ): UiState
 
 interface FeedUiSideEffect: UiSideEffect
