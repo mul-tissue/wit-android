@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
-//    alias(libs.plugins.hilt)
+    alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.com.multissue.wit.hilt)
 }
@@ -81,6 +81,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     ksp(libs.hilt.compiler)
+    implementation(libs.hilt.android)
 
     implementation(libs.androidx.compose.material3.adaptive)
     implementation(libs.androidx.compose.material3.adaptive.layout)

@@ -55,7 +55,7 @@ fun OutlinedWitSelectableBox(
     modifier: Modifier = Modifier,
     title: String,
     isSelected: Boolean = false,
-    shape: Shape = RoundedCornerShape(8.dp),
+    shape: Shape = RoundedCornerShape(10.dp),
     onSelectChanged: () -> Unit,
 ) {
     Box(
@@ -65,7 +65,7 @@ fun OutlinedWitSelectableBox(
                 color = WitTheme.colors.background
             )
             .border(
-                width = 1.dp,
+                width = 1.5.dp,
                 color = if (isSelected) WitTheme.colors.primaryDark else WitTheme.colors.divider,
                 shape = shape
             )

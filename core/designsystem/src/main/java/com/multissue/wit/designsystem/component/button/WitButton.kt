@@ -2,6 +2,7 @@ package com.multissue.wit.designsystem.component.button
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.multissue.wit.designsystem.R
@@ -29,7 +31,9 @@ fun WitButton(
         disabledContentColor = WitTheme.colors.background
     ),
     shape: Shape = RoundedCornerShape(12.dp),
+    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
     title: String,
+    textStyle: TextStyle = WitTheme.typography.titleM,
     enabled: Boolean = true,
     leadingIcon: @Composable () -> Unit = {},
     trailingIcon: @Composable () -> Unit = {},
@@ -40,12 +44,13 @@ fun WitButton(
         enabled = enabled,
         shape = shape,
         colors = colors,
+        contentPadding = contentPadding,
         onClick = onClick
     ) {
         leadingIcon()
         Text(
             text = title,
-            style = WitTheme.typography.titleM
+            style = textStyle
         )
         trailingIcon()
     }

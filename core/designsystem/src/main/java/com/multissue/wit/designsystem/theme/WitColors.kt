@@ -25,6 +25,7 @@ val white200 = Color(0xFFF8F8F8)
 val white300 = Color(0xFFeeeeee)
 val white400 = Color(0xFFe9e9e9)
 val white500 = Color(0xFFcacaca)
+val yellow = Color(0xFFFEE500)
 val yellow200 = Color(0xFFFFD21E)
 val green200 = Color(0xFF22C55E)
 val red100 = Color(0xFFFF5e5e)
@@ -45,6 +46,7 @@ class WitColors(
     background: Color,
     containerColor: Color,
     iconTint: Color,
+    iconTintConverse: Color,
     divider: Color,
     border: Color,
     text: Color,
@@ -94,6 +96,8 @@ class WitColors(
     var containerColor by mutableStateOf(containerColor)
         private set
     var iconTint by mutableStateOf(iconTint)
+        private set
+    var iconTintConverse by mutableStateOf(iconTintConverse)
         private set
     var divider by mutableStateOf(divider)
         private set
@@ -165,6 +169,7 @@ class WitColors(
         background = background,
         containerColor = containerColor,
         iconTint = iconTint,
+        iconTintConverse = iconTintConverse,
         divider = divider,
         border = border,
         text = text,
@@ -207,6 +212,7 @@ class WitColors(
         background = other.background
         containerColor = other.containerColor
         iconTint = other.iconTint
+        iconTintConverse = other.iconTintConverse
         divider = other.divider
         border = other.border
         text = other.text
@@ -257,6 +263,7 @@ fun lightColorScheme(): WitColors = WitColors(
     background = white100,
     containerColor = white100,
     iconTint = black100,
+    iconTintConverse = white100,
     divider = gray200,
     border = gray200,
     text = black100,
@@ -309,6 +316,7 @@ fun darkColorScheme(): WitColors = WitColors(
     background = white100,
     containerColor = white100,
     iconTint = black100,
+    iconTintConverse = white100,
     divider = gray200,
     border = gray200,
     text = black100,

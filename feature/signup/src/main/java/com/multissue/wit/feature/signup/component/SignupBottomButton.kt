@@ -1,0 +1,26 @@
+package com.multissue.wit.feature.signup.component
+
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.multissue.wit.designsystem.component.button.WitButton
+import com.multissue.wit.feature.signup.R
+
+@Composable
+fun SignupBottomButton(
+    modifier: Modifier = Modifier,
+    enabled: Boolean,
+    onClick: () -> Unit
+) {
+    WitButton(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(50.dp),
+        onClick = onClick,
+        enabled = enabled,
+        title = stringResource(R.string.button_next)
+    )
+}

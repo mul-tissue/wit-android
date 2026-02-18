@@ -22,7 +22,7 @@
             android:value = "${MAPS_API_KEY}"/>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".WitActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Wit">
