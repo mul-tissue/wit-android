@@ -8,6 +8,7 @@ data class FeedUiState(
     val user: UserState = UserState(),
     val reactionState: ReactionState = ReactionState(),
     val feedState: FeedState = FeedState(),
+    val reportState: ReportState = ReportState()
 ): UiState
 
 interface FeedUiSideEffect: UiSideEffect
@@ -20,4 +21,7 @@ sealed interface FeedUiIntent: UiIntent {
     ) : FeedUiIntent
 
     data object Empty : FeedUiIntent
+    data object ClickMoreButton: FeedUiIntent
+    data object DismissReportBottomSheet: FeedUiIntent
+    data object ClickReportButton: FeedUiIntent
 }

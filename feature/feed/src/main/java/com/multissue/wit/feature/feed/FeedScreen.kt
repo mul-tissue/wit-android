@@ -20,11 +20,16 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.multissue.wit.designsystem.theme.WitTheme
+import com.multissue.wit.feature.feed.component.FeedContentColumn
 import com.multissue.wit.feature.feed.component.MapTopAppBar
+import com.multissue.wit.feature.feed.component.MoreBottomSheet
 import com.multissue.wit.feature.feed.component.ReactionButtonRow
+import com.multissue.wit.feature.feed.component.SpH
 import com.multissue.wit.feature.feed.state.FeedState
+import com.multissue.wit.feature.feed.state.FeedUiIntent
 import com.multissue.wit.feature.feed.state.ReactionState
 import com.multissue.wit.feature.feed.state.ReactionType
+import com.multissue.wit.feature.feed.state.ReportState
 import com.multissue.wit.feature.feed.state.UserState
 
 @Composable
@@ -38,7 +43,9 @@ fun FeedScreen(
         userState = feedUiState.user,
         reactionState = feedUiState.reactionState,
         feedState = feedUiState.feedState,
-        onReactionItemClicked = viewModel::onReactionItemClick
+        reportState = feedUiState.reportState,
+        onReactionItemClicked = viewModel::onReactionItemClick,
+        onIntent = viewModel::onIntent
     )
 }
 
@@ -48,6 +55,8 @@ internal fun FeedScreen(
     userState: UserState,
     reactionState: ReactionState,
     feedState: FeedState,
+    reportState: ReportState,
+    onIntent: (FeedUiIntent) -> Unit,
     onReactionItemClicked: (ReactionType) -> Unit,
 ) {
     Scaffold(
@@ -58,7 +67,7 @@ internal fun FeedScreen(
                 username = userState.username,
                 userThumbnail = userState.userThumbnailUrl,
                 onBackButtonClicked = {  },
-                onMoreButtonClicked = {  },
+                onMoreButtonClicked = { onIntent(FeedUiIntent.ClickMoreButton) },
             )
         }
     ) { paddingValues ->
@@ -81,17 +90,14 @@ internal fun FeedScreen(
                 model = feedState.imageUrl,
                 contentDescription = "피드 이미지"
             )
-            Column(
+            SpH(18.dp)
+            FeedContentColumn(
                 modifier = Modifier
-                    .padding(top = 18.dp)
-                    .fillMaxWidth()
-            ) {
-                Column (
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-
-                }
-            }
+                    .fillMaxWidth(),
+                title = feedState.title,
+                location = feedState.location,
+                date = feedState.date,
+            )
             HorizontalDivider(
                 modifier = Modifier.padding(vertical = 14.dp),
                 thickness = 1.dp,
@@ -101,6 +107,11 @@ internal fun FeedScreen(
                 modifier = Modifier.fillMaxWidth(),
                 onReactionClicked = onReactionItemClicked,
                 reactionState = reactionState,
+            )
+            MoreBottomSheet(
+                visible = reportState.reportBottomSheet,
+                onReportButtonClicked = { onIntent(FeedUiIntent.ClickReportButton) },
+                onDismiss = { onIntent(FeedUiIntent.DismissReportBottomSheet) },
             )
         }
     }

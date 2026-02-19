@@ -35,14 +35,43 @@ class FeedViewModel @AssistedInject constructor(
             is FeedUiIntent.FeedDetail -> {
                 setState { intent.feedUiState }
             }
+            FeedUiIntent.ClickMoreButton -> { onMoreButtonClick() }
+            FeedUiIntent.DismissReportBottomSheet -> { dismissReportBottonSheet() }
+            FeedUiIntent.ClickReportButton -> { onReportButtonClick() }
         }
+    }
+
+    fun onMoreButtonClick() {
+        setState { copy(reportState = reportState.copy(reportBottomSheet = true)) }
+    }
+
+    fun dismissReportBottonSheet() {
+        setState { copy(reportState = reportState.copy(reportBottomSheet = false)) }
+    }
+
+    fun onReportButtonClick() {
+        setState { copy(reportState = reportState.copy(reportDialog = true)) }
     }
 
     fun onReactionItemClick(
         type: ReactionType
     ) {
-        setState {
-            copy(reactionState = reactionState.copy(selectedReaction = type))
+        if (uiState.value.reactionState.selectedReaction == type) {
+            setState {
+                copy(
+                    reactionState = reactionState.copy(
+                        selectedReaction = null,
+                    )
+                )
+            }
+        } else {
+            setState {
+                copy(
+                    reactionState = reactionState.copy(
+                        selectedReaction = type,
+                    )
+                )
+            }
         }
     }
 
