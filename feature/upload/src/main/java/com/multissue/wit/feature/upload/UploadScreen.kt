@@ -1,11 +1,10 @@
 package com.multissue.wit.feature.upload
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.multissue.wit.feature.upload.component.CameraScreen
+import com.multissue.wit.feature.upload.permission.CameraPermission
 
 @Composable
 fun UploadScreen(
@@ -19,12 +18,7 @@ fun UploadScreen(
 internal fun UploadScreen(
     modifier: Modifier = Modifier,
 ) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "UploadScreen"
-        )
+    CameraPermission {
+        CameraScreen()
     }
 }
