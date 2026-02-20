@@ -13,9 +13,8 @@ import dagger.Provides
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestScope
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import java.util.UUID
 import javax.inject.Singleton
 
@@ -30,11 +29,12 @@ object TestModule {
     @Provides
     @Singleton
     fun provideTestDataStore(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
+        scope: CoroutineScope
     ): DataStore<Preferences> {
         return PreferenceDataStoreFactory.create(
             produceFile = { context.preferencesDataStoreFile("test_wit_datastore_${UUID.randomUUID()}") },
-            scope = TestScope(UnconfinedTestDispatcher())
+            scope = scope
         )
     }
 

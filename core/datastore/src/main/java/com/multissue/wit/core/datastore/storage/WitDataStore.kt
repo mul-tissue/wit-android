@@ -16,13 +16,17 @@ import javax.inject.Inject
 
 class WitDataStore @Inject constructor(
     private val dataStore: DataStore<Preferences>
-): Storage {
+) : Storage {
     override fun <T> getAsFlow(key: Storage.Key<T>): Flow<T?> {
         return when (key) {
             is Storage.Key.DataKey<T> -> {
                 dataStore.data.map { preferences ->
                     val str = preferences[stringPreferencesKey(key.name)]
-                    if (str != null) key.serializer.decode(str) else key.defaultValue
+                    if (str != null) {
+                        runCatching { key.serializer.decode(str) }.getOrElse { key.defaultValue }
+                    } else {
+                        key.defaultValue
+                    }
                 }
             }
             else -> {

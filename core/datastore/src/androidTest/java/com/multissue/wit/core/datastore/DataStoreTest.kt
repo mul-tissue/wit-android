@@ -5,6 +5,10 @@ import com.multissue.wit.core.datastore.storage.Storage
 import com.multissue.wit.core.datastore.storage.WitDataStore
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -16,17 +20,25 @@ import javax.inject.Inject
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-class WitDataStoreTest {
+class DataStoreTest {
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
     @Inject
     lateinit var storage: WitDataStore
+    lateinit var testScope: TestScope
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun init() {
         hiltRule.inject()
+        testScope = TestScope(UnconfinedTestDispatcher())
+    }
+
+    @After
+    fun tearDown() {
+        testScope.cancel()
     }
 
     @Test
