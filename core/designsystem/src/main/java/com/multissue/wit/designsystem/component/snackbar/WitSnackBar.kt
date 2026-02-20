@@ -55,12 +55,12 @@ fun WitSnackBarHost(
             val witVisuals = snackbarData.visuals as? WitSnackBarVisuals
 
             Snackbar(
-                modifier = modifier.padding(24.dp)
-                    .border(
-                        width = 1.dp,
-                        color = WitTheme.colors.primary,
-                        shape = RoundedCornerShape(8.dp)
-                    ),
+                modifier = modifier.padding(24.dp),
+//                    .border(
+//                        width = 1.dp,
+//                        color = WitTheme.colors.primary,
+//                        shape = RoundedCornerShape(8.dp)
+//                    ),
                 containerColor = WitTheme.colors.white100,
                 contentColor = WitTheme.colors.text,
                 shape = RoundedCornerShape(8.dp)

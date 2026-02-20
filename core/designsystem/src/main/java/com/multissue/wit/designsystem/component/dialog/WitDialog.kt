@@ -86,6 +86,21 @@ fun WitDialogScope.WitDialogTitle(
 }
 
 @Composable
+fun WitDialogScope.WitDialogOnlyTitle(
+    modifier: Modifier = Modifier
+) {
+    val dialogTitle = title ?: return
+    Text(
+        modifier = modifier
+            .fillMaxWidth(fraction = 0.92f),
+        textAlign = TextAlign.Center,
+        style = WitTheme.typography.titleM,
+        color = WitTheme.colors.text,
+        text = dialogTitle
+    )
+}
+
+@Composable
 fun WitDialogScope.WitDialogMessage(
     modifier: Modifier = Modifier
 ) {
@@ -128,7 +143,7 @@ fun WitDialogScope.WitDialogLeftButton(
         shape = RoundedCornerShape(8.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = WitTheme.colors.disabledButton,
-            contentColor = WitTheme.colors.disabledButtonText
+            contentColor = WitTheme.colors.text
         ),
         onClick = onLeftButtonClick
     ) {
@@ -143,7 +158,7 @@ fun WitDialogScope.WitDialogLeftButton(
 fun WitDialogScope.WitDialogDefaultLayout() {
     Column(
         modifier = Modifier
-        .padding(top = 24.dp, bottom = 20.dp, start = 20.dp, end = 20.dp),
+        .padding(top = 30.dp, bottom = 20.dp, start = 20.dp, end = 20.dp),
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -153,9 +168,41 @@ fun WitDialogScope.WitDialogDefaultLayout() {
             WitDialogMessage()
             bodyContent()
         }
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(26.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            WitDialogLeftButton(
+                modifier = Modifier
+                    .height(42.dp)
+                    .weight(1f)
+            )
+            WitDialogRightButton(
+                modifier = Modifier
+                    .height(42.dp)
+                    .weight(1f)
+            )
+        }
+    }
+}
+
+@Composable
+fun WitDialogScope.WitDialogTitleOnlyLayout() {
+    Column(
+        modifier = Modifier
+            .padding(top = 30.dp, bottom = 20.dp, start = 20.dp, end = 20.dp),
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            WitDialogOnlyTitle()
+        }
+        Spacer(modifier = Modifier.height(28.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(fraction = 0.92f),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {

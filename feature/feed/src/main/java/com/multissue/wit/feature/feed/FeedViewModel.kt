@@ -9,6 +9,7 @@ import com.multissue.wit.feature.feed.state.FeedUiIntent
 import com.multissue.wit.feature.feed.state.FeedUiSideEffect
 import com.multissue.wit.feature.feed.state.FeedUiState
 import com.multissue.wit.feature.feed.state.ReactionType
+import com.multissue.wit.feature.feed.state.ReportType
 import com.multissue.wit.feature.feed.state.UserState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -38,6 +39,13 @@ class FeedViewModel @AssistedInject constructor(
             FeedUiIntent.ClickMoreButton -> { onMoreButtonClick() }
             FeedUiIntent.DismissReportBottomSheet -> { dismissReportBottonSheet() }
             FeedUiIntent.ClickReportButton -> { onReportButtonClick() }
+            FeedUiIntent.ClickDeleteButton -> { onDeleteButtonClick() }
+            FeedUiIntent.ClickDialogCancelButton -> { dismissDialog() }
+            FeedUiIntent.ClickDialogDeleteButton -> { onDeleteConfirmButtonClick() }
+            FeedUiIntent.ClickDialogReportButton -> { onReportConfirmButtonClick() }
+            is FeedUiIntent.ClickReportType -> {
+                onSelectReportType(intent.type)
+            }
         }
     }
 
@@ -51,6 +59,34 @@ class FeedViewModel @AssistedInject constructor(
 
     fun onReportButtonClick() {
         setState { copy(reportState = reportState.copy(reportDialog = true)) }
+    }
+
+    fun onDeleteButtonClick() {
+        setState { copy(reportState = reportState.copy(deleteDialog = true)) }
+    }
+
+    fun onDeleteConfirmButtonClick() {
+        setState {
+            copy(reportState = reportState.copy(deleteDialog = false, reportBottomSheet = false))
+        }
+        postSideEffect(FeedUiSideEffect.OnDeleteSuccess) //TODO
+    }
+
+    fun onReportConfirmButtonClick() {
+        setState {
+            copy(reportState = reportState.copy(reportDialog = false, reportBottomSheet = false))
+        }
+        postSideEffect(FeedUiSideEffect.OnReportSuccess) //TODO
+    }
+
+    fun dismissDialog() {
+        setState { copy(reportState = reportState.copy(deleteDialog = false, reportDialog = false)) }
+    }
+
+    fun onSelectReportType(
+        type: ReportType
+    ) {
+        setState { copy(reportState = reportState.copy(selectedReportType = type)) }
     }
 
     fun onReactionItemClick(

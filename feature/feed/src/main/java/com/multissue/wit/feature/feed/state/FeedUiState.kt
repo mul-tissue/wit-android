@@ -11,7 +11,10 @@ data class FeedUiState(
     val reportState: ReportState = ReportState()
 ): UiState
 
-interface FeedUiSideEffect: UiSideEffect
+interface FeedUiSideEffect: UiSideEffect {
+    data object OnDeleteSuccess: FeedUiSideEffect
+    data object OnReportSuccess: FeedUiSideEffect
+}
 
 sealed interface FeedUiIntent: UiIntent {
     data object Loading : FeedUiIntent
@@ -24,4 +27,11 @@ sealed interface FeedUiIntent: UiIntent {
     data object ClickMoreButton: FeedUiIntent
     data object DismissReportBottomSheet: FeedUiIntent
     data object ClickReportButton: FeedUiIntent
+    data object ClickDeleteButton: FeedUiIntent
+    data object ClickDialogCancelButton: FeedUiIntent
+    data object ClickDialogDeleteButton: FeedUiIntent
+    data object ClickDialogReportButton: FeedUiIntent
+    data class ClickReportType(
+        val type: ReportType
+    ): FeedUiIntent
 }

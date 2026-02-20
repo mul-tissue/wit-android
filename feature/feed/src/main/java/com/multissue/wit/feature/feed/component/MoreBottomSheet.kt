@@ -1,5 +1,6 @@
 package com.multissue.wit.feature.feed.component
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -27,7 +29,9 @@ import com.multissue.wit.designsystem.util.noRippleClickable
 @Composable
 fun MoreBottomSheet(
     visible: Boolean,
+    isMine: Boolean,
     onReportButtonClicked: () -> Unit,
+    onDeleteButtonClicked: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     if (!visible) return
@@ -57,17 +61,21 @@ fun MoreBottomSheet(
         Column(
             modifier = Modifier.padding(26.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .height(60.dp)
-                    .fillMaxWidth()
-                    .noRippleClickable { onReportButtonClicked() },
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "신고", // TODO String
-                    style = WitTheme.typography.titleM,
-                    color = WitTheme.colors.error
+            if (isMine) {
+                BottomSheetButton(
+                    modifier = Modifier
+                        .height(60.dp)
+                        .fillMaxWidth(),
+                    text = "삭제",
+                    onClick = { onDeleteButtonClicked() },
+                )
+            } else {
+                BottomSheetButton(
+                    modifier = Modifier
+                        .height(60.dp)
+                        .fillMaxWidth(),
+                    text = "신고",
+                    onClick = { onReportButtonClicked() },
                 )
             }
         }
