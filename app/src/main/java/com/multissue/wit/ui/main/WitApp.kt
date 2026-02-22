@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -12,9 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -34,25 +31,15 @@ import com.multissue.wit.core.navigation.toEntries
 import com.multissue.wit.designsystem.component.navigation.WitNavItem
 import com.multissue.wit.designsystem.component.navigation.WitNavigationRail
 import com.multissue.wit.designsystem.theme.WitTheme
-import com.multissue.wit.feature.chat.navigation.ChatNavKey
 import com.multissue.wit.feature.chat.navigation.chatEntry
-import com.multissue.wit.feature.feed.navigation.FeedNavKey
 import com.multissue.wit.feature.feed.navigation.feedEntry
-import com.multissue.wit.feature.home.navigation.HomeNavKey
 import com.multissue.wit.feature.home.navigation.homeEntry
-import com.multissue.wit.feature.login.navigation.LoginNavKey
-import com.multissue.wit.feature.login.navigation.loginEntry
 import com.multissue.wit.feature.map.navigation.MapNavKey
 import com.multissue.wit.feature.map.navigation.mapEntry
 import com.multissue.wit.feature.mypage.navigation.myPageEntry
-import com.multissue.wit.feature.onboarding.navigation.OnboardingNavKey
-import com.multissue.wit.feature.onboarding.navigation.onboardingEntry
-import com.multissue.wit.feature.signup.navigation.SignupNavKey
-import com.multissue.wit.feature.signup.navigation.signupEntry
 import com.multissue.wit.feature.upload.navigation.UploadNavKey
 import com.multissue.wit.feature.upload.navigation.uploadEntry
 import com.multissue.wit.navigation.MAIN_LEVEL_NAV_ITEMS
-import com.multissue.wit.navigation.main.MainNavKey
 
 @Composable
 fun WitApp(
@@ -111,10 +98,8 @@ internal fun WitApp(
                     onBack = { navigator.goBack() },
                 )
             }
-//            if (appState.navigationState.currentKey == HomeNavKey
-//                || appState.navigationState.currentKey == ChatNavKey
-//                || appState.navigationState.currentKey == MapNavKey
-//            ) {
+
+            if (appState.navigationState.currentKey != UploadNavKey) {
                 WitNavigationRail(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -153,7 +138,7 @@ internal fun WitApp(
                         }
                     }
                 )
-//            }
+            }
         }
     }
 }
