@@ -27,19 +27,6 @@ fun FeedFilterChipRow(
         WitSelectableChip(
             modifier = Modifier
                 .fillMaxHeight(),
-            colors = FilterChipDefaults.filterChipColors(
-                containerColor = WitTheme.colors.containerColor,
-                labelColor = WitTheme.colors.grayText,
-                selectedContainerColor = WitTheme.colors.primaryLighter,
-                selectedLabelColor = WitTheme.colors.primaryDark,
-            ),
-            border = FilterChipDefaults.filterChipBorder(
-                enabled = true,
-                selected = filterType == FeedFilterType.POPULAR,
-                borderWidth = 1.dp,
-                borderColor = WitTheme.colors.border,
-                selectedBorderColor = WitTheme.colors.primaryDark,
-            ),
             isSelected = filterType == FeedFilterType.POPULAR,
             text = "인기 명소", // TODO String
             onClick = { onFilterClicked(FeedFilterType.POPULAR) }
@@ -47,19 +34,6 @@ fun FeedFilterChipRow(
         WitSelectableChip(
             modifier = Modifier
                 .fillMaxHeight(),
-            colors = FilterChipDefaults.filterChipColors(
-                containerColor = WitTheme.colors.containerColor,
-                labelColor = WitTheme.colors.grayText,
-                selectedContainerColor = WitTheme.colors.primaryLighter,
-                selectedLabelColor = WitTheme.colors.primaryDark,
-            ),
-            border = FilterChipDefaults.filterChipBorder(
-                enabled = true,
-                selected = filterType == FeedFilterType.LIVE,
-                borderWidth = 1.dp,
-                borderColor = WitTheme.colors.border,
-                selectedBorderColor = WitTheme.colors.primaryDark,
-            ),
             isSelected = filterType == FeedFilterType.LIVE,
             text = "실시간", // TODO String
             onClick = { onFilterClicked(FeedFilterType.LIVE) }
