@@ -10,4 +10,6 @@
     <string name="travel_day_badge">D-Day</string>
     <string name="travel_day_badge_diff">D-%d</string>
     <string name="travel_participant">%d / %d</string>
+    <string name="travel_filter_activity_type">활동 유형</string>
+    <string name="travel_select_done">선택 완료</string>
 </resources>
