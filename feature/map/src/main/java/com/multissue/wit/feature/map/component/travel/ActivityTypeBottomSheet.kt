@@ -24,7 +24,9 @@ fun ActivityTypeBottomSheet(
     onDismiss: () -> Unit,
     onComplete: () -> Unit
 ) {
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
 
     TravelFilterBottomSheet(
         visible = visible,

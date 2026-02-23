@@ -3,10 +3,13 @@ package com.multissue.wit.feature.map.component.travel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalBottomSheetProperties
@@ -15,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.multissue.wit.designsystem.theme.WitTheme
 import kotlinx.coroutines.CoroutineScope
@@ -26,6 +30,7 @@ fun TravelFilterBottomSheet(
     sheetState: SheetState,
     visible: Boolean,
     title: String,
+    paddingHorizontal: Dp = 24.dp,
     onDismissRequest: () -> Unit,
     content: @Composable ColumnScope.(CoroutineScope) -> Unit,
 ) {
@@ -35,7 +40,6 @@ fun TravelFilterBottomSheet(
 
     ModalBottomSheet(
         modifier = Modifier
-            .padding(bottom = 30.dp)
             .fillMaxWidth()
             .wrapContentHeight(),
         onDismissRequest = {},
@@ -46,6 +50,7 @@ fun TravelFilterBottomSheet(
             shouldDismissOnBackPress = false,
             shouldDismissOnClickOutside = false
         ),
+        contentWindowInsets = { BottomSheetDefaults.windowInsets.only(WindowInsetsSides.Bottom) },
         sheetGesturesEnabled = false,
         dragHandle = null
     ) {
@@ -71,7 +76,7 @@ fun TravelFilterBottomSheet(
                         color = WitTheme.colors.background,
                         shape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
                     )
-                    .padding(horizontal = 24.dp),
+                    .padding(horizontal = paddingHorizontal),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 content(scope)

@@ -10,9 +10,35 @@
     <string name="travel_day_badge">D-Day</string>
     <string name="travel_day_badge_diff">D-%d</string>
     <string name="travel_participant">%d / %d</string>
+    
     <string name="travel_filter_activity_type">활동 유형</string>
     <string name="travel_filter_age_gender">나이/성별</string>
     <string name="travel_filter_age">나이</string>
     <string name="travel_filter_gender">성별</string>
     <string name="travel_select_done">선택 완료</string>
+
+    <string name="travel_age_20">20대</string>
+    <string name="travel_age_30">30대</string>
+    <string name="travel_age_40">40대</string>
+    <string name="travel_age_50">50대</string>
+    <string name="travel_age_60">60대+</string>
+    <string name="travel_age_none">무관</string>
+
+    <string name="travel_gender_male">남자</string>
+    <string name="travel_gender_female">여자</string>
+    <string name="travel_gender_none">무관</string>
+
+    <string name="travel_filter_date_title">날짜 선택</string>
+    <string name="travel_calendar_year_month_format">%1$d년 %2$d월</string>
+    <string name="travel_date_range_format">%1$d월 %2$d일 - %3$d월 %4$d일</string>
+    <string name="travel_date_single_format">%1$d월 %2$d일</string>
+    <string name="travel_reset">초기화</string>
+
+    <string name="day_sun">일</string>
+    <string name="day_mon">월</string>
+    <string name="day_tue">화</string>
+    <string name="day_wed">수</string>
+    <string name="day_thu">목</string>
+    <string name="day_fri">금</string>
+    <string name="day_sat">토</string>
 </resources>
