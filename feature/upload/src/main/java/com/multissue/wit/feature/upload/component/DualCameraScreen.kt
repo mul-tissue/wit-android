@@ -1,8 +1,10 @@
 package com.multissue.wit.feature.upload.component
 
 import android.util.Log
+import android.view.ScaleGestureDetector
 import androidx.camera.core.AspectRatio
 import androidx.camera.core.CameraControl
+import androidx.camera.core.CameraInfo
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ConcurrentCamera
 import androidx.camera.core.ImageCapture
@@ -14,8 +16,10 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -31,6 +35,7 @@ import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -39,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -63,13 +69,31 @@ fun DualCameraScreen(
     val scope = rememberCoroutineScope()
 
     val frontPreviewView = remember { PreviewView(context).apply { implementationMode = PreviewView.ImplementationMode.COMPATIBLE } }
-    val backPreviewView = remember { PreviewView(context).apply { implementationMode = PreviewView.ImplementationMode.COMPATIBLE } }
+    val backPreviewView = remember { PreviewView(context).apply { implementationMode = PreviewView.ImplementationMode.PERFORMANCE } }
     val backImageCapture = remember { ImageCapture.Builder().build() }
     val frontImageCapture = remember { ImageCapture.Builder().build() }
     val cameraExecutor = remember { Executors.newSingleThreadExecutor() }
 
+    var backCameraInfo by remember { mutableStateOf<CameraInfo?>(null) }   // 추가
     var backCameraControl by remember { mutableStateOf<CameraControl?>(null) }
     var isFlashOn by remember { mutableStateOf(false) }
+
+    var currentZoomRatio by remember { mutableFloatStateOf(1f) }
+
+    val scaleGestureDetector = remember {
+        ScaleGestureDetector(
+            context,
+            object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+                override fun onScale(detector: ScaleGestureDetector): Boolean {
+                    val cameraControl = backCameraControl ?: return true
+                    val newZoom = (currentZoomRatio * detector.scaleFactor).coerceIn(1f, 2f)
+                    currentZoomRatio = newZoom
+                    cameraControl.setZoomRatio(newZoom)
+                    return true
+                }
+            }
+        )
+    }
 
     // ImageCapture 유즈케이스 선언
 
@@ -106,9 +130,11 @@ fun DualCameraScreen(
             )
 
             val cameraInfos = cameraProvider.bindToLifecycle(listOf(backConfig, frontConfig))
-            backCameraControl = cameraInfos.cameras.find {
+            val backCamera = cameraInfos.cameras.find {
                 it.cameraInfo.lensFacing == CameraSelector.LENS_FACING_BACK
-            }?.cameraControl
+            }
+            backCameraControl = backCamera?.cameraControl
+            backCameraInfo = backCamera?.cameraInfo
 
         } catch (e: Exception) {
             Log.e("DualCamera", "Binding failed: ${e.message}")
@@ -125,6 +151,12 @@ fun DualCameraScreen(
                 .fillMaxWidth()
                 .aspectRatio(3f / 4f),
             factory = { backPreviewView },
+            update = { view ->
+                view.setOnTouchListener { _, event ->
+                    scaleGestureDetector.onTouchEvent(event)
+                    true
+                }
+            }
         )
 
         Box(
@@ -152,27 +184,42 @@ fun DualCameraScreen(
                 .background(Color.White.copy(alpha = shutterAlpha.value))
         )
 
-        CameraControlRow(
+        Column(
             modifier = modifier
                 .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-                .padding(bottom = 50.dp),
-            isFlashOn = isFlashOn,
-            onFlashButtonClicked = {
-                isFlashOn = !it
-                backCameraControl?.enableTorch(isFlashOn)
-            },
-            onCaptureButtonClicked = {
-                captureDualImage(
-                    context = context,
-                    backCapture = backImageCapture,
-                    frontCapture = frontImageCapture,
-                    executor = cameraExecutor,
-                    onResult = {
-                        onCaptureFinished()
-                    },
-                )
-            },
-        )
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ZoomLevelRow(
+                currentZoom = currentZoomRatio,
+                onZoomSelected = { zoom ->
+                    currentZoomRatio = zoom
+                    backCameraControl?.setZoomRatio(zoom)
+                }
+            )
+
+            CameraControlRow(
+                modifier = modifier
+//                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .padding(bottom = 50.dp),
+                isFlashOn = isFlashOn,
+                onFlashButtonClicked = {
+                    isFlashOn = !it
+                    backCameraControl?.enableTorch(isFlashOn)
+                },
+                onCaptureButtonClicked = {
+                    captureDualImage(
+                        context = context,
+                        backCapture = backImageCapture,
+                        frontCapture = frontImageCapture,
+                        executor = cameraExecutor,
+                        onResult = {
+                            onCaptureFinished()
+                        },
+                    )
+                },
+            )
+        }
     }
 }

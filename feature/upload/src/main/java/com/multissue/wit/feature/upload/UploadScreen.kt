@@ -2,6 +2,7 @@ package com.multissue.wit.feature.upload
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -53,7 +54,8 @@ internal fun UploadScreen(
                 .background(
                     color = WitTheme.colors.black100
                 )
-                .padding(top = 60.dp, bottom = 10.dp)
+                .padding(top = 60.dp, bottom = 10.dp),
+            verticalArrangement = Arrangement.Center
         ) {
             CameraPermission {
                 DualCameraScreen(
