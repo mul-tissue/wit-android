@@ -20,6 +20,7 @@ import com.multissue.wit.feature.map.R
 fun TravelSheetTitleRow(
     modifier: Modifier = Modifier,
     title: String,
+    onClick: () -> Unit,
     onDismiss: (() -> Unit)? = null,
 ) {
     Box(
@@ -27,7 +28,10 @@ fun TravelSheetTitleRow(
             .wrapContentHeight(),
     ) {
         Text(
-            modifier = Modifier.align(Alignment.Center),
+            modifier = Modifier.align(Alignment.Center)
+                .noRippleClickable {
+                    onClick()
+                },
             text = title,
             style = WitTheme.typography.titleL
         )
@@ -55,6 +59,7 @@ private fun TravelSheetTitleRowPreview() {
         TravelSheetTitleRow(
             modifier = Modifier.background(WitTheme.colors.background),
             title = "활동 유형",
+            onClick = {},
             onDismiss = {}
         )
     }

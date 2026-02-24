@@ -29,6 +29,7 @@
     <string name="travel_gender_none">무관</string>
 
     <string name="travel_filter_date_title">날짜 선택</string>
+    <string name="travel_filter_date_title_placeholder">날짜를 선택해 주세요</string>
     <string name="travel_calendar_year_month_format">%1$d년 %2$d월</string>
     <string name="travel_date_range_format">%1$d월 %2$d일 - %3$d월 %4$d일</string>
     <string name="travel_date_single_format">%1$d월 %2$d일</string>

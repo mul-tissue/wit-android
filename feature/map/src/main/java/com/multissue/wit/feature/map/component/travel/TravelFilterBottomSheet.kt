@@ -30,6 +30,7 @@ fun TravelFilterBottomSheet(
     sheetState: SheetState,
     visible: Boolean,
     title: String,
+    onClick: () -> Unit = {},
     paddingHorizontal: Dp = 24.dp,
     onDismissRequest: () -> Unit,
     content: @Composable ColumnScope.(CoroutineScope) -> Unit,
@@ -62,6 +63,7 @@ fun TravelFilterBottomSheet(
             TravelSheetTitleRow(
                 modifier = Modifier.padding(horizontal = 20.dp),
                 title = title,
+                onClick = onClick,
                 onDismiss = {
                     scope.launch {
                         sheetState.hide()
