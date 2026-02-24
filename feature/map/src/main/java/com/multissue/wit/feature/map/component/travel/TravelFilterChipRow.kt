@@ -22,6 +22,9 @@ fun TravelFilterChipRow(
     onActivityFilterClick: () -> Unit,
     onAgeAndGenderFilterClick: () -> Unit,
     onDateFilterClick: () -> Unit,
+    onActivityClear: () -> Unit,
+    onAgeGenderClear: () -> Unit,
+    onDateClear: () -> Unit,
 ) {
     Row(
         modifier = modifier
@@ -30,25 +33,25 @@ fun TravelFilterChipRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         WitFilterChip(
-            modifier = Modifier
-                .fillMaxHeight(),
+            modifier = Modifier.fillMaxHeight(),
             isSelected = activityType.isNotEmpty(),
             text = activityType.ifEmpty { stringResource(R.string.travel_activity_type_placeholder) },
-            onClick = onActivityFilterClick
+            onClick = onActivityFilterClick,
+            onClear = onActivityClear
         )
         WitFilterChip(
-            modifier = Modifier
-                .fillMaxHeight(),
+            modifier = Modifier.fillMaxHeight(),
             isSelected = ageAndGender.isNotEmpty(),
             text = ageAndGender.ifEmpty { stringResource(R.string.travel_age_gender_placeholder) },
-            onClick = onAgeAndGenderFilterClick
+            onClick = onAgeAndGenderFilterClick,
+            onClear = onAgeGenderClear
         )
         WitFilterChip(
-            modifier = Modifier
-                .fillMaxHeight(),
+            modifier = Modifier.fillMaxHeight(),
             isSelected = selectDate.isNotEmpty(),
             text = selectDate.ifEmpty { stringResource(R.string.travel_date_placeholder) },
-            onClick = onDateFilterClick
+            onClick = onDateFilterClick,
+            onClear = onDateClear
         )
     }
 }

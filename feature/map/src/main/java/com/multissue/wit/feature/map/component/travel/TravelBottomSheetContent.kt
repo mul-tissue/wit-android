@@ -26,6 +26,9 @@ fun TravelBottomSheetContent(
     onActivityFilterClick: () -> Unit,
     onAgeAndGenderFilterClick: () -> Unit,
     onDateFilterClick: () -> Unit,
+    onActivityClear: () -> Unit,
+    onAgeGenderClear: () -> Unit,
+    onDateClear: () -> Unit,
     onReloadClick: () -> Unit,
     onChatClick: (Int) -> Unit,
     onItemClick: (Int) -> Unit
@@ -34,7 +37,8 @@ fun TravelBottomSheetContent(
         modifier = modifier,
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .height(44.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -45,7 +49,10 @@ fun TravelBottomSheetContent(
                 selectDate = selectDate,
                 onActivityFilterClick = onActivityFilterClick,
                 onAgeAndGenderFilterClick = onAgeAndGenderFilterClick,
-                onDateFilterClick = onDateFilterClick
+                onDateFilterClick = onDateFilterClick,
+                onActivityClear = onActivityClear,
+                onAgeGenderClear = onAgeGenderClear,
+                onDateClear = onDateClear
             )
 
             SpW(8.dp)

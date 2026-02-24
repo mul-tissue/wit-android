@@ -1,7 +1,12 @@
 package com.multissue.wit.feature.map
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,33 +22,48 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.multissue.wit.designsystem.component.selectable.WitSelectType
 import com.multissue.wit.feature.map.component.FilterSearchRow
 import com.multissue.wit.feature.map.component.MapBottomSheetScaffold
 import com.multissue.wit.feature.map.component.MapTest
 import com.multissue.wit.feature.map.component.MapTopAppBar
 import com.multissue.wit.feature.map.component.feed.FeedBottomSheetContent
+import com.multissue.wit.feature.map.component.travel.ActivityTypeBottomSheet
+import com.multissue.wit.feature.map.component.travel.AgeGenderBottomSheet
+import com.multissue.wit.feature.map.component.travel.CalendarDateSelectionScreen
+import com.multissue.wit.feature.map.component.travel.DateSelectionBottomSheet
 import com.multissue.wit.feature.map.component.travel.TravelBottomSheetContent
 import com.multissue.wit.feature.map.dummy.placeDummyList
 import com.multissue.wit.feature.map.state.FeedFilterType
+import com.multissue.wit.feature.map.state.travel.TravelUiIntent
+import com.multissue.wit.feature.map.state.travel.TravelUiState
 import com.multissue.wit.feature.map.util.permission.LocationPermission
+import java.time.YearMonth
 
 @Composable
 fun MapScreen(
     modifier: Modifier = Modifier,
-    viewModel: MapViewModel = hiltViewModel(),
+    mapViewModel: MapViewModel = hiltViewModel(),
+    travelViewModel: TravelViewModel = hiltViewModel(),
     onFeedItemClicked: (feedId: Int) -> Unit,
 ) {
+    val travelUiState by travelViewModel.uiState.collectAsStateWithLifecycle()
+
     MapScreen(
         modifier = modifier,
-        onFeedItemClicked = onFeedItemClicked
+        travelUiState = travelUiState,
+        onTravelIntent = travelViewModel::onIntent,
+        onFeedItemClicked = onFeedItemClicked,
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun MapScreen(
+fun MapScreen(
     modifier: Modifier = Modifier,
+    travelUiState: TravelUiState,
+    onTravelIntent: (TravelUiIntent) -> Unit,
     onFeedItemClicked: (feedId: Int) -> Unit,
 ) {
     // TODO UI STATE
@@ -53,6 +73,44 @@ internal fun MapScreen(
         // TODO UI STATE
         var selected by remember { mutableStateOf(WitSelectType.Feed) }
         var searchText by remember { mutableStateOf("") }
+
+        // 활동 유형
+        ActivityTypeBottomSheet(
+            visible = travelUiState.showActivityTypeSheet,
+            selectedActivityType = travelUiState.draftActivityType,
+            onActivityTypeSelected = { onTravelIntent(TravelUiIntent.DraftSelectActivityType(it)) },
+            onDismiss = { onTravelIntent(TravelUiIntent.HideActivityTypeSheet) },
+            onComplete = { onTravelIntent(TravelUiIntent.ConfirmActivityType) }
+        )
+
+        // 나이/성별
+        AgeGenderBottomSheet(
+            visible = travelUiState.showAgeGenderSheet,
+            ageOptions = travelUiState.ageOptions,
+            genderOptions = travelUiState.genderOptions,
+            selectedAge = travelUiState.draftSelectedAge,
+            selectedGender = travelUiState.draftSelectedGender,
+            onAgeSelected = { onTravelIntent(TravelUiIntent.DraftSelectAge(it)) },
+            onGenderSelected = { onTravelIntent(TravelUiIntent.DraftSelectGender(it)) },
+            onDismiss = { onTravelIntent(TravelUiIntent.HideAgeGenderSheet) },
+            onComplete = { onTravelIntent(TravelUiIntent.ConfirmAgeGender) }
+        )
+
+        // 날짜
+        DateSelectionBottomSheet(
+            visible = travelUiState.showDateSelectionSheet,
+            currentMonth = YearMonth.now(),
+            startDate = travelUiState.draftStartDate,
+            endDate = travelUiState.draftEndDate,
+            onOpenOtherDate = {
+                onTravelIntent(TravelUiIntent.HideDateSelectionSheet)
+                onTravelIntent(TravelUiIntent.ShowCalendarDialog)
+            },
+            onDateSelected = { onTravelIntent(TravelUiIntent.DraftSelectDate(it)) },
+            onReset = { onTravelIntent(TravelUiIntent.DraftResetDate) },
+            onDismiss = { onTravelIntent(TravelUiIntent.HideDateSelectionSheet) },
+            onComplete = { onTravelIntent(TravelUiIntent.ConfirmDate) }
+        )
 
         val scaffoldState = rememberBottomSheetScaffoldState(
             bottomSheetState = rememberStandardBottomSheetState(
@@ -80,18 +138,22 @@ internal fun MapScreen(
                             onFilterClicked = { filter = it },
                         )
                     }
+
                     WitSelectType.Travel -> {
                         TravelBottomSheetContent(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 24.dp),
-                            activityType = "",
-                            ageAndGender = "",
-                            selectDate = "",
-                            onActivityFilterClick = { /*TODO*/ },
-                            onAgeAndGenderFilterClick = { /*TODO*/ },
-                            onDateFilterClick = { /*TODO*/ },
-                            onReloadClick = { /*TODO*/ },
+                            activityType = travelUiState.selectedActivityType,
+                            ageAndGender = travelUiState.ageAndGenderStr,
+                            selectDate = travelUiState.dateStr,
+                            onActivityFilterClick = { onTravelIntent(TravelUiIntent.ShowActivityTypeSheet) },
+                            onAgeAndGenderFilterClick = { onTravelIntent(TravelUiIntent.ShowAgeGenderSheet) },
+                            onDateFilterClick = { onTravelIntent(TravelUiIntent.ShowDateSelectionSheet) },
+                            onActivityClear = { onTravelIntent(TravelUiIntent.ClearActivityType) },
+                            onAgeGenderClear = { onTravelIntent(TravelUiIntent.ClearAgeGender) },
+                            onDateClear = { onTravelIntent(TravelUiIntent.ClearDate) },
+                            onReloadClick = { onTravelIntent(TravelUiIntent.Reload) },
                             onChatClick = { /*TODO*/ },
                             onItemClick = { /*TODO*/ }
                         )
@@ -128,6 +190,32 @@ internal fun MapScreen(
                     )
                 }
             }
+        }
+
+        // 전체 화면 달력
+        AnimatedVisibility(
+            modifier = Modifier.fillMaxSize(),
+            visible = travelUiState.showCalendarDialog,
+            enter = slideInVertically(
+                initialOffsetY = { it },
+                animationSpec = tween(400)
+            ),
+            exit = slideOutVertically(
+                targetOffsetY = { it },
+                animationSpec = tween(400)
+            )
+        ) {
+            CalendarDateSelectionScreen(
+                startDate = travelUiState.draftStartDate,
+                endDate = travelUiState.draftEndDate,
+                onDateSelected = { onTravelIntent(TravelUiIntent.DraftSelectDate(it)) },
+                onReset = { onTravelIntent(TravelUiIntent.DraftResetDate) },
+                onComplete = {
+                    onTravelIntent(TravelUiIntent.ConfirmDate)
+                    onTravelIntent(TravelUiIntent.HideCalendarDialog)
+                },
+                onBack = { onTravelIntent(TravelUiIntent.HideCalendarDialog) }
+            )
         }
     }
 }

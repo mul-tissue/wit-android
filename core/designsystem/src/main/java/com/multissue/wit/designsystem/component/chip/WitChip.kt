@@ -21,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import com.multissue.wit.designsystem.util.noRippleClickable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -38,6 +39,7 @@ fun WitFilterChip(
     isSelected: Boolean,
     text: String,
     onClick: () -> Unit,
+    onClear: (() -> Unit)? = null,
     paddingHorizontal: Dp = 12.dp,
     paddingVertical: Dp = 10.dp,
     style: TextStyle = WitTheme.typography.bodyM,
@@ -75,14 +77,17 @@ fun WitFilterChip(
                 enter = fadeIn() + expandHorizontally(),
                 exit = fadeOut() + shrinkHorizontally(),
             ) {
-                Icon(
-                    modifier = Modifier
-                        .padding(start = 4.dp)
-                        .size(style.fontSize.value.dp),
-                    painter = painterResource(R.drawable.icon_close_chip),
-                    contentDescription = "Remove Selected Chip Item",
-                    tint = selectedLabelColor
-                )
+                if (onClear != null) {
+                    Icon(
+                        modifier = Modifier
+                            .size(style.fontSize.value.dp)
+                            .noRippleClickable { onClear() }
+                            .padding(start = 4.dp),
+                        painter = painterResource(R.drawable.icon_close_chip),
+                        contentDescription = "Remove Selected Chip Item",
+                        tint = if (isSelected) selectedLabelColor else labelColor,
+                    )
+                }
             }
         }
     }
