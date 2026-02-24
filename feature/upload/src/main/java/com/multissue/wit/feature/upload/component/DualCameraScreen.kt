@@ -1,5 +1,6 @@
 package com.multissue.wit.feature.upload.component
 
+import android.app.Activity
 import android.util.Log
 import android.view.ScaleGestureDetector
 import androidx.camera.core.AspectRatio
@@ -199,13 +200,13 @@ fun DualCameraScreen(
             )
 
             CameraControlRow(
-                modifier = modifier
+                modifier = Modifier
 //                    .align(Alignment.BottomCenter)
-                    .fillMaxWidth()
+                    .fillMaxWidth(fraction = 0.7f)
                     .padding(bottom = 50.dp),
                 isFlashOn = isFlashOn,
                 onFlashButtonClicked = {
-                    isFlashOn = !it
+                    isFlashOn = it
                     backCameraControl?.enableTorch(isFlashOn)
                 },
                 onCaptureButtonClicked = {
@@ -219,6 +220,7 @@ fun DualCameraScreen(
                         },
                     )
                 },
+                onRotateButtonClicked = {  }
             )
         }
     }

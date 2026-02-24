@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -54,7 +55,7 @@ internal fun UploadScreen(
                 .background(
                     color = WitTheme.colors.black100
                 )
-                .padding(top = 60.dp, bottom = 10.dp),
+                .padding(top = 110.dp),
             verticalArrangement = Arrangement.Center
         ) {
             CameraPermission {

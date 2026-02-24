@@ -20,6 +20,7 @@ fun CameraControlRow(
     modifier: Modifier = Modifier,
     isFlashOn: Boolean,
     onFlashButtonClicked: (Boolean) -> Unit,
+    onRotateButtonClicked: () -> Unit,
     onCaptureButtonClicked: () -> Unit,
 ) {
     Row(
@@ -27,6 +28,11 @@ fun CameraControlRow(
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
+        FlashButton(
+            modifier = Modifier.size(48.dp),
+            isFlashOn = isFlashOn,
+            onClick = onFlashButtonClicked,
+        )
         Box(
             modifier = Modifier
                 .size(80.dp)
@@ -49,5 +55,9 @@ fun CameraControlRow(
                     )
             )
         }
+        RotateButton(
+            modifier = Modifier.size(48.dp),
+            onClick = onRotateButtonClicked,
+        )
     }
 }
