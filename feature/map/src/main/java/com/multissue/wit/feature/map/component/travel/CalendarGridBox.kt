@@ -1,15 +1,12 @@
 package com.multissue.wit.feature.map.component.travel
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -72,82 +69,94 @@ fun CalendarGridBox(
 
         SpH(24.dp)
 
-        LazyVerticalGrid(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            columns = GridCells.Fixed(7),
-            userScrollEnabled = false
+        Column(
+            modifier = Modifier.fillMaxWidth()
         ) {
-            items(
-                items = calendarDays
-            ) { date ->
-                if (date == null) {
-                    Box(modifier = Modifier.aspectRatio(1f))
-                } else {
-                    val isPast = date.isBefore(today)
-                    val isSelectedStart = date == startDate
-                    val isSelectedEnd = date == endDate
-                    val isInRange = startDate != null && endDate != null &&
-                            date.isAfter(startDate) && date.isBefore(endDate)
+            calendarDays.chunked(7).forEach { week ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    week.forEach { date ->
+                        if (date == null) {
+                            Box(modifier = Modifier
+                                .weight(1f)
+                                .aspectRatio(1f))
+                        } else {
+                            val isPast = date.isBefore(today)
+                            val isSelectedStart = date == startDate
+                            val isSelectedEnd = date == endDate
+                            val isInRange = startDate != null && endDate != null &&
+                                    date.isAfter(startDate) && date.isBefore(endDate)
 
-                    Box(
-                        modifier = Modifier
-                            .aspectRatio(1f),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        // 날짜 선택 연결 Box
-                        if (startDate != null && endDate != null) {
-                            if (isInRange || isSelectedStart || isSelectedEnd) {
+                            Box(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .aspectRatio(1f),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                // 날짜 선택 연결 Box
+                                if (startDate != null && endDate != null) {
+                                    if (isInRange || isSelectedStart || isSelectedEnd) {
 
-                                val shape = when {
-                                    isSelectedStart -> RoundedCornerShape(
-                                        topStart = 4.dp,
-                                        bottomStart = 4.dp
-                                    )
+                                        val shape = when {
+                                            isSelectedStart -> RoundedCornerShape(
+                                                topStart = 4.dp,
+                                                bottomStart = 4.dp
+                                            )
 
-                                    isSelectedEnd -> RoundedCornerShape(
-                                        topEnd = 4.dp,
-                                        bottomEnd = 4.dp
-                                    )
+                                            isSelectedEnd -> RoundedCornerShape(
+                                                topEnd = 4.dp,
+                                                bottomEnd = 4.dp
+                                            )
 
-                                    else -> RoundedCornerShape(0.dp)
+                                            else -> RoundedCornerShape(0.dp)
+                                        }
+
+                                        Box(
+                                            modifier = Modifier
+                                                .matchParentSize()
+                                                .background(
+                                                    color = WitTheme.colors.primaryDark,
+                                                    shape = shape
+                                                )
+                                        )
+                                    }
                                 }
 
+
+                                // 날짜 선택 Box
                                 Box(
                                     modifier = Modifier
-                                        .matchParentSize()
+                                        .aspectRatio(1f)
+                                        .clip(RoundedCornerShape(4.dp))
                                         .background(
-                                            color = WitTheme.colors.primaryDark,
-                                            shape = shape
+                                            if (isSelectedStart || isSelectedEnd) WitTheme.colors.primaryDark else Color.Transparent
                                         )
-                                )
+                                        .noRippleClickable(enabled = !isPast) { onDateSelected(date) },
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        text = date.dayOfMonth.toString(),
+                                        style = WitTheme.typography.titleM,
+                                        color = when {
+                                            isInRange || isSelectedStart || isSelectedEnd -> WitTheme.colors.background
+                                            isPast -> WitTheme.colors.border
+                                            date.dayOfWeek.value == 7 -> WitTheme.colors.error
+                                            date.dayOfWeek.value == 6 -> WitTheme.colors.primaryDark
+                                            else -> WitTheme.colors.text
+                                        }
+                                    )
+                                }
                             }
                         }
-
-
-                        // 날짜 선택 Box
-                        Box(
-                            modifier = Modifier
-                                .aspectRatio(1f)
-                                .clip(RoundedCornerShape(4.dp))
-                                .background(
-                                    if (isSelectedStart || isSelectedEnd) WitTheme.colors.primaryDark else Color.Transparent
-                                )
-                                .noRippleClickable(enabled = !isPast) { onDateSelected(date) },
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = date.dayOfMonth.toString(),
-                                style = WitTheme.typography.titleM,
-                                color = when {
-                                    isInRange || isSelectedStart || isSelectedEnd -> WitTheme.colors.background
-                                    isPast -> WitTheme.colors.border
-                                    date.dayOfWeek.value == 7 -> WitTheme.colors.error
-                                    date.dayOfWeek.value == 6 -> WitTheme.colors.primaryDark
-                                    else -> WitTheme.colors.text
-                                }
-                            )
+                    }
+                    // 마지막 주의 빈 공간 채우기
+                    if (week.size < 7) {
+                        repeat(7 - week.size) {
+                            Box(modifier = Modifier
+                                .weight(1f)
+                                .aspectRatio(1f))
                         }
                     }
                 }
