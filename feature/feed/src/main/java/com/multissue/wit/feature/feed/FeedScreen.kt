@@ -1,7 +1,6 @@
 package com.multissue.wit.feature.feed
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -31,7 +29,7 @@ import com.multissue.wit.designsystem.component.snackbar.WitSnackBarHost
 import com.multissue.wit.designsystem.component.snackbar.WitSnackBarVisuals
 import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.feature.feed.component.FeedContentColumn
-import com.multissue.wit.feature.feed.component.MapTopAppBar
+import com.multissue.wit.feature.feed.component.FeedTopAppBar
 import com.multissue.wit.feature.feed.component.MoreBottomSheet
 import com.multissue.wit.feature.feed.component.ReactionButtonRow
 import com.multissue.wit.feature.feed.component.ReportSelectColumn
@@ -44,7 +42,6 @@ import com.multissue.wit.feature.feed.state.ReactionType
 import com.multissue.wit.feature.feed.state.ReportState
 import com.multissue.wit.feature.feed.state.UserState
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 
 @Composable
 fun FeedScreen(
@@ -104,7 +101,7 @@ internal fun FeedScreen(
         modifier = Modifier
             .fillMaxSize(),
         topBar = {
-            MapTopAppBar(
+            FeedTopAppBar(
                 username = userState.username,
                 userThumbnail = userState.userThumbnailUrl,
                 isMine = true,

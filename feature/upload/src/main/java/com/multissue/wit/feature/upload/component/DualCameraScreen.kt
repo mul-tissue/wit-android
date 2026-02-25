@@ -1,6 +1,7 @@
 package com.multissue.wit.feature.upload.component
 
 import android.app.Activity
+import android.net.Uri
 import android.util.Log
 import android.view.ScaleGestureDetector
 import androidx.camera.core.AspectRatio
@@ -13,8 +14,6 @@ import androidx.camera.core.Preview
 import androidx.camera.core.UseCaseGroup
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTransformGestures
@@ -52,6 +51,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.feature.upload.util.captureDualImage
+import com.multissue.wit.feature.upload.util.getLocationAddress
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -61,12 +61,11 @@ import java.util.concurrent.Executors
 @Composable
 fun DualCameraScreen(
     modifier: Modifier = Modifier,
-    onCaptureFinished: () -> Unit,
+    onCaptureFinished: (Uri?, String?, Long) -> Unit,
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    val shutterAlpha = remember { Animatable(0f) }
     val scope = rememberCoroutineScope()
 
     val frontPreviewView = remember { PreviewView(context).apply { implementationMode = PreviewView.ImplementationMode.COMPATIBLE } }
@@ -78,6 +77,7 @@ fun DualCameraScreen(
     var backCameraInfo by remember { mutableStateOf<CameraInfo?>(null) }   // 추가
     var backCameraControl by remember { mutableStateOf<CameraControl?>(null) }
     var isFlashOn by remember { mutableStateOf(false) }
+    var isCapturing by remember { mutableStateOf(false) }
 
     var currentZoomRatio by remember { mutableFloatStateOf(1f) }
 
@@ -179,12 +179,6 @@ fun DualCameraScreen(
             )
         }
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White.copy(alpha = shutterAlpha.value))
-        )
-
         Column(
             modifier = modifier
                 .align(Alignment.BottomCenter)
@@ -205,20 +199,29 @@ fun DualCameraScreen(
                     .fillMaxWidth(fraction = 0.7f)
                     .padding(bottom = 50.dp),
                 isFlashOn = isFlashOn,
+                isCapturing = isCapturing,
                 onFlashButtonClicked = {
                     isFlashOn = it
                     backCameraControl?.enableTorch(isFlashOn)
                 },
                 onCaptureButtonClicked = {
-                    captureDualImage(
-                        context = context,
-                        backCapture = backImageCapture,
-                        frontCapture = frontImageCapture,
-                        executor = cameraExecutor,
-                        onResult = {
-                            onCaptureFinished()
-                        },
-                    )
+                    isCapturing = true
+                    val capturedAt = System.currentTimeMillis()
+                    scope.launch {
+                        val location = getLocationAddress(context)
+                        captureDualImage(
+                            context = context,
+                            backCapture = backImageCapture,
+                            frontCapture = frontImageCapture,
+                            executor = cameraExecutor,
+                            onResult = { uri ->
+                                scope.launch(Dispatchers.Main) {
+                                    isCapturing = false
+                                    onCaptureFinished(uri, location, capturedAt)
+                                }
+                            },
+                        )
+                    }
                 },
                 onRotateButtonClicked = {  }
             )

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +20,7 @@ import com.multissue.wit.designsystem.util.noRippleClickable
 fun CameraControlRow(
     modifier: Modifier = Modifier,
     isFlashOn: Boolean,
+    isCapturing: Boolean,
     onFlashButtonClicked: (Boolean) -> Unit,
     onRotateButtonClicked: () -> Unit,
     onCaptureButtonClicked: () -> Unit,
@@ -36,24 +38,33 @@ fun CameraControlRow(
         Box(
             modifier = Modifier
                 .size(80.dp)
-                .noRippleClickable {
-                    onCaptureButtonClicked()
-                }
+                .then(
+                    if (!isCapturing) Modifier.noRippleClickable { onCaptureButtonClicked() }
+                    else Modifier
+                )
                 .border(
                     width = 4.dp,
-                    color = WitTheme.colors.primary,
+                    color = if (isCapturing) WitTheme.colors.gray200 else WitTheme.colors.primary,
                     shape = CircleShape
                 ),
             contentAlignment = Alignment.Center
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(fraction = 0.8f)
-                    .background(
-                        color = WitTheme.colors.primary,
-                        shape = CircleShape
-                    )
-            )
+            if (isCapturing) {
+                CircularProgressIndicator(
+                    modifier = Modifier.fillMaxSize(fraction = 0.6f),
+                    color = WitTheme.colors.primary,
+                    strokeWidth = 3.dp
+                )
+            } else {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(fraction = 0.8f)
+                        .background(
+                            color = WitTheme.colors.primary,
+                            shape = CircleShape
+                        )
+                )
+            }
         }
         RotateButton(
             modifier = Modifier.size(48.dp),

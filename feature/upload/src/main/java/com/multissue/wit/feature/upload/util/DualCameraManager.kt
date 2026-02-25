@@ -10,6 +10,7 @@ import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.RectF
+import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import androidx.camera.core.ImageCapture
@@ -21,7 +22,7 @@ fun captureDualImage(
     backCapture: ImageCapture,
     frontCapture: ImageCapture,
     executor: java.util.concurrent.Executor,
-    onResult: () -> Unit
+    onResult: (Uri?) -> Unit
 ) {
     // 1. 후면 촬영
     backCapture.takePicture(executor, object : ImageCapture.OnImageCapturedCallback() {
@@ -39,9 +40,9 @@ fun captureDualImage(
 
                     // 3. 합성 및 저장
                     val combined = combineBitmaps(backBitmap, frontBitmap, context)
-                    saveBitmapToGallery(context, combined)
+                    val uri = saveBitmapToGallery(context, combined)
 
-                    onResult()
+                    onResult(uri)
                 }
             })
         }
@@ -125,7 +126,7 @@ private fun centerCropAndScale(source: Bitmap, targetWidth: Int, targetHeight: I
 }
 
 // 갤러리 저장 로직
-private fun saveBitmapToGallery(context: Context, bitmap: Bitmap) {
+private fun saveBitmapToGallery(context: Context, bitmap: Bitmap): Uri? {
     val filename = "DualCamera_${System.currentTimeMillis()}.jpg"
     val contentValues = ContentValues().apply {
         put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
@@ -143,6 +144,7 @@ private fun saveBitmapToGallery(context: Context, bitmap: Bitmap) {
             }
         }
     }
+    return uri
 }
 
 // ImageProxy를 Bitmap으로 변환하는 확장 함수
