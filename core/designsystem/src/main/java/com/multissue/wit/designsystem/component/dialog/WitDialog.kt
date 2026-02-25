@@ -128,7 +128,7 @@ fun WitDialogScope.WitDialogLeftButton(
         shape = RoundedCornerShape(8.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = WitTheme.colors.disabledButton,
-            contentColor = WitTheme.colors.disabledButtonText
+            contentColor = WitTheme.colors.text
         ),
         onClick = onLeftButtonClick
     ) {

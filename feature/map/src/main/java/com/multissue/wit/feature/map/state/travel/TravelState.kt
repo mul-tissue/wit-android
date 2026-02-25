@@ -28,6 +28,11 @@ data class TravelUiState(
     val showCalendarDialog: Boolean = false,
 
     val showUploadDateSelectionSheet: Boolean = false,
+    val draftUploadDate: LocalDate? = null,
+    val showUploadCalendarDialog: Boolean = false,
+    val showSelectTimeDialog: Boolean = false,
+    val showUploadActivityTypeSheet: Boolean = false,
+    val uploadData: UploadTravelData = UploadTravelData(),
 ) : UiState {
     val ageAndGenderStr: String
         get() = buildString {
@@ -45,6 +50,19 @@ data class TravelUiState(
             }
         }
 }
+
+data class UploadTravelData(
+    val activityType: String = "",
+    val maxParticipants: Int = 0,
+    val ageCondition: String = "",
+    val genderCondition: String = "",
+    val meetingDate: LocalDate? = null,
+    val isTimeUndecided: Boolean = false,
+    val amPm: AmPm = AmPm.AM,
+    val hour: PickerHour = PickerHour.NINE,
+    val minute: PickerMinute = PickerMinute.ZERO,
+    val location: String = "",  // TODO("API 연결 시 정보들 추가")
+)
 
 data class TravelItemState(
     val id: Int = 0,
@@ -65,7 +83,6 @@ sealed class TravelUiIntent : UiIntent {
     data object ShowAgeGenderSheet : TravelUiIntent()
     data object HideAgeGenderSheet : TravelUiIntent()
     data object ShowDateSelectionSheet : TravelUiIntent()
-    data object ShowUploadDateSelectionSheet : TravelUiIntent()
     data object HideDateSelectionSheet : TravelUiIntent()
     data object ShowCalendarDialog : TravelUiIntent()
     data object HideCalendarDialog : TravelUiIntent()
@@ -81,6 +98,16 @@ sealed class TravelUiIntent : UiIntent {
     data object ClearAgeGender : TravelUiIntent()
     data object ClearDate : TravelUiIntent()
     data object Reload : TravelUiIntent()
+    data object ShowUploadDateSelectionSheet : TravelUiIntent()
+    data object HideUploadDateSelectionSheet : TravelUiIntent()
+    data class DraftSelectUploadDate(val date: LocalDate) : TravelUiIntent()
+    data object DraftResetUploadDate : TravelUiIntent()
+    data object ConfirmUploadDate : TravelUiIntent()
+    data object ShowUploadCalendarDialog : TravelUiIntent()
+    data object HideUploadCalendarDialog : TravelUiIntent()
+    data object HideSelectTimeDialog : TravelUiIntent()
+    data class ConfirmTime(val amPm: AmPm, val hour: PickerHour, val minute: PickerMinute) : TravelUiIntent()
+    data object ConfirmTimeUndecided : TravelUiIntent()
 }
 
 sealed interface TravelSideEffect : UiSideEffect {

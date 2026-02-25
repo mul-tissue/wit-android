@@ -35,7 +35,10 @@ import com.multissue.wit.feature.map.component.travel.ActivityTypeBottomSheet
 import com.multissue.wit.feature.map.component.travel.AgeGenderBottomSheet
 import com.multissue.wit.feature.map.component.travel.CalendarDateSelectionScreen
 import com.multissue.wit.feature.map.component.travel.DateSelectionBottomSheet
+import com.multissue.wit.feature.map.component.travel.SelectTimeDialog
 import com.multissue.wit.feature.map.component.travel.TravelBottomSheetContent
+import com.multissue.wit.feature.map.component.travel.UploadCalendarDateSelectionScreen
+import com.multissue.wit.feature.map.component.travel.UploadDateSelectionBottomSheet
 import com.multissue.wit.feature.map.dummy.placeDummyList
 import com.multissue.wit.feature.map.state.FeedFilterType
 import com.multissue.wit.feature.map.state.travel.TravelUiIntent
@@ -128,6 +131,34 @@ fun MapScreen(
             onComplete = { onTravelIntent(TravelUiIntent.ConfirmDate) }
         )
 
+        // 업로드 — 날짜 선택
+        UploadDateSelectionBottomSheet(
+            visible = travelUiState.showUploadDateSelectionSheet,
+            currentMonth = YearMonth.now(),
+            selectedDate = travelUiState.draftUploadDate,
+            onOpenOtherDate = {
+                onTravelIntent(TravelUiIntent.ShowUploadCalendarDialog)
+            },
+            onDateSelected = { onTravelIntent(TravelUiIntent.DraftSelectUploadDate(it)) },
+            onReset = { onTravelIntent(TravelUiIntent.DraftResetUploadDate) },
+            onDismiss = { onTravelIntent(TravelUiIntent.HideUploadDateSelectionSheet) },
+            onComplete = { onTravelIntent(TravelUiIntent.ConfirmUploadDate) }
+        )
+
+        // 업로드 — 시간 선택
+        SelectTimeDialog(
+            showDialog = travelUiState.showSelectTimeDialog,
+            selectedAmPm = travelUiState.uploadData.amPm,
+            selectedHour = travelUiState.uploadData.hour,
+            selectedMinute = travelUiState.uploadData.minute,
+            isUndecided = travelUiState.uploadData.isTimeUndecided,
+            onDismiss = { onTravelIntent(TravelUiIntent.HideSelectTimeDialog) },
+            onTimeSelected = { ampm, hour, minute ->
+                onTravelIntent(TravelUiIntent.ConfirmTime(ampm, hour, minute))
+            },
+            onUndecidedSelected = { onTravelIntent(TravelUiIntent.ConfirmTimeUndecided) }
+        )
+
         val scaffoldState = rememberBottomSheetScaffoldState(
             bottomSheetState = rememberStandardBottomSheetState(
                 initialValue = SheetValue.PartiallyExpanded,
@@ -208,7 +239,29 @@ fun MapScreen(
             }
         }
 
-        // 전체 화면 달력
+        // 업로드 — 전체 화면 달력 (단일 날짜, 3개월)
+        AnimatedVisibility(
+            modifier = Modifier.fillMaxSize(),
+            visible = travelUiState.showUploadCalendarDialog,
+            enter = slideInVertically(
+                initialOffsetY = { it },
+                animationSpec = tween(400)
+            ),
+            exit = slideOutVertically(
+                targetOffsetY = { it },
+                animationSpec = tween(400)
+            )
+        ) {
+            UploadCalendarDateSelectionScreen(
+                selectedDate = travelUiState.draftUploadDate,
+                onDateSelected = { onTravelIntent(TravelUiIntent.DraftSelectUploadDate(it)) },
+                onReset = { onTravelIntent(TravelUiIntent.DraftResetUploadDate) },
+                onComplete = { onTravelIntent(TravelUiIntent.ConfirmUploadDate) },
+                onBack = { onTravelIntent(TravelUiIntent.HideUploadCalendarDialog) }
+            )
+        }
+
+        // 필터 — 전체 화면 달력
         AnimatedVisibility(
             modifier = Modifier.fillMaxSize(),
             visible = travelUiState.showCalendarDialog,

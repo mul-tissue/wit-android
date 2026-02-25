@@ -42,4 +42,9 @@
     <string name="day_thu">목</string>
     <string name="day_fri">금</string>
     <string name="day_sat">토</string>
+
+    <string name="travel_time_select">시간 선택</string>
+    <string name="travel_time_tbc">미정</string>
+    <string name="travel_select">선택</string>
+    <string name="travel_close">닫기</string>
 </resources>
