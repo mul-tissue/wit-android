@@ -15,9 +15,11 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -40,6 +42,7 @@ import com.multissue.wit.feature.map.state.travel.TravelUiIntent
 import com.multissue.wit.feature.map.state.travel.TravelUiState
 import com.multissue.wit.feature.map.util.permission.LocationPermission
 import java.time.YearMonth
+import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun MapScreen(
@@ -47,6 +50,7 @@ fun MapScreen(
     mapViewModel: MapViewModel = hiltViewModel(),
     travelViewModel: TravelViewModel = hiltViewModel(),
     onFeedItemClicked: (feedId: Int) -> Unit,
+    centerButtonEvent: Flow<Unit>,
 ) {
     val travelUiState by travelViewModel.uiState.collectAsStateWithLifecycle()
 
@@ -55,6 +59,7 @@ fun MapScreen(
         travelUiState = travelUiState,
         onTravelIntent = travelViewModel::onIntent,
         onFeedItemClicked = onFeedItemClicked,
+        centerButtonEvent = centerButtonEvent
     )
 }
 
@@ -65,6 +70,7 @@ fun MapScreen(
     travelUiState: TravelUiState,
     onTravelIntent: (TravelUiIntent) -> Unit,
     onFeedItemClicked: (feedId: Int) -> Unit,
+    centerButtonEvent: Flow<Unit>,
 ) {
     // TODO UI STATE
     var filter by remember { mutableStateOf(FeedFilterType.POPULAR) }
@@ -73,6 +79,16 @@ fun MapScreen(
         // TODO UI STATE
         var selected by remember { mutableStateOf(WitSelectType.Feed) }
         var searchText by remember { mutableStateOf("") }
+
+        val currentSelected by rememberUpdatedState(selected)
+        LaunchedEffect(centerButtonEvent) {
+            centerButtonEvent.collect {
+                when (currentSelected) {
+                    WitSelectType.Travel -> onTravelIntent(TravelUiIntent.ShowUploadDateSelectionSheet)
+                    WitSelectType.Feed -> { /* TODO: Feed + 버튼 동작 */ }
+                }
+            }
+        }
 
         // 활동 유형
         ActivityTypeBottomSheet(

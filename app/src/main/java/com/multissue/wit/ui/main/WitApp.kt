@@ -1,10 +1,10 @@
 package com.multissue.wit.ui.main
 
+import android.R.attr.entries
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -12,9 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -26,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
@@ -39,28 +38,23 @@ import com.multissue.wit.feature.chat.navigation.chatEntry
 import com.multissue.wit.feature.feed.navigation.feedEntry
 import com.multissue.wit.feature.home.navigation.HomeNavKey
 import com.multissue.wit.feature.home.navigation.homeEntry
-import com.multissue.wit.feature.login.navigation.LoginNavKey
-import com.multissue.wit.feature.login.navigation.loginEntry
 import com.multissue.wit.feature.map.navigation.MapNavKey
 import com.multissue.wit.feature.map.navigation.mapEntry
 import com.multissue.wit.feature.mypage.navigation.myPageEntry
-import com.multissue.wit.feature.onboarding.navigation.OnboardingNavKey
-import com.multissue.wit.feature.onboarding.navigation.onboardingEntry
-import com.multissue.wit.feature.signup.navigation.SignupNavKey
-import com.multissue.wit.feature.signup.navigation.signupEntry
 import com.multissue.wit.feature.upload.navigation.UploadNavKey
 import com.multissue.wit.feature.upload.navigation.uploadEntry
 import com.multissue.wit.navigation.MAIN_LEVEL_NAV_ITEMS
-import com.multissue.wit.navigation.main.MainNavKey
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.map
 
 @Composable
 fun WitApp(
     appState: WitAppState,
-    modifier: Modifier = Modifier,
 ) {
     // TODO THEMES
     WitApp(
-        appState = appState
+        appState = appState,
+        witAppViewModel = hiltViewModel()
     )
 }
 
@@ -68,6 +62,7 @@ fun WitApp(
 @Composable
 internal fun WitApp(
     appState: WitAppState,
+    witAppViewModel: WitAppViewModel,
 ) {
     val navigator = remember { Navigator(appState.navigationState) }
 
@@ -98,7 +93,12 @@ internal fun WitApp(
                         navigateToMap = { navigator.navigate(MapNavKey) }
                     )
                     chatEntry(navigator)
-                    mapEntry(navigator)
+                    mapEntry(
+                        navigator = navigator,
+                        centerButtonEvent = witAppViewModel.sideEffect
+                            .filterIsInstance<WitAppSideEffect.OpenMapSheet>()
+                            .map { }, // Map 모듈과 의존성이 없어 Unit으로 이벤트만 받기
+                    )
                     myPageEntry(navigator)
                     uploadEntry(navigator)
                     feedEntry(navigator)
@@ -120,7 +120,13 @@ internal fun WitApp(
                         .height(64.dp) //TODO
                         .background(color = Color.White), //TODO
 //                        .padding(bottom = WindowInsets.systemBars.asPaddingValues().calculateBottomPadding()),
-                    onCenterButtonClicked = { navigator.navigate(UploadNavKey) },
+                    onCenterButtonClicked = {
+                        if (appState.navigationState.currentKey == MapNavKey) {
+                            witAppViewModel.onIntent(WitAppUiIntent.CenterButtonClicked)
+                        } else {
+                            navigator.navigate(UploadNavKey)
+                        }
+                    },
                     navItems = {
                         MAIN_LEVEL_NAV_ITEMS.forEach { (navKey, navItem) ->
     //                        val hasUnread = unreadNavKeys.contains(navKey) //TODO

@@ -26,6 +26,8 @@ data class TravelUiState(
     val showAgeGenderSheet: Boolean = false,
     val showDateSelectionSheet: Boolean = false,
     val showCalendarDialog: Boolean = false,
+
+    val showUploadDateSelectionSheet: Boolean = false,
 ) : UiState {
     val ageAndGenderStr: String
         get() = buildString {
@@ -63,6 +65,7 @@ sealed class TravelUiIntent : UiIntent {
     data object ShowAgeGenderSheet : TravelUiIntent()
     data object HideAgeGenderSheet : TravelUiIntent()
     data object ShowDateSelectionSheet : TravelUiIntent()
+    data object ShowUploadDateSelectionSheet : TravelUiIntent()
     data object HideDateSelectionSheet : TravelUiIntent()
     data object ShowCalendarDialog : TravelUiIntent()
     data object HideCalendarDialog : TravelUiIntent()

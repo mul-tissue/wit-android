@@ -5,12 +5,17 @@ import androidx.navigation3.runtime.NavKey
 import com.multissue.wit.core.navigation.Navigator
 import com.multissue.wit.feature.feed.navigation.navigateToFeed
 import com.multissue.wit.feature.map.MapScreen
+import kotlinx.coroutines.flow.Flow
 
-fun EntryProviderScope<NavKey>.mapEntry(navigator: Navigator) {
+fun EntryProviderScope<NavKey>.mapEntry(
+    navigator: Navigator,
+    centerButtonEvent: Flow<Unit>,
+) {
     // TODO SnackBar
     entry<MapNavKey> {
         MapScreen(
-            onFeedItemClicked = navigator::navigateToFeed
+            onFeedItemClicked = navigator::navigateToFeed,
+            centerButtonEvent = centerButtonEvent,
         )
     }
 }

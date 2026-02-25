@@ -27,6 +27,7 @@ class TravelViewModel @Inject constructor(
             is TravelUiIntent.ShowAgeGenderSheet -> onShowAgeGenderSheet()
             is TravelUiIntent.HideAgeGenderSheet -> onHideAgeGenderSheet()
             is TravelUiIntent.ShowDateSelectionSheet -> onShowDateSelectionSheet()
+            is TravelUiIntent.ShowUploadDateSelectionSheet -> onShowUploadDateSelectionSheet()
             is TravelUiIntent.HideDateSelectionSheet -> onHideDateSelectionSheet()
             is TravelUiIntent.ShowCalendarDialog -> onShowCalendarDialog()
             is TravelUiIntent.HideCalendarDialog -> onHideCalendarDialog()
@@ -85,6 +86,14 @@ class TravelViewModel @Inject constructor(
                 draftStartDate = startDate,
                 draftEndDate = endDate,
                 showDateSelectionSheet = true
+            )
+        }
+    }
+
+    private fun onShowUploadDateSelectionSheet() {
+        setState {
+            copy(
+                showUploadDateSelectionSheet = true
             )
         }
     }
