@@ -61,6 +61,8 @@ data class UploadTravelData(
     val amPm: AmPm = AmPm.AM,
     val hour: PickerHour = PickerHour.NINE,
     val minute: PickerMinute = PickerMinute.ZERO,
+    val title: String = "",
+    val content: String = "",
     val location: String = "",  // TODO("API 연결 시 정보들 추가")
 )
 
@@ -108,6 +110,17 @@ sealed class TravelUiIntent : UiIntent {
     data object HideSelectTimeDialog : TravelUiIntent()
     data class ConfirmTime(val amPm: AmPm, val hour: PickerHour, val minute: PickerMinute) : TravelUiIntent()
     data object ConfirmTimeUndecided : TravelUiIntent()
+
+    // 업로드 플로우 — 3단계 시트 (활동유형 / 조건 / 글작성)
+    data object HideUploadActivityTypeSheet : TravelUiIntent()
+    data class SelectUploadActivityType(val activityType: String) : TravelUiIntent()
+    data class SelectUploadParticipants(val count: Int) : TravelUiIntent()
+    data class SelectUploadAge(val age: String) : TravelUiIntent()
+    data class SelectUploadGender(val gender: String) : TravelUiIntent()
+    data object ResetUploadConditions : TravelUiIntent()
+    data class UpdateUploadTitle(val title: String) : TravelUiIntent()
+    data class UpdateUploadContent(val content: String) : TravelUiIntent()
+    data object ConfirmUpload : TravelUiIntent()
 }
 
 sealed interface TravelSideEffect : UiSideEffect {

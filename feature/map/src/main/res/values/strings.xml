@@ -17,17 +17,6 @@
     <string name="travel_filter_gender">성별</string>
     <string name="travel_select_done">선택 완료</string>
 
-    <string name="travel_age_20">20대</string>
-    <string name="travel_age_30">30대</string>
-    <string name="travel_age_40">40대</string>
-    <string name="travel_age_50">50대</string>
-    <string name="travel_age_60">60대+</string>
-    <string name="travel_age_none">무관</string>
-
-    <string name="travel_gender_male">남자</string>
-    <string name="travel_gender_female">여자</string>
-    <string name="travel_gender_none">무관</string>
-
     <string name="travel_filter_date_title">날짜 선택</string>
     <string name="travel_filter_date_title_placeholder">날짜를 선택해 주세요</string>
     <string name="travel_calendar_year_month_format">%1$d년 %2$d월</string>
@@ -47,4 +36,19 @@
     <string name="travel_time_tbc">미정</string>
     <string name="travel_select">선택</string>
     <string name="travel_close">닫기</string>
+
+    <!-- Upload sheet -->
+    <string name="upload_step_activity_type">유형 선택</string>
+    <string name="upload_step_condition">조건 선택</string>
+    <string name="upload_step_post">글 작성</string>
+    <string name="upload_step_format">%1$s %2$d/3</string>
+    <string name="upload_participants_label">인원 수</string>
+    <string name="upload_participants_count">%d명</string>
+    <string name="upload_next">다음</string>
+    <string name="upload_reset">초기화</string>
+    <string name="upload_post_title_label">제목</string>
+    <string name="upload_post_title_hint">누구와 어떤 여행을 하고 싶은지 적어주세요 ✈️</string>
+    <string name="upload_post_content_label">내용</string>
+    <string name="upload_post_content_hint">함께 하고 싶은 여행 이야기를 편하게 써주세요</string>
+    <string name="upload_char_count_format">(%1$d/%2$d)</string>
 </resources>

@@ -39,6 +39,7 @@ import com.multissue.wit.feature.map.component.travel.SelectTimeDialog
 import com.multissue.wit.feature.map.component.travel.TravelBottomSheetContent
 import com.multissue.wit.feature.map.component.travel.UploadCalendarDateSelectionScreen
 import com.multissue.wit.feature.map.component.travel.UploadDateSelectionBottomSheet
+import com.multissue.wit.feature.map.component.travel.UploadTravelBottomSheet
 import com.multissue.wit.feature.map.dummy.placeDummyList
 import com.multissue.wit.feature.map.state.FeedFilterType
 import com.multissue.wit.feature.map.state.travel.TravelUiIntent
@@ -157,6 +158,23 @@ fun MapScreen(
                 onTravelIntent(TravelUiIntent.ConfirmTime(ampm, hour, minute))
             },
             onUndecidedSelected = { onTravelIntent(TravelUiIntent.ConfirmTimeUndecided) }
+        )
+
+        // 업로드 — 3단계 시트 (활동유형 / 조건 / 글작성)
+        UploadTravelBottomSheet(
+            visible = travelUiState.showUploadActivityTypeSheet,
+            uploadData = travelUiState.uploadData,
+            ageOptions = travelUiState.ageOptions,
+            genderOptions = travelUiState.genderOptions,
+            onActivityTypeSelected = { onTravelIntent(TravelUiIntent.SelectUploadActivityType(it)) },
+            onParticipantsSelected = { onTravelIntent(TravelUiIntent.SelectUploadParticipants(it)) },
+            onAgeSelected = { onTravelIntent(TravelUiIntent.SelectUploadAge(it)) },
+            onGenderSelected = { onTravelIntent(TravelUiIntent.SelectUploadGender(it)) },
+            onConditionReset = { onTravelIntent(TravelUiIntent.ResetUploadConditions) },
+            onTitleChanged = { onTravelIntent(TravelUiIntent.UpdateUploadTitle(it)) },
+            onContentChanged = { onTravelIntent(TravelUiIntent.UpdateUploadContent(it)) },
+            onDismiss = { onTravelIntent(TravelUiIntent.HideUploadActivityTypeSheet) },
+            onConfirmUpload = { onTravelIntent(TravelUiIntent.ConfirmUpload) },
         )
 
         val scaffoldState = rememberBottomSheetScaffoldState(

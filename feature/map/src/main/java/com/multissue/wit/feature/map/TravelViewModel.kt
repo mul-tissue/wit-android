@@ -40,6 +40,15 @@ class TravelViewModel @Inject constructor(
             is TravelUiIntent.HideSelectTimeDialog -> onHideSelectTimeDialog()
             is TravelUiIntent.ConfirmTime -> onConfirmTime(intent.amPm, intent.hour, intent.minute)
             is TravelUiIntent.ConfirmTimeUndecided -> onConfirmTimeUndecided()
+            is TravelUiIntent.HideUploadActivityTypeSheet -> onHideUploadActivityTypeSheet()
+            is TravelUiIntent.SelectUploadActivityType -> onSelectUploadActivityType(intent.activityType)
+            is TravelUiIntent.SelectUploadParticipants -> onSelectUploadParticipants(intent.count)
+            is TravelUiIntent.SelectUploadAge -> onSelectUploadAge(intent.age)
+            is TravelUiIntent.SelectUploadGender -> onSelectUploadGender(intent.gender)
+            is TravelUiIntent.ResetUploadConditions -> onResetUploadConditions()
+            is TravelUiIntent.UpdateUploadTitle -> onUpdateUploadTitle(intent.title)
+            is TravelUiIntent.UpdateUploadContent -> onUpdateUploadContent(intent.content)
+            is TravelUiIntent.ConfirmUpload -> onConfirmUpload()
             is TravelUiIntent.HideDateSelectionSheet -> onHideDateSelectionSheet()
             is TravelUiIntent.ShowCalendarDialog -> onShowCalendarDialog()
             is TravelUiIntent.HideCalendarDialog -> onHideCalendarDialog()
@@ -174,6 +183,63 @@ class TravelViewModel @Inject constructor(
                 showUploadActivityTypeSheet = true,
             )
         }
+    }
+
+    private fun onHideUploadActivityTypeSheet() {
+        setState {
+            copy(
+                showUploadActivityTypeSheet = false,
+                uploadData = uploadData.copy(
+                    activityType = "",
+                    maxParticipants = 1,
+                    ageCondition = "",
+                    genderCondition = "",
+                    title = "",
+                    content = "",
+                )
+            )
+        }
+    }
+
+    private fun onSelectUploadActivityType(activityType: String) {
+        setState { copy(uploadData = uploadData.copy(activityType = activityType)) }
+    }
+
+    private fun onSelectUploadParticipants(count: Int) {
+        setState { copy(uploadData = uploadData.copy(maxParticipants = count)) }
+    }
+
+    private fun onSelectUploadAge(age: String) {
+        setState { copy(uploadData = uploadData.copy(ageCondition = age)) }
+    }
+
+    private fun onSelectUploadGender(gender: String) {
+        setState { copy(uploadData = uploadData.copy(genderCondition = gender)) }
+    }
+
+    private fun onResetUploadConditions() {
+        setState {
+            copy(
+                uploadData = uploadData.copy(
+                    maxParticipants = 0,
+                    ageCondition = "",
+                    genderCondition = "",
+                )
+            )
+        }
+    }
+
+    private fun onUpdateUploadTitle(title: String) {
+        setState { copy(uploadData = uploadData.copy(title = title)) }
+    }
+
+    private fun onUpdateUploadContent(content: String) {
+        setState { copy(uploadData = uploadData.copy(content = content)) }
+    }
+
+    private fun onConfirmUpload() {
+        setState { copy(showUploadActivityTypeSheet = false) }
+        // TODO: 업로드 API 호출
     }
 
     private fun onHideDateSelectionSheet() {
