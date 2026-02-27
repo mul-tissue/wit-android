@@ -14,7 +14,8 @@ fun EntryProviderScope<NavKey>.travelEntry(navigator: Navigator) {
         }
         TravelDetailScreen(
             viewModel = viewModel,
-            onBackClick = { navigator.goBack() }
+            onBackClick = { navigator.goBack() },
+            onChatRoomNavigate = { /* TODO: 채팅방 네비게이션 */ },
         )
     }
 }
