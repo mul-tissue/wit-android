@@ -6,11 +6,15 @@ import com.multissue.wit.core.navigation.Navigator
 import com.multissue.wit.feature.feed.navigation.navigateToFeed
 import com.multissue.wit.feature.map.MapScreen
 
-fun EntryProviderScope<NavKey>.mapEntry(navigator: Navigator) {
+fun EntryProviderScope<NavKey>.mapEntry(
+    navigator: Navigator,
+    navigateToMyPage: () -> Unit,
+) {
     // TODO SnackBar
     entry<MapNavKey> {
         MapScreen(
-            onFeedItemClicked = navigator::navigateToFeed
+            onFeedItemClicked = navigator::navigateToFeed,
+            navigateToMyPage = navigateToMyPage
         )
     }
 }

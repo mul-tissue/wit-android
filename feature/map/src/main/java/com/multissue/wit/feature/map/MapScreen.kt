@@ -32,10 +32,12 @@ fun MapScreen(
     modifier: Modifier = Modifier,
     viewModel: MapViewModel = hiltViewModel(),
     onFeedItemClicked: (feedId: Int) -> Unit,
+    navigateToMyPage: () -> Unit,
 ) {
     MapScreen(
         modifier = modifier,
-        onFeedItemClicked = onFeedItemClicked
+        onFeedItemClicked = onFeedItemClicked,
+        navigateToMyPage = navigateToMyPage
     )
 }
 
@@ -44,6 +46,7 @@ fun MapScreen(
 internal fun MapScreen(
     modifier: Modifier = Modifier,
     onFeedItemClicked: (feedId: Int) -> Unit,
+    navigateToMyPage: () -> Unit,
 ) {
     // TODO UI STATE
     var filter by remember { mutableStateOf(FeedFilterType.POPULAR) }
@@ -84,7 +87,7 @@ internal fun MapScreen(
                 MapTopAppBar(
                     onBackButtonClicked = {},
                     onNotificationButtonClicked = {},
-                    onProfileButtonClicked = {},
+                    onProfileButtonClicked = navigateToMyPage,
                 )
 
                 Box(

@@ -36,6 +36,7 @@ import com.multissue.wit.feature.feed.navigation.feedEntry
 import com.multissue.wit.feature.home.navigation.homeEntry
 import com.multissue.wit.feature.map.navigation.MapNavKey
 import com.multissue.wit.feature.map.navigation.mapEntry
+import com.multissue.wit.feature.mypage.navigation.MyPageNavKey
 import com.multissue.wit.feature.mypage.navigation.myPageEntry
 import com.multissue.wit.feature.upload.navigation.UploadNavKey
 import com.multissue.wit.feature.upload.navigation.uploadEntry
@@ -86,7 +87,10 @@ internal fun WitApp(
                         navigateToMap = { navigator.navigate(MapNavKey) }
                     )
                     chatEntry(navigator)
-                    mapEntry(navigator)
+                    mapEntry(
+                        navigator,
+                        navigateToMyPage = { navigator.navigate(MyPageNavKey) }
+                    )
                     myPageEntry(navigator)
                     uploadEntry(navigator)
                     feedEntry(navigator)
