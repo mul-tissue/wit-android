@@ -33,6 +33,9 @@ data class TravelUiState(
     val showSelectTimeDialog: Boolean = false,
     val showUploadActivityTypeSheet: Boolean = false,
     val uploadData: UploadTravelData = UploadTravelData(),
+
+    val showJoinChatDialog: Boolean = false,
+    val pendingChatTravelId: Int? = null,
 ) : UiState {
     val ageAndGenderStr: String
         get() = buildString {
@@ -121,8 +124,14 @@ sealed class TravelUiIntent : UiIntent {
     data class UpdateUploadTitle(val title: String) : TravelUiIntent()
     data class UpdateUploadContent(val content: String) : TravelUiIntent()
     data object ConfirmUpload : TravelUiIntent()
+
+    data class NavigateToTravelDetail(val travelId: Int) : TravelUiIntent()
+    data class ShowJoinChatDialog(val travelId: Int) : TravelUiIntent()
+    data object HideJoinChatDialog : TravelUiIntent()
+    data object ConfirmJoinChat : TravelUiIntent()
 }
 
 sealed interface TravelSideEffect : UiSideEffect {
     data class NavigateToDetail(val travelId: Int) : TravelSideEffect
+    data class NavigateToChatRoom(val chatRoomId: Int) : TravelSideEffect
 }

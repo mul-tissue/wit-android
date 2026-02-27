@@ -64,6 +64,10 @@ class TravelViewModel @Inject constructor(
             is TravelUiIntent.ClearAgeGender -> onClearAgeGender()
             is TravelUiIntent.ClearDate -> onClearDate()
             is TravelUiIntent.Reload -> onReload()
+            is TravelUiIntent.NavigateToTravelDetail -> postSideEffect(TravelSideEffect.NavigateToDetail(intent.travelId))
+            is TravelUiIntent.ShowJoinChatDialog -> onShowJoinChatDialog(intent.travelId)
+            is TravelUiIntent.HideJoinChatDialog -> onHideJoinChatDialog()
+            is TravelUiIntent.ConfirmJoinChat -> onConfirmJoinChat()
         }
     }
 
@@ -321,5 +325,19 @@ class TravelViewModel @Inject constructor(
 
     private fun onReload() {
         // TODO: 검색 API 호출
+    }
+
+    private fun onShowJoinChatDialog(travelId: Int) {
+        setState { copy(showJoinChatDialog = true, pendingChatTravelId = travelId) }
+    }
+
+    private fun onHideJoinChatDialog() {
+        setState { copy(showJoinChatDialog = false, pendingChatTravelId = null) }
+    }
+
+    private fun onConfirmJoinChat() {
+        val chatTravelId = currentState.pendingChatTravelId ?: return
+        setState { copy(showJoinChatDialog = false, pendingChatTravelId = null) }
+        postSideEffect(TravelSideEffect.NavigateToChatRoom(chatTravelId))
     }
 }

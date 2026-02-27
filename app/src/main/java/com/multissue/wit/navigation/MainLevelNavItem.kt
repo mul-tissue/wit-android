@@ -66,7 +66,7 @@ val FEED = MainLevelNavItem(
 
 val MAIN_LEVEL_NAV_ITEMS = mapOf(
     HomeNavKey to HOME,
-    ChatNavKey to CHAT,
+    ChatNavKey() to CHAT,
 )
 
 val SUB_LEVEL_NAV_ITEMS = mapOf(

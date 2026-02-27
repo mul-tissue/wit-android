@@ -61,6 +61,7 @@ dependencies {
     implementation(projects.feature.signup)
     implementation(projects.feature.upload)
     implementation(projects.feature.feed)
+    implementation(projects.feature.travel)
     implementation(projects.core.ui)
     implementation(projects.core.designsystem)
 

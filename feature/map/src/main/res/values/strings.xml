@@ -51,4 +51,9 @@
     <string name="upload_post_content_label">내용</string>
     <string name="upload_post_content_hint">함께 하고 싶은 여행 이야기를 편하게 써주세요</string>
     <string name="upload_char_count_format">(%1$d/%2$d)</string>
+
+    <!-- Chat Join Dialog -->
+    <string name="travel_join_chat_title">동행 채팅방에 참여할까요?</string>
+    <string name="travel_join_chat_cancel">취소</string>
+    <string name="travel_join_chat_confirm">참여하기</string>
 </resources>

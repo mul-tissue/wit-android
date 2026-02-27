@@ -19,6 +19,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -41,7 +42,12 @@ import com.multissue.wit.feature.map.component.travel.UploadCalendarDateSelectio
 import com.multissue.wit.feature.map.component.travel.UploadDateSelectionBottomSheet
 import com.multissue.wit.feature.map.component.travel.UploadTravelBottomSheet
 import com.multissue.wit.feature.map.dummy.placeDummyList
+import androidx.compose.ui.res.stringResource
+import com.multissue.wit.designsystem.component.dialog.WitDialog
+import com.multissue.wit.designsystem.component.dialog.WitDialogDefaultLayout
+import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.feature.map.state.FeedFilterType
+import com.multissue.wit.feature.map.state.travel.TravelSideEffect
 import com.multissue.wit.feature.map.state.travel.TravelUiIntent
 import com.multissue.wit.feature.map.state.travel.TravelUiState
 import com.multissue.wit.feature.map.util.permission.LocationPermission
@@ -54,9 +60,20 @@ fun MapScreen(
     mapViewModel: MapViewModel = hiltViewModel(),
     travelViewModel: TravelViewModel = hiltViewModel(),
     onFeedItemClicked: (feedId: Int) -> Unit,
+    onTravelItemClicked: (travelId: Int) -> Unit,
+    onChatRoomNavigate: (chatRoomId: Int) -> Unit,
     centerButtonEvent: Flow<Unit>,
 ) {
     val travelUiState by travelViewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        travelViewModel.sideEffect.collect { effect ->
+            when (effect) {
+                is TravelSideEffect.NavigateToDetail -> onTravelItemClicked(effect.travelId)
+                is TravelSideEffect.NavigateToChatRoom -> onChatRoomNavigate(effect.chatRoomId)
+            }
+        }
+    }
 
     MapScreen(
         modifier = modifier,
@@ -77,12 +94,12 @@ fun MapScreen(
     centerButtonEvent: Flow<Unit>,
 ) {
     // TODO UI STATE
-    var filter by remember { mutableStateOf(FeedFilterType.POPULAR) }
+    var filter by rememberSaveable { mutableStateOf(FeedFilterType.POPULAR) }
 
     LocationPermission {
         // TODO UI STATE
-        var selected by remember { mutableStateOf(WitSelectType.Feed) }
-        var searchText by remember { mutableStateOf("") }
+        var selected by rememberSaveable { mutableStateOf(WitSelectType.Feed) }
+        var searchText by rememberSaveable { mutableStateOf("") }
 
         val currentSelected by rememberUpdatedState(selected)
         LaunchedEffect(centerButtonEvent) {
@@ -219,8 +236,8 @@ fun MapScreen(
                             onAgeGenderClear = { onTravelIntent(TravelUiIntent.ClearAgeGender) },
                             onDateClear = { onTravelIntent(TravelUiIntent.ClearDate) },
                             onReloadClick = { onTravelIntent(TravelUiIntent.Reload) },
-                            onChatClick = { /*TODO*/ },
-                            onItemClick = { /*TODO*/ }
+                            onChatClick = { onTravelIntent(TravelUiIntent.ShowJoinChatDialog(it)) },
+                            onItemClick = { onTravelIntent(TravelUiIntent.NavigateToTravelDetail(it)) }
                         )
                     }
                 }
@@ -303,6 +320,18 @@ fun MapScreen(
                 },
                 onBack = { onTravelIntent(TravelUiIntent.HideCalendarDialog) }
             )
+        }
+
+        WitDialog(
+            showDialog = travelUiState.showJoinChatDialog,
+            title = stringResource(R.string.travel_join_chat_title),
+            leftButtonText = stringResource(R.string.travel_join_chat_cancel),
+            rightButtonText = stringResource(R.string.travel_join_chat_confirm),
+            rightButtonColor = WitTheme.colors.primaryDark,
+            onLeftButtonClick = { onTravelIntent(TravelUiIntent.HideJoinChatDialog) },
+            onRightButtonClick = { onTravelIntent(TravelUiIntent.ConfirmJoinChat) },
+        ) {
+            WitDialogDefaultLayout()
         }
     }
 }

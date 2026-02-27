@@ -41,6 +41,7 @@ import com.multissue.wit.feature.home.navigation.homeEntry
 import com.multissue.wit.feature.map.navigation.MapNavKey
 import com.multissue.wit.feature.map.navigation.mapEntry
 import com.multissue.wit.feature.mypage.navigation.myPageEntry
+import com.multissue.wit.feature.travel.navigation.travelEntry
 import com.multissue.wit.feature.upload.navigation.UploadNavKey
 import com.multissue.wit.feature.upload.navigation.uploadEntry
 import com.multissue.wit.navigation.MAIN_LEVEL_NAV_ITEMS
@@ -102,6 +103,7 @@ internal fun WitApp(
                     myPageEntry(navigator)
                     uploadEntry(navigator)
                     feedEntry(navigator)
+                    travelEntry(navigator)
                 }
 
                 NavDisplay(
@@ -111,7 +113,7 @@ internal fun WitApp(
                 )
             }
             if (appState.navigationState.currentKey == HomeNavKey
-                || appState.navigationState.currentKey == ChatNavKey
+                || appState.navigationState.currentKey is ChatNavKey
                 || appState.navigationState.currentKey == MapNavKey) {
 
                 WitNavigationRail(
