@@ -2,8 +2,8 @@ package com.multissue.wit.feature.map.component.travel
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
@@ -35,6 +35,11 @@ import kotlinx.coroutines.launch
 fun PostConfirmBottomSheet(
     visible: Boolean,
     uploadTravelData: UploadTravelData,
+    isEditMode: Boolean = false,
+    onWriteClick: (() -> Unit)? = null,
+    onLocationClick: (() -> Unit)? = null,
+    onScheduleClick: (() -> Unit)? = null,
+    onTypeClick: (() -> Unit)? = null,
     onBackClick: () -> Unit,
     onCloseClick: () -> Unit,
     onCompleteClick: () -> Unit,
@@ -66,6 +71,7 @@ fun PostConfirmBottomSheet(
             SpH(16.dp)
             PostConfirmTopBar(
                 title = stringResource(R.string.post_confirm_title),
+                showBack = !isEditMode,
                 onBackClick = {
                     scope.launch {
                         sheetState.hide()
@@ -82,7 +88,7 @@ fun PostConfirmBottomSheet(
 
             Column(
                 modifier = Modifier
-                    .wrapContentHeight()
+                    .fillMaxHeight(0.8f)
                     .verticalScroll(rememberScrollState())
                     .padding(horizontal = 24.dp)
             ) {
@@ -95,6 +101,7 @@ fun PostConfirmBottomSheet(
                         iconRes = R.drawable.icon_write,
                         iconDescription = "제목",
                         text = uploadTravelData.title,
+                        onClick = onWriteClick,
                     )
                 }
 
@@ -107,6 +114,7 @@ fun PostConfirmBottomSheet(
                         iconRes = R.drawable.icon_write,
                         iconDescription = "내용",
                         text = uploadTravelData.content,
+                        onClick = onWriteClick,
                     )
                     SpH(80.dp)
                 }
@@ -118,7 +126,8 @@ fun PostConfirmBottomSheet(
                         PostConfirmInfoRow(
                             iconRes = R.drawable.icon_location,
                             iconDescription = "위치",
-                            text = uploadTravelData.location
+                            text = uploadTravelData.location,
+                            onClick = onLocationClick,
                         )
                     }
                 }
@@ -129,7 +138,8 @@ fun PostConfirmBottomSheet(
                     PostConfirmInfoRow(
                         iconRes = R.drawable.icon_calendar,
                         iconDescription = "일정",
-                        text = uploadTravelData.schedule
+                        text = uploadTravelData.schedule,
+                        onClick = onScheduleClick,
                     )
                 }
 
@@ -141,7 +151,8 @@ fun PostConfirmBottomSheet(
                         PostConfirmInfoRow(
                             iconRes = R.drawable.icon_flag,
                             iconDescription = "활동 유형",
-                            text = uploadTravelData.activityType
+                            text = uploadTravelData.activityType,
+                            onClick = onTypeClick,
                         )
                         PostConfirmInfoRow(
                             iconRes = R.drawable.icon_people,
@@ -151,7 +162,8 @@ fun PostConfirmBottomSheet(
                                 uploadTravelData.maxParticipants,
                                 uploadTravelData.ageCondition,
                                 uploadTravelData.genderCondition
-                            )
+                            ),
+                            onClick = onTypeClick,
                         )
                     }
                 }
@@ -164,7 +176,9 @@ fun PostConfirmBottomSheet(
                     .padding(horizontal = 24.dp, vertical = 16.dp)
                     .fillMaxWidth()
                     .height(52.dp),
-                title = stringResource(R.string.post_confirm_complete),
+                title = stringResource(
+                    if (isEditMode) R.string.post_confirm_edit_complete else R.string.post_confirm_complete
+                ),
                 onClick = {
                     scope.launch {
                         sheetState.hide()

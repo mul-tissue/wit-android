@@ -15,11 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.multissue.wit.feature.map.component.SpH
 import com.multissue.wit.feature.map.component.SpW
-import com.multissue.wit.feature.map.dummy.travelDummyData
+import com.multissue.wit.feature.map.state.travel.TravelItemState
 
 @Composable
 fun TravelBottomSheetContent(
     modifier: Modifier = Modifier,
+    travelItems: List<TravelItemState> = emptyList(),
     activityType: String,
     ageAndGender: String,
     selectDate: String,
@@ -71,7 +72,7 @@ fun TravelBottomSheetContent(
             contentPadding = PaddingValues(bottom = 10.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(travelDummyData) { travelItem ->
+            items(travelItems) { travelItem ->
                 TravelListItem(
                     travelItem = travelItem,
                     onChatClick = onChatClick,

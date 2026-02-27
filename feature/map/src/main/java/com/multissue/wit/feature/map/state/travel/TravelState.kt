@@ -42,6 +42,14 @@ data class TravelUiState(
 
     val showJoinChatDialog: Boolean = false,
     val pendingChatTravelId: Int? = null,
+
+    val showTravelPostCard: Boolean = false,
+    val selectedTravelItem: TravelItemState? = null,
+
+    val showOptionSheet: Boolean = false,
+    val showDeleteConfirmDialog: Boolean = false,
+    val isEditMode: Boolean = false,
+    val uploadInitialPage: Int = 0,
 ) : UiState {
     val ageAndGenderStr: String
         get() = buildString {
@@ -88,7 +96,15 @@ data class TravelItemState(
     val location: String = "",
     val maxParticipants: Int = 0,
     val currentParticipants: Int = 0,
-    val companionThumbnails: List<String> = emptyList()
+    val companionThumbnails: List<String> = emptyList(),
+    val content: String = "",
+    val ageCondition: String = "",
+    val genderCondition: String = "",
+    val authorName: String = "",
+    val authorAvatarUrl: String = "",
+    val lat: Double = 0.0,
+    val lng: Double = 0.0,
+    val address: String = "",
 )
 
 data class SearchResultItemState(
@@ -164,9 +180,26 @@ sealed class TravelUiIntent : UiIntent {
     data class ShowJoinChatDialog(val travelId: Int) : TravelUiIntent()
     data object HideJoinChatDialog : TravelUiIntent()
     data object ConfirmJoinChat : TravelUiIntent()
+
+    data class ShowTravelPostCard(val travelId: Int) : TravelUiIntent()
+    data object HideTravelPostCard : TravelUiIntent()
+
+    data object ShowOptionSheet : TravelUiIntent()
+    data object HideOptionSheet : TravelUiIntent()
+    data object ShowDeleteConfirmDialog : TravelUiIntent()
+    data object HideDeleteConfirmDialog : TravelUiIntent()
+    data object ConfirmDelete : TravelUiIntent()
+
+    data object ShowEditMode : TravelUiIntent()
+    data object ConfirmEdit : TravelUiIntent()
+    data object EditTypeSection : TravelUiIntent()
+    data object EditScheduleSection : TravelUiIntent()
+    data object EditLocationSection : TravelUiIntent()
+    data object EditWriteSection : TravelUiIntent()
 }
 
 sealed interface TravelSideEffect : UiSideEffect {
     data class NavigateToDetail(val travelId: Int) : TravelSideEffect
     data class NavigateToChatRoom(val chatRoomId: Int) : TravelSideEffect
+    data object ShowDeletedSnackbar : TravelSideEffect
 }

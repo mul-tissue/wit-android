@@ -66,6 +66,7 @@
     <string name="post_confirm_section_title">제목</string>
     <string name="post_confirm_section_content">내용</string>
     <string name="post_confirm_section_location">위치</string>
+    <string name="post_confirm_section_location_undecide">위치 선택 X</string>
     <string name="post_confirm_section_schedule">일정</string>
     <string name="post_confirm_section_type">유형</string>
     <string name="post_confirm_complete">작성 완료</string>
@@ -75,4 +76,15 @@
     <string name="travel_join_chat_title">동행 채팅방에 참여할까요?</string>
     <string name="travel_join_chat_cancel">취소</string>
     <string name="travel_join_chat_confirm">참여하기</string>
+
+    <!-- Delete Dialog -->
+    <string name="travel_sheet_delete_title">삭제</string>
+    <string name="travel_sheet_modify_title">수정</string>
+    <string name="travel_delete_dialog_title">게시글을 삭제할까요?</string>
+    <string name="travel_delete_cancel">취소</string>
+    <string name="travel_delete_confirm">삭제하기</string>
+    <string name="travel_deleted_snackbar">게시글이 삭제되었어요</string>
+
+    <!-- Edit -->
+    <string name="post_confirm_edit_complete">수정 완료</string>
 </resources>

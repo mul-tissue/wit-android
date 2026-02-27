@@ -14,20 +14,25 @@ import com.multissue.wit.feature.map.R
 fun PostConfirmTopBar(
     modifier: Modifier = Modifier,
     title: String,
+    showBack: Boolean = true,
     onBackClick: () -> Unit,
     onCloseClick: () -> Unit,
 ) {
     WitCenterAlignedTopAppBar(
         modifier = modifier,
         title = title,
-        navigationIcon = {
-            IconButton(onClick = onBackClick) {
-                Icon(
-                    painter = painterResource(R.drawable.icon_back),
-                    contentDescription = "뒤로 가기",
-                    tint = WitTheme.colors.iconTint
-                )
+        navigationIcon = if (showBack) {
+            {
+                IconButton(onClick = onBackClick) {
+                    Icon(
+                        painter = painterResource(R.drawable.icon_back),
+                        contentDescription = "뒤로 가기",
+                        tint = WitTheme.colors.iconTint
+                    )
+                }
             }
+        } else {
+            {}
         },
         actions = {
             IconButton(onClick = onCloseClick) {

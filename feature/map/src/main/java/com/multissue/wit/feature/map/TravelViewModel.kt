@@ -8,9 +8,11 @@ import com.multissue.wit.feature.map.state.travel.PickerMinute
 import com.multissue.wit.feature.map.state.travel.TravelSideEffect
 import com.multissue.wit.feature.map.state.travel.TravelUiIntent
 import com.multissue.wit.feature.map.state.travel.TravelUiState
+import com.multissue.wit.feature.map.state.travel.TravelItemState
 import com.multissue.wit.feature.map.state.travel.UploadTravelData
 import com.multissue.wit.feature.map.state.travel.SearchResultItemState
 import com.multissue.wit.feature.map.dummy.searchDummyList
+import com.multissue.wit.feature.map.dummy.travelDummyData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -88,6 +90,22 @@ class TravelViewModel @Inject constructor(
             is TravelUiIntent.ShowJoinChatDialog -> onShowJoinChatDialog(intent.travelId)
             is TravelUiIntent.HideJoinChatDialog -> onHideJoinChatDialog()
             is TravelUiIntent.ConfirmJoinChat -> onConfirmJoinChat()
+
+            is TravelUiIntent.ShowTravelPostCard -> onShowTravelPostCard(intent.travelId)
+            is TravelUiIntent.HideTravelPostCard -> onHideTravelPostCard()
+
+            is TravelUiIntent.ShowOptionSheet -> setState { copy(showOptionSheet = true) }
+            is TravelUiIntent.HideOptionSheet -> setState { copy(showOptionSheet = false) }
+            is TravelUiIntent.ShowDeleteConfirmDialog -> setState { copy(showOptionSheet = false, showDeleteConfirmDialog = true) }
+            is TravelUiIntent.HideDeleteConfirmDialog -> setState { copy(showDeleteConfirmDialog = false, showOptionSheet = true) }
+            is TravelUiIntent.ConfirmDelete -> onConfirmDelete()
+
+            is TravelUiIntent.ShowEditMode -> onShowEditMode()
+            is TravelUiIntent.ConfirmEdit -> onConfirmEdit()
+            is TravelUiIntent.EditTypeSection -> setState { copy(showUploadActivityTypeSheet = true, uploadInitialPage = 0) }
+            is TravelUiIntent.EditScheduleSection -> setState { copy(showUploadDateSelectionSheet = true) }
+            is TravelUiIntent.EditLocationSection -> setState { copy(showLocationSheet = true) }
+            is TravelUiIntent.EditWriteSection -> setState { copy(showUploadActivityTypeSheet = true, uploadInitialPage = 2) }
         }
     }
 
@@ -96,6 +114,7 @@ class TravelViewModel @Inject constructor(
             // TODO: Repository에서 가져오기
             setState {
                 copy(
+                    travelItems = travelDummyData,
                     ageOptions = listOf("20대", "30대", "40대", "50대", "60대+", "무관"),
                     genderOptions = listOf("남자", "여자", "무관")
                 )
@@ -136,7 +155,15 @@ class TravelViewModel @Inject constructor(
     }
 
     private fun onShowUploadDateSelectionSheet() {
-        setState { copy(showUploadDateSelectionSheet = true) }
+        setState {
+            copy(
+                showUploadDateSelectionSheet = true,
+                draftUploadDate = null,
+                uploadData = UploadTravelData(),
+                uploadInitialPage = 0,
+                isEditMode = false,
+            )
+        }
     }
 
     private fun onHideUploadDateSelectionSheet() {
@@ -145,6 +172,7 @@ class TravelViewModel @Inject constructor(
                 showUploadDateSelectionSheet = false,
                 showSelectTimeDialog = false,
                 draftUploadDate = null,
+                showPostConfirmSheet = if (isEditMode) true else showPostConfirmSheet,
             )
         }
     }
@@ -170,11 +198,23 @@ class TravelViewModel @Inject constructor(
     }
 
     private fun onShowUploadCalendarDialog() {
-        setState { copy(showUploadDateSelectionSheet = false, showUploadCalendarDialog = true) }
+        setState {
+            copy(
+                showUploadDateSelectionSheet = false,
+                showUploadCalendarDialog = true,
+                showPostConfirmSheet = if (isEditMode) false else showPostConfirmSheet,
+            )
+        }
     }
 
     private fun onHideUploadCalendarDialog() {
-        setState { copy(showUploadCalendarDialog = false, showUploadDateSelectionSheet = true) }
+        setState {
+            copy(
+                showUploadCalendarDialog = false,
+                showUploadDateSelectionSheet = true,
+                showPostConfirmSheet = if (isEditMode) true else showPostConfirmSheet,
+            )
+        }
     }
 
     private fun onHideSelectTimeDialog() {
@@ -201,7 +241,8 @@ class TravelViewModel @Inject constructor(
                 ),
                 showUploadDateSelectionSheet = false,
                 showSelectTimeDialog = false,
-                showUploadActivityTypeSheet = true,
+                showUploadActivityTypeSheet = if (isEditMode) false else true,
+                showPostConfirmSheet = if (isEditMode) true else false,
             )
         }
     }
@@ -219,7 +260,8 @@ class TravelViewModel @Inject constructor(
                 ),
                 showUploadDateSelectionSheet = false,
                 showSelectTimeDialog = false,
-                showUploadActivityTypeSheet = true,
+                showUploadActivityTypeSheet = if (isEditMode) false else true,
+                showPostConfirmSheet = if (isEditMode) true else false,
             )
         }
     }
@@ -239,18 +281,23 @@ class TravelViewModel @Inject constructor(
     }
 
     private fun onHideUploadActivityTypeSheet() {
-        setState {
-            copy(
-                showUploadActivityTypeSheet = false,
-                uploadData = uploadData.copy(
-                    activityType = "",
-                    maxParticipants = 1,
-                    ageCondition = "",
-                    genderCondition = "",
-                    title = "",
-                    content = "",
+        if (currentState.isEditMode) {
+            setState { copy(showUploadActivityTypeSheet = false, showPostConfirmSheet = true, uploadInitialPage = 0) }
+        } else {
+            setState {
+                copy(
+                    showUploadActivityTypeSheet = false,
+                    uploadInitialPage = 0,
+                    uploadData = uploadData.copy(
+                        activityType = "",
+                        maxParticipants = 1,
+                        ageCondition = "",
+                        genderCondition = "",
+                        title = "",
+                        content = "",
+                    )
                 )
-            )
+            }
         }
     }
 
@@ -291,7 +338,11 @@ class TravelViewModel @Inject constructor(
     }
 
     private fun onConfirmUpload() {
-        setState { copy(showUploadActivityTypeSheet = false, showLocationSheet = true) }
+        if (currentState.isEditMode) {
+            setState { copy(showUploadActivityTypeSheet = false, showPostConfirmSheet = true) }
+        } else {
+            setState { copy(showUploadActivityTypeSheet = false, showLocationSheet = true) }
+        }
     }
 
     private fun onHideLocationSheet() {
@@ -299,7 +350,11 @@ class TravelViewModel @Inject constructor(
     }
 
     private fun onBackFromLocationSheet() {
-        setState { copy(showLocationSheet = false, showUploadActivityTypeSheet = true) }
+        if (currentState.isEditMode) {
+            setState { copy(showLocationSheet = false, showPostConfirmSheet = true) }
+        } else {
+            setState { copy(showLocationSheet = false, showUploadActivityTypeSheet = true) }
+        }
     }
 
     private fun onUpdateUploadLocation(location: String) {
@@ -311,7 +366,11 @@ class TravelViewModel @Inject constructor(
             copy(
                 showLocationSheet = false,
                 showPostConfirmSheet = true,
-                uploadData = uploadData.copy(location = "")
+                uploadData = uploadData.copy(
+                    location = "",
+                    lat = 0.0,
+                    lng = 0.0
+                )
             )
         }
     }
@@ -320,6 +379,7 @@ class TravelViewModel @Inject constructor(
         setState {
             copy(
                 showLocationSheet = false,
+                showPostConfirmSheet = false,
                 showSearchScreen = true,
                 searchText = "",
                 searchResults = searchDummyList, // TODO: 검색 API 연결 시 교체
@@ -363,7 +423,11 @@ class TravelViewModel @Inject constructor(
     }
 
     private fun onPostConfirmBack() {
-        setState { copy(showPostConfirmSheet = false, showLocationSheet = true) }
+        if (currentState.isEditMode) {
+            setState { copy(showPostConfirmSheet = false, isEditMode = false, uploadData = UploadTravelData()) }
+        } else {
+            setState { copy(showPostConfirmSheet = false, showLocationSheet = true) }
+        }
     }
 
     private fun onPostConfirmClose() {
@@ -371,14 +435,40 @@ class TravelViewModel @Inject constructor(
             copy(
                 showPostConfirmSheet = false,
                 showLocationSheet = false,
+                isEditMode = false,
                 uploadData = UploadTravelData(),
             )
         }
     }
 
     private fun onPostConfirmComplete() {
-        setState { copy(showPostConfirmSheet = false) }
         // TODO: 업로드 API 호출
+        val data = currentState.uploadData
+        val previewItem = TravelItemState(
+            id = -1,
+            title = data.title,
+            content = data.content,
+            activityType = data.activityType,
+            meetingDate = data.schedule,
+            dayDiff = 0,
+            location = data.location,
+            maxParticipants = data.maxParticipants,
+            currentParticipants = 1,
+            ageCondition = data.ageCondition,
+            genderCondition = data.genderCondition,
+            authorName = "나",
+            lat = data.lat,
+            lng = data.lng,
+            address = data.location,
+        )
+        setState {
+            copy(
+                showPostConfirmSheet = false,
+                showTravelPostCard = true,
+                selectedTravelItem = previewItem,
+                uploadData = UploadTravelData(),
+            )
+        }
     }
 
     private fun onHideDateSelectionSheet() {
@@ -475,5 +565,77 @@ class TravelViewModel @Inject constructor(
         val chatTravelId = currentState.pendingChatTravelId ?: return
         setState { copy(showJoinChatDialog = false, pendingChatTravelId = null) }
         postSideEffect(TravelSideEffect.NavigateToChatRoom(chatTravelId))
+    }
+
+    private fun onShowTravelPostCard(travelId: Int) {
+        val item = currentState.travelItems.find { it.id == travelId } ?: return
+        setState { copy(showTravelPostCard = true, selectedTravelItem = item) }
+    }
+
+    private fun onHideTravelPostCard() {
+        setState { copy(showTravelPostCard = false, selectedTravelItem = null) }
+    }
+
+    private fun onConfirmDelete() {
+        setState {
+            copy(
+                showDeleteConfirmDialog = false,
+                showTravelPostCard = false,
+                selectedTravelItem = null,
+            )
+        }
+        postSideEffect(TravelSideEffect.ShowDeletedSnackbar)
+        // TODO: 삭제 API 호출
+    }
+
+    private fun onShowEditMode() {
+        val item = currentState.selectedTravelItem ?: return
+        setState {
+            copy(
+                showOptionSheet = false,
+                isEditMode = true,
+                uploadData = UploadTravelData(
+                    title = item.title,
+                    content = item.content,
+                    activityType = item.activityType,
+                    maxParticipants = item.maxParticipants,
+                    ageCondition = item.ageCondition,
+                    genderCondition = item.genderCondition,
+                    location = item.location,
+                    lat = item.lat,
+                    lng = item.lng,
+                    schedule = item.meetingDate,
+                ),
+                showPostConfirmSheet = true,
+            )
+        }
+    }
+
+    private fun onConfirmEdit() {
+        val item = currentState.selectedTravelItem ?: return
+        val data = currentState.uploadData
+        val updatedItem = item.copy(
+            title = data.title,
+            content = data.content,
+            activityType = data.activityType,
+            maxParticipants = data.maxParticipants,
+            ageCondition = data.ageCondition,
+            genderCondition = data.genderCondition,
+            location = data.location,
+            lat = data.lat,
+            lng = data.lng,
+            address = data.location,
+            meetingDate = data.schedule,
+        )
+        setState {
+            copy(
+                showPostConfirmSheet = false,
+                isEditMode = false,
+                uploadData = UploadTravelData(),
+                selectedTravelItem = updatedItem,
+                travelItems = travelItems.map { if (it.id == item.id) updatedItem else it },
+            )
+        }
+        // TODO: 수정 API 호출
     }
 }

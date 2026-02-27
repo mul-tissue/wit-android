@@ -34,6 +34,7 @@ private const val TOTAL_STEPS = 3
 @Composable
 fun UploadTravelBottomSheet(
     visible: Boolean,
+    startPage: Int = 0,
     uploadData: UploadTravelData,
     ageOptions: List<String>,
     genderOptions: List<String>,
@@ -47,15 +48,16 @@ fun UploadTravelBottomSheet(
     onDismiss: () -> Unit,
     onConfirmUpload: () -> Unit,
 ) {
+    if (!visible) return
+
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
     val pagerState = rememberPagerState(
+        initialPage = startPage,
         pageCount = { TOTAL_STEPS }
     )
     val scope = rememberCoroutineScope()
-
-    if (!visible) return
 
     val stepTitles = listOf(
         stringResource(R.string.upload_step_activity_type),
