@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 fun EntryProviderScope<NavKey>.mapEntry(
     navigator: Navigator,
     centerButtonEvent: Flow<Unit>,
+    onNavRailVisibilityChanged: (Boolean) -> Unit,
 ) {
     // TODO SnackBar
     entry<MapNavKey> {
@@ -20,6 +21,7 @@ fun EntryProviderScope<NavKey>.mapEntry(
             onTravelItemClicked = navigator::navigateToTravel,
             centerButtonEvent = centerButtonEvent,
             onChatRoomNavigate = navigator::navigateToChatRoom,
+            onNavRailVisibilityChanged = onNavRailVisibilityChanged,
         )
     }
 }

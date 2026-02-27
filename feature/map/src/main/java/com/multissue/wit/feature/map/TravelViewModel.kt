@@ -8,6 +8,9 @@ import com.multissue.wit.feature.map.state.travel.PickerMinute
 import com.multissue.wit.feature.map.state.travel.TravelSideEffect
 import com.multissue.wit.feature.map.state.travel.TravelUiIntent
 import com.multissue.wit.feature.map.state.travel.TravelUiState
+import com.multissue.wit.feature.map.state.travel.UploadTravelData
+import com.multissue.wit.feature.map.state.travel.SearchResultItemState
+import com.multissue.wit.feature.map.dummy.searchDummyList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -49,6 +52,18 @@ class TravelViewModel @Inject constructor(
             is TravelUiIntent.UpdateUploadTitle -> onUpdateUploadTitle(intent.title)
             is TravelUiIntent.UpdateUploadContent -> onUpdateUploadContent(intent.content)
             is TravelUiIntent.ConfirmUpload -> onConfirmUpload()
+            is TravelUiIntent.HideLocationSheet -> onHideLocationSheet()
+            is TravelUiIntent.BackFromLocationSheet -> onBackFromLocationSheet()
+            is TravelUiIntent.UpdateUploadLocation -> onUpdateUploadLocation(intent.location)
+            is TravelUiIntent.SkipLocation -> onSkipLocation()
+            is TravelUiIntent.ConfirmLocation -> onConfirmLocation()
+            is TravelUiIntent.HideSearchScreen -> onHideSearchScreen()
+            is TravelUiIntent.UpdateSearchText -> onUpdateSearchText(intent.text)
+            is TravelUiIntent.SelectSearchResult -> onSelectSearchResult(intent.item)
+            is TravelUiIntent.ConfirmSearchResult -> onConfirmSearchResult()
+            is TravelUiIntent.PostConfirmBack -> onPostConfirmBack()
+            is TravelUiIntent.PostConfirmClose -> onPostConfirmClose()
+            is TravelUiIntent.PostConfirmComplete -> onPostConfirmComplete()
             is TravelUiIntent.HideDateSelectionSheet -> onHideDateSelectionSheet()
             is TravelUiIntent.ShowCalendarDialog -> onShowCalendarDialog()
             is TravelUiIntent.HideCalendarDialog -> onHideCalendarDialog()
@@ -64,7 +79,12 @@ class TravelViewModel @Inject constructor(
             is TravelUiIntent.ClearAgeGender -> onClearAgeGender()
             is TravelUiIntent.ClearDate -> onClearDate()
             is TravelUiIntent.Reload -> onReload()
-            is TravelUiIntent.NavigateToTravelDetail -> postSideEffect(TravelSideEffect.NavigateToDetail(intent.travelId))
+            is TravelUiIntent.NavigateToTravelDetail -> postSideEffect(
+                TravelSideEffect.NavigateToDetail(
+                    intent.travelId
+                )
+            )
+
             is TravelUiIntent.ShowJoinChatDialog -> onShowJoinChatDialog(intent.travelId)
             is TravelUiIntent.HideJoinChatDialog -> onHideJoinChatDialog()
             is TravelUiIntent.ConfirmJoinChat -> onConfirmJoinChat()
@@ -164,12 +184,20 @@ class TravelViewModel @Inject constructor(
 
     private fun onConfirmTime(amPm: AmPm, hour: PickerHour, minute: PickerMinute) {
         setState {
+            val schedule = buildSchedule(
+                date = uploadData.meetingDate,
+                isTimeUndecided = false,
+                amPm = amPm,
+                hour = hour,
+                minute = minute,
+            )
             copy(
                 uploadData = uploadData.copy(
                     amPm = amPm,
                     hour = hour,
                     minute = minute,
                     isTimeUndecided = false,
+                    schedule = schedule,
                 ),
                 showUploadDateSelectionSheet = false,
                 showSelectTimeDialog = false,
@@ -180,13 +208,34 @@ class TravelViewModel @Inject constructor(
 
     private fun onConfirmTimeUndecided() {
         setState {
+            val schedule = buildSchedule(
+                date = uploadData.meetingDate,
+                isTimeUndecided = true,
+            )
             copy(
-                uploadData = uploadData.copy(isTimeUndecided = true),
+                uploadData = uploadData.copy(
+                    isTimeUndecided = true,
+                    schedule = schedule,
+                ),
                 showUploadDateSelectionSheet = false,
                 showSelectTimeDialog = false,
                 showUploadActivityTypeSheet = true,
             )
         }
+    }
+
+    private fun buildSchedule(
+        date: LocalDate?,
+        isTimeUndecided: Boolean,
+        amPm: AmPm = AmPm.AM,
+        hour: PickerHour = PickerHour.NINE,
+        minute: PickerMinute = PickerMinute.ZERO,
+    ): String {
+        date ?: return ""
+        val dateStr = "${date.monthValue}월 ${date.dayOfMonth}일"
+        val timeStr =
+            if (isTimeUndecided) "미정" else "${hour.displayText}:${minute.displayText} ${amPm.name}"
+        return "$dateStr · $timeStr"
     }
 
     private fun onHideUploadActivityTypeSheet() {
@@ -242,7 +291,93 @@ class TravelViewModel @Inject constructor(
     }
 
     private fun onConfirmUpload() {
-        setState { copy(showUploadActivityTypeSheet = false) }
+        setState { copy(showUploadActivityTypeSheet = false, showLocationSheet = true) }
+    }
+
+    private fun onHideLocationSheet() {
+        setState { copy(showLocationSheet = false) }
+    }
+
+    private fun onBackFromLocationSheet() {
+        setState { copy(showLocationSheet = false, showUploadActivityTypeSheet = true) }
+    }
+
+    private fun onUpdateUploadLocation(location: String) {
+        setState { copy(uploadData = uploadData.copy(location = location)) }
+    }
+
+    private fun onSkipLocation() {
+        setState {
+            copy(
+                showLocationSheet = false,
+                showPostConfirmSheet = true,
+                uploadData = uploadData.copy(location = "")
+            )
+        }
+    }
+
+    private fun onConfirmLocation() {
+        setState {
+            copy(
+                showLocationSheet = false,
+                showSearchScreen = true,
+                searchText = "",
+                searchResults = searchDummyList, // TODO: 검색 API 연결 시 교체
+            )
+        }
+    }
+
+    private fun onHideSearchScreen() {
+        setState {
+            copy(
+                showSearchScreen = false,
+                showLocationSheet = true,
+                searchText = "",
+                selectedSearchResult = null,
+            )
+        }
+    }
+
+    private fun onUpdateSearchText(text: String) {
+        setState { copy(searchText = text) }
+    }
+
+    private fun onSelectSearchResult(item: SearchResultItemState) {
+        setState { copy(selectedSearchResult = if (selectedSearchResult == item) null else item) }
+    }
+
+    private fun onConfirmSearchResult() {
+        val selected = currentState.selectedSearchResult ?: return
+        setState {
+            copy(
+                uploadData = uploadData.copy(
+                    location = selected.name,
+                    lat = selected.lat,
+                    lng = selected.lng,
+                ),
+                selectedSearchResult = null,
+                showSearchScreen = false,
+                showPostConfirmSheet = true,
+            )
+        }
+    }
+
+    private fun onPostConfirmBack() {
+        setState { copy(showPostConfirmSheet = false, showLocationSheet = true) }
+    }
+
+    private fun onPostConfirmClose() {
+        setState {
+            copy(
+                showPostConfirmSheet = false,
+                showLocationSheet = false,
+                uploadData = UploadTravelData(),
+            )
+        }
+    }
+
+    private fun onPostConfirmComplete() {
+        setState { copy(showPostConfirmSheet = false) }
         // TODO: 업로드 API 호출
     }
 
@@ -277,6 +412,7 @@ class TravelViewModel @Inject constructor(
             currentDraftStart == null || currentDraftEnd != null -> setState {
                 copy(draftStartDate = date, draftEndDate = null)
             }
+
             date.isBefore(currentDraftStart) -> setState { copy(draftStartDate = date) }
             date == currentDraftStart -> setState { copy(draftStartDate = null) }
             else -> setState { copy(draftEndDate = date) }

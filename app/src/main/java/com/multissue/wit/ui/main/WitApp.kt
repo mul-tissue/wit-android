@@ -19,7 +19,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -66,6 +69,7 @@ internal fun WitApp(
     witAppViewModel: WitAppViewModel,
 ) {
     val navigator = remember { Navigator(appState.navigationState) }
+    var showNavRail by remember { mutableStateOf(true) }
 
     Scaffold(
         modifier = Modifier
@@ -99,6 +103,7 @@ internal fun WitApp(
                         centerButtonEvent = witAppViewModel.sideEffect
                             .filterIsInstance<WitAppSideEffect.OpenMapSheet>()
                             .map { }, // Map 모듈과 의존성이 없어 Unit으로 이벤트만 받기
+                        onNavRailVisibilityChanged = { showNavRail = it },
                     )
                     myPageEntry(navigator)
                     uploadEntry(navigator)
@@ -112,9 +117,9 @@ internal fun WitApp(
                     onBack = { navigator.goBack() },
                 )
             }
-            if (appState.navigationState.currentKey == HomeNavKey
+            if ((appState.navigationState.currentKey == HomeNavKey
                 || appState.navigationState.currentKey is ChatNavKey
-                || appState.navigationState.currentKey == MapNavKey) {
+                || appState.navigationState.currentKey == MapNavKey) && showNavRail) {
 
                 WitNavigationRail(
                     modifier = Modifier

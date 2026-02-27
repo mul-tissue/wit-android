@@ -32,7 +32,13 @@ data class TravelUiState(
     val showUploadCalendarDialog: Boolean = false,
     val showSelectTimeDialog: Boolean = false,
     val showUploadActivityTypeSheet: Boolean = false,
+    val showLocationSheet: Boolean = false,
+    val showPostConfirmSheet: Boolean = false,
     val uploadData: UploadTravelData = UploadTravelData(),
+    val showSearchScreen: Boolean = false,
+    val searchText: String = "",
+    val searchResults: List<SearchResultItemState> = emptyList(),
+    val selectedSearchResult: SearchResultItemState? = null,
 
     val showJoinChatDialog: Boolean = false,
     val pendingChatTravelId: Int? = null,
@@ -66,7 +72,10 @@ data class UploadTravelData(
     val minute: PickerMinute = PickerMinute.ZERO,
     val title: String = "",
     val content: String = "",
-    val location: String = "",  // TODO("API 연결 시 정보들 추가")
+    val location: String = "",
+    val lat: Double = 0.0,
+    val lng: Double = 0.0,
+    val schedule: String = "",  // "M월 D일 · HH:MM AM/PM" 또는 "M월 D일 · 미정"
 )
 
 data class TravelItemState(
@@ -80,6 +89,14 @@ data class TravelItemState(
     val maxParticipants: Int = 0,
     val currentParticipants: Int = 0,
     val companionThumbnails: List<String> = emptyList()
+)
+
+data class SearchResultItemState(
+    val id: Int,
+    val name: String,
+    val address: String,
+    val lat: Double = 0.0,
+    val lng: Double = 0.0,
 )
 
 sealed class TravelUiIntent : UiIntent {
@@ -124,6 +141,24 @@ sealed class TravelUiIntent : UiIntent {
     data class UpdateUploadTitle(val title: String) : TravelUiIntent()
     data class UpdateUploadContent(val content: String) : TravelUiIntent()
     data object ConfirmUpload : TravelUiIntent()
+
+    // 업로드 플로우 — 위치 추가 시트
+    data object HideLocationSheet : TravelUiIntent()
+    data object BackFromLocationSheet : TravelUiIntent()
+    data class UpdateUploadLocation(val location: String) : TravelUiIntent()
+    data object SkipLocation : TravelUiIntent()
+    data object ConfirmLocation : TravelUiIntent()
+
+    // 업로드 플로우 — 검색 화면
+    data object HideSearchScreen : TravelUiIntent()
+    data class UpdateSearchText(val text: String) : TravelUiIntent()
+    data class SelectSearchResult(val item: SearchResultItemState) : TravelUiIntent()
+    data object ConfirmSearchResult : TravelUiIntent()
+
+    // 업로드 플로우 — 게시 전 확인 시트
+    data object PostConfirmBack : TravelUiIntent()
+    data object PostConfirmClose : TravelUiIntent()
+    data object PostConfirmComplete : TravelUiIntent()
 
     data class NavigateToTravelDetail(val travelId: Int) : TravelUiIntent()
     data class ShowJoinChatDialog(val travelId: Int) : TravelUiIntent()

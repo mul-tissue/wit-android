@@ -18,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
@@ -33,9 +32,12 @@ import com.multissue.wit.feature.map.component.MapTest
 import com.multissue.wit.feature.map.component.MapTopAppBar
 import com.multissue.wit.feature.map.component.feed.FeedBottomSheetContent
 import com.multissue.wit.feature.map.component.travel.ActivityTypeBottomSheet
+import com.multissue.wit.feature.map.component.travel.AddLocationBottomSheet
 import com.multissue.wit.feature.map.component.travel.AgeGenderBottomSheet
 import com.multissue.wit.feature.map.component.travel.CalendarDateSelectionScreen
 import com.multissue.wit.feature.map.component.travel.DateSelectionBottomSheet
+import com.multissue.wit.feature.map.component.travel.PostConfirmBottomSheet
+import com.multissue.wit.feature.map.component.travel.SearchScreen
 import com.multissue.wit.feature.map.component.travel.SelectTimeDialog
 import com.multissue.wit.feature.map.component.travel.TravelBottomSheetContent
 import com.multissue.wit.feature.map.component.travel.UploadCalendarDateSelectionScreen
@@ -63,6 +65,7 @@ fun MapScreen(
     onTravelItemClicked: (travelId: Int) -> Unit,
     onChatRoomNavigate: (chatRoomId: Int) -> Unit,
     centerButtonEvent: Flow<Unit>,
+    onNavRailVisibilityChanged: (Boolean) -> Unit = {},
 ) {
     val travelUiState by travelViewModel.uiState.collectAsStateWithLifecycle()
 
@@ -80,7 +83,8 @@ fun MapScreen(
         travelUiState = travelUiState,
         onTravelIntent = travelViewModel::onIntent,
         onFeedItemClicked = onFeedItemClicked,
-        centerButtonEvent = centerButtonEvent
+        centerButtonEvent = centerButtonEvent,
+        onNavRailVisibilityChanged = onNavRailVisibilityChanged,
     )
 }
 
@@ -92,9 +96,16 @@ fun MapScreen(
     onTravelIntent: (TravelUiIntent) -> Unit,
     onFeedItemClicked: (feedId: Int) -> Unit,
     centerButtonEvent: Flow<Unit>,
+    onNavRailVisibilityChanged: (Boolean) -> Unit = {},
 ) {
     // TODO UI STATE
     var filter by rememberSaveable { mutableStateOf(FeedFilterType.POPULAR) }
+
+    LaunchedEffect(travelUiState.showSearchScreen, travelUiState.showPostConfirmSheet, travelUiState.showCalendarDialog, travelUiState.showUploadCalendarDialog) {
+        onNavRailVisibilityChanged(
+            !travelUiState.showSearchScreen && !travelUiState.showPostConfirmSheet && !travelUiState.showCalendarDialog && !travelUiState.showUploadCalendarDialog
+        )
+    }
 
     LocationPermission {
         // TODO UI STATE
@@ -192,6 +203,24 @@ fun MapScreen(
             onContentChanged = { onTravelIntent(TravelUiIntent.UpdateUploadContent(it)) },
             onDismiss = { onTravelIntent(TravelUiIntent.HideUploadActivityTypeSheet) },
             onConfirmUpload = { onTravelIntent(TravelUiIntent.ConfirmUpload) },
+        )
+
+        // 업로드 — 위치 추가 시트
+        AddLocationBottomSheet(
+            visible = travelUiState.showLocationSheet,
+            onBackClick = { onTravelIntent(TravelUiIntent.BackFromLocationSheet) },
+            onCloseClick = { onTravelIntent(TravelUiIntent.PostConfirmClose) },
+            onSkipClick = { onTravelIntent(TravelUiIntent.SkipLocation) },
+            onAddLocationClick = { onTravelIntent(TravelUiIntent.ConfirmLocation) },
+        )
+
+        // 업로드 — 게시 전 확인 시트
+        PostConfirmBottomSheet(
+            visible = travelUiState.showPostConfirmSheet,
+            uploadTravelData = travelUiState.uploadData,
+            onBackClick = { onTravelIntent(TravelUiIntent.PostConfirmBack) },
+            onCloseClick = { onTravelIntent(TravelUiIntent.PostConfirmClose) },
+            onCompleteClick = { onTravelIntent(TravelUiIntent.PostConfirmComplete) },
         )
 
         val scaffoldState = rememberBottomSheetScaffoldState(
@@ -319,6 +348,31 @@ fun MapScreen(
                     onTravelIntent(TravelUiIntent.HideCalendarDialog)
                 },
                 onBack = { onTravelIntent(TravelUiIntent.HideCalendarDialog) }
+            )
+        }
+
+        // 업로드 — 위치 검색 전체 화면
+        AnimatedVisibility(
+            modifier = Modifier.fillMaxSize(),
+            visible = travelUiState.showSearchScreen,
+            enter = slideInVertically(
+                initialOffsetY = { it },
+                animationSpec = tween(400)
+            ),
+            exit = slideOutVertically(
+                targetOffsetY = { it },
+                animationSpec = tween(400)
+            )
+        ) {
+            SearchScreen(
+                searchText = travelUiState.searchText,
+                onSearchTextChanged = { onTravelIntent(TravelUiIntent.UpdateSearchText(it)) },
+                onSearch = { /* TODO: 검색 API 연결 */ },
+                searchResults = travelUiState.searchResults,
+                selectedItem = travelUiState.selectedSearchResult,
+                onResultClick = { onTravelIntent(TravelUiIntent.SelectSearchResult(it)) },
+                onConfirmClick = { onTravelIntent(TravelUiIntent.ConfirmSearchResult) },
+                onBack = { onTravelIntent(TravelUiIntent.HideSearchScreen) },
             )
         }
 

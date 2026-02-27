@@ -52,6 +52,25 @@
     <string name="upload_post_content_hint">함께 하고 싶은 여행 이야기를 편하게 써주세요</string>
     <string name="upload_char_count_format">(%1$d/%2$d)</string>
 
+    <!-- Location Sheet -->
+    <string name="location_sheet_title">위치 추가</string>
+    <string name="location_sheet_placeholder">상세 위치를 추가하면 더 정확한 매칭이 가능해요</string>
+    <string name="location_sheet_skip">건너뛰기</string>
+    <string name="location_sheet_add">상세 위치 추가</string>
+
+    <!-- Search Screen -->
+    <string name="search_location_placeholder">도시, 지하철역, 명소, 숙소명으로 입력</string>
+
+    <!-- Post Confirm -->
+    <string name="post_confirm_title">게시 전 확인</string>
+    <string name="post_confirm_section_title">제목</string>
+    <string name="post_confirm_section_content">내용</string>
+    <string name="post_confirm_section_location">위치</string>
+    <string name="post_confirm_section_schedule">일정</string>
+    <string name="post_confirm_section_type">유형</string>
+    <string name="post_confirm_complete">작성 완료</string>
+    <string name="post_confirm_participant_format">인원 수 · %1$d  |  %2$s  |  %3$s</string>
+
     <!-- Chat Join Dialog -->
     <string name="travel_join_chat_title">동행 채팅방에 참여할까요?</string>
     <string name="travel_join_chat_cancel">취소</string>
