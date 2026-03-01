@@ -1,6 +1,13 @@
 package com.multissue.wit.feature.mypage
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -17,9 +24,11 @@ import com.multissue.wit.designsystem.component.snackbar.WitSnackBarHost
 import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.designsystem.util.addFocusCleaner
 import com.multissue.wit.feature.mypage.component.MyPageHomeContent
+import com.multissue.wit.feature.mypage.component.MyPageHomeTopAppBar
 import com.multissue.wit.feature.mypage.component.MyPageMapContent
+import com.multissue.wit.feature.mypage.component.MyPageMapTopAppBar
 import com.multissue.wit.feature.mypage.component.MyPageSettingsContent
-import com.multissue.wit.feature.mypage.component.MyPageTopAppBar
+import com.multissue.wit.feature.mypage.component.MyPageSettingsTopAppBar
 import com.multissue.wit.feature.mypage.state.FeedItemState
 import com.multissue.wit.feature.mypage.state.MyPageNav
 import com.multissue.wit.feature.mypage.state.MyPageType
@@ -33,6 +42,12 @@ fun MyPageScreen(
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    BackHandler(
+        enabled = uiState.myPageNav == MyPageNav.MAP || uiState.myPageNav == MyPageNav.SETTINGS
+    ) {
+        viewModel.onIntent(MyPageUiIntent.ClickBackButton)
+    }
 
     MyPageScreen(
         modifier = modifier,
@@ -66,11 +81,37 @@ internal fun MyPageScreen(
             .background(WitTheme.background.color)
             .addFocusCleaner(focusManager),
         topBar = {
-            MyPageTopAppBar(
-                onLogoButtonClicked = {},
-                onNotificationButtonClicked = {},
-                onSettingsButtonClicked = { onIntent(MyPageUiIntent.ClickSettingsButton) },
-            )
+            AnimatedContent(
+                targetState = myPageNav,
+                transitionSpec = {
+                    val direction = if (targetState.ordinal > initialState.ordinal) 1 else -1
+                    slideInHorizontally { it * direction } + fadeIn() togetherWith
+                            slideOutHorizontally { it * -direction } + fadeOut()
+                },
+                label = "MyPageTopBarAnimation"
+            ) { nav ->
+                when (nav) {
+                    MyPageNav.HOME -> {
+                        MyPageHomeTopAppBar(
+                            onLogoButtonClicked = {},
+                            onNotificationButtonClicked = {},
+                            onSettingsButtonClicked = { onIntent(MyPageUiIntent.ClickSettingsButton) },
+                        )
+                    }
+                    MyPageNav.MAP -> {
+                        MyPageMapTopAppBar(
+                            onBackButtonClicked = { onIntent(MyPageUiIntent.ClickBackButton) },
+                            onNotificationButtonClicked = { },
+                        )
+                    }
+                    MyPageNav.SETTINGS -> {
+                        MyPageSettingsTopAppBar(
+                            onBackButtonClicked = { onIntent(MyPageUiIntent.ClickBackButton) },
+                            onNotificationButtonClicked = { },
+                        )
+                    }
+                }
+            }
         },
         snackbarHost = {
             WitSnackBarHost(
@@ -78,26 +119,36 @@ internal fun MyPageScreen(
             )
         }
     ) { paddingValues ->
-        when (myPageNav) {
-            MyPageNav.HOME -> {
-                MyPageHomeContent(
-                    modifier = Modifier.padding(paddingValues),
-                    myPageType = myPageType,
-                    userInfoState = userInfoState,
-                    feedList = feedList,
-                    travelList = travelList,
-                    onIntent = onIntent,
-                )
-            }
-            MyPageNav.MAP -> {
-                MyPageMapContent(
-                    modifier = Modifier.padding(paddingValues),
-                )
-            }
-            MyPageNav.SETTINGS -> {
-                MyPageSettingsContent(
-                    modifier = Modifier.padding(paddingValues),
-                )
+        AnimatedContent(
+            targetState = myPageNav,
+            transitionSpec = {
+                val direction = if (targetState.ordinal > initialState.ordinal) 1 else -1
+                slideInHorizontally { it * direction } + fadeIn() togetherWith
+                        slideOutHorizontally { it * -direction } + fadeOut()
+            },
+            label = "MyPageContentAnimation"
+        ) { nav ->
+            when (nav) {
+                MyPageNav.HOME -> {
+                    MyPageHomeContent(
+                        modifier = Modifier.padding(paddingValues),
+                        myPageType = myPageType,
+                        userInfoState = userInfoState,
+                        feedList = feedList,
+                        travelList = travelList,
+                        onIntent = onIntent,
+                    )
+                }
+                MyPageNav.MAP -> {
+                    MyPageMapContent(
+                        modifier = Modifier.padding(paddingValues),
+                    )
+                }
+                MyPageNav.SETTINGS -> {
+                    MyPageSettingsContent(
+                        modifier = Modifier.padding(paddingValues),
+                    )
+                }
             }
         }
     }

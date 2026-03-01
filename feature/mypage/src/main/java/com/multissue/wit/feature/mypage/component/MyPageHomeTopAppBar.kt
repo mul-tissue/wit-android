@@ -12,7 +12,7 @@ import com.multissue.wit.designsystem.component.topbar.WitCenterAlignedTopAppBar
 import com.multissue.wit.designsystem.util.noRippleClickable
 
 @Composable
-fun MyPageTopAppBar(
+fun MyPageHomeTopAppBar(
     onLogoButtonClicked: () -> Unit,
     onNotificationButtonClicked: () -> Unit,
     onSettingsButtonClicked: () -> Unit,
