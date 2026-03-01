@@ -5,5 +5,5 @@ enum class MyPageType {
 }
 
 enum class MyPageNav {
-    HOME, MAP, SETTINGS
+    HOME, MAP, SETTINGS, PROFILE_EDIT
 }

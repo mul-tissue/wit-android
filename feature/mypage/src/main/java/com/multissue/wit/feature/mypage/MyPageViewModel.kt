@@ -32,7 +32,17 @@ class MyPageViewModel @Inject constructor(
                 setState { copy(myPageNav = MyPageNav.SETTINGS) }
             }
             MyPageUiIntent.ClickBackButton -> {
-                setState { copy(myPageNav = MyPageNav.HOME) }
+                setState {
+                    copy(
+                        myPageNav = when (myPageNav) {
+                            MyPageNav.PROFILE_EDIT -> MyPageNav.SETTINGS
+                            else -> MyPageNav.HOME
+                        }
+                    )
+                }
+            }
+            MyPageUiIntent.NavigateToProfileEdit -> {
+                setState { copy(myPageNav = MyPageNav.PROFILE_EDIT) }
             }
         }
     }

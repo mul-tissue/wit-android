@@ -21,4 +21,5 @@ sealed interface MyPageUiIntent: UiIntent {
     data class ClickFeedItem(val feedItemState: FeedItemState): MyPageUiIntent
     data object ClickSettingsButton: MyPageUiIntent
     data object ClickBackButton: MyPageUiIntent
+    data object NavigateToProfileEdit: MyPageUiIntent
 }

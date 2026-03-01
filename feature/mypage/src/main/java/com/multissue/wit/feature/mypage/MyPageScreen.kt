@@ -27,13 +27,15 @@ import com.multissue.wit.feature.mypage.component.MyPageHomeContent
 import com.multissue.wit.feature.mypage.component.MyPageHomeTopAppBar
 import com.multissue.wit.feature.mypage.component.MyPageMapContent
 import com.multissue.wit.feature.mypage.component.MyPageMapTopAppBar
+import com.multissue.wit.feature.mypage.component.profileedit.ProfileEditContent
+import com.multissue.wit.feature.mypage.component.profileedit.ProfileEditTopAppBar
 import com.multissue.wit.feature.mypage.component.settings.MyPageSettingsContent
 import com.multissue.wit.feature.mypage.component.settings.MyPageSettingsTopAppBar
-import com.multissue.wit.feature.mypage.state.feed.FeedItemState
 import com.multissue.wit.feature.mypage.state.MyPageNav
 import com.multissue.wit.feature.mypage.state.MyPageType
 import com.multissue.wit.feature.mypage.state.MyPageUiIntent
 import com.multissue.wit.feature.mypage.state.UserInfoState
+import com.multissue.wit.feature.mypage.state.feed.FeedItemState
 
 @Composable
 fun MyPageScreen(
@@ -43,9 +45,7 @@ fun MyPageScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    BackHandler(
-        enabled = uiState.myPageNav == MyPageNav.MAP || uiState.myPageNav == MyPageNav.SETTINGS
-    ) {
+    BackHandler(enabled = uiState.myPageNav != MyPageNav.HOME) {
         viewModel.onIntent(MyPageUiIntent.ClickBackButton)
     }
 
@@ -110,6 +110,11 @@ internal fun MyPageScreen(
                             onNotificationButtonClicked = { },
                         )
                     }
+                    MyPageNav.PROFILE_EDIT -> {
+                        ProfileEditTopAppBar(
+                            onBackButtonClicked = { onIntent(MyPageUiIntent.ClickBackButton) },
+                        )
+                    }
                 }
             }
         },
@@ -146,6 +151,12 @@ internal fun MyPageScreen(
                 }
                 MyPageNav.SETTINGS -> {
                     MyPageSettingsContent(
+                        modifier = Modifier.padding(paddingValues),
+                        onNavigateToProfileEdit = { onIntent(MyPageUiIntent.NavigateToProfileEdit) },
+                    )
+                }
+                MyPageNav.PROFILE_EDIT -> {
+                    ProfileEditContent(
                         modifier = Modifier.padding(paddingValues),
                     )
                 }
