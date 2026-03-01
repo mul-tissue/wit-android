@@ -1,4 +1,4 @@
-package com.multissue.wit.feature.mypage.component
+package com.multissue.wit.feature.mypage.component.settings
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton

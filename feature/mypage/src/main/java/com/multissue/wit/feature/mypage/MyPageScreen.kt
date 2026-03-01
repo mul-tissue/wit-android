@@ -27,9 +27,9 @@ import com.multissue.wit.feature.mypage.component.MyPageHomeContent
 import com.multissue.wit.feature.mypage.component.MyPageHomeTopAppBar
 import com.multissue.wit.feature.mypage.component.MyPageMapContent
 import com.multissue.wit.feature.mypage.component.MyPageMapTopAppBar
-import com.multissue.wit.feature.mypage.component.MyPageSettingsContent
-import com.multissue.wit.feature.mypage.component.MyPageSettingsTopAppBar
-import com.multissue.wit.feature.mypage.state.FeedItemState
+import com.multissue.wit.feature.mypage.component.settings.MyPageSettingsContent
+import com.multissue.wit.feature.mypage.component.settings.MyPageSettingsTopAppBar
+import com.multissue.wit.feature.mypage.state.feed.FeedItemState
 import com.multissue.wit.feature.mypage.state.MyPageNav
 import com.multissue.wit.feature.mypage.state.MyPageType
 import com.multissue.wit.feature.mypage.state.MyPageUiIntent

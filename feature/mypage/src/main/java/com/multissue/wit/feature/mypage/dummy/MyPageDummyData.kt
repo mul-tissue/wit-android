@@ -1,6 +1,6 @@
 package com.multissue.wit.feature.mypage.dummy
 
-import com.multissue.wit.feature.mypage.state.FeedItemState
+import com.multissue.wit.feature.mypage.state.feed.FeedItemState
 
 val feedDummyList = listOf(
     FeedItemState(

@@ -1,4 +1,4 @@
-package com.multissue.wit.feature.mypage.component
+package com.multissue.wit.feature.mypage.component.settings
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

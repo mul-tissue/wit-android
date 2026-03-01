@@ -1,4 +1,4 @@
-package com.multissue.wit.feature.mypage.component
+package com.multissue.wit.feature.mypage.component.feed
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -22,7 +22,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.designsystem.util.noRippleClickable
-import com.multissue.wit.feature.mypage.state.FeedItemState
+import com.multissue.wit.feature.mypage.R
+import com.multissue.wit.feature.mypage.state.feed.FeedItemState
 
 @Composable
 fun FeedGridItem(
@@ -54,7 +55,7 @@ fun FeedGridItem(
         ) {
             Icon(
                 modifier = Modifier.size(18.dp),
-                painter = painterResource(com.multissue.wit.feature.mypage.R.drawable.icon_location),
+                painter = painterResource(R.drawable.icon_location),
                 contentDescription = null,
                 tint = WitTheme.colors.disabledText
             )

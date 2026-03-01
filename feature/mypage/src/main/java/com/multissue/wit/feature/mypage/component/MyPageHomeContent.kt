@@ -15,7 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.multissue.wit.designsystem.theme.WitTheme
-import com.multissue.wit.feature.mypage.state.FeedItemState
+import com.multissue.wit.feature.mypage.component.feed.FeedGridItem
+import com.multissue.wit.feature.mypage.state.feed.FeedItemState
 import com.multissue.wit.feature.mypage.state.MyPageType
 import com.multissue.wit.feature.mypage.state.MyPageUiIntent
 import com.multissue.wit.feature.mypage.state.UserInfoState

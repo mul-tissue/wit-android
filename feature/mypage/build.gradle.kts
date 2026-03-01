@@ -11,6 +11,12 @@ kotlin {
             implementation(libs.coil.kt)
             implementation(libs.coil.kt.compose)
             implementation(libs.androidx.activity.compose)
+
+            implementation(libs.maps.compose)
+            implementation(libs.maps.utils)
+            implementation(libs.maps.utils.ktx)
+            implementation(libs.androidx.vectordrawable)
+            implementation(libs.play.services.location)
         }
     }
 }
