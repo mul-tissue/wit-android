@@ -18,7 +18,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -59,6 +62,7 @@ internal fun WitApp(
     appState: WitAppState,
 ) {
     val navigator = remember { Navigator(appState.navigationState) }
+    var showBottomNav by remember { mutableStateOf(true) }
 
     Scaffold(
         modifier = Modifier
@@ -91,7 +95,10 @@ internal fun WitApp(
                         navigator,
                         navigateToMyPage = { navigator.navigate(MyPageNavKey) }
                     )
-                    myPageEntry(navigator)
+                    myPageEntry(
+                        navigator,
+                        onBottomNavVisibilityChanged = { showBottomNav = it },
+                    )
                     uploadEntry(navigator)
                     feedEntry(navigator)
                 }
@@ -103,7 +110,7 @@ internal fun WitApp(
                 )
             }
 
-            if (appState.navigationState.currentKey != UploadNavKey) {
+            if (appState.navigationState.currentKey != UploadNavKey && showBottomNav) {
                 WitNavigationRail(
                     modifier = Modifier
                         .fillMaxWidth()

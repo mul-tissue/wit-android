@@ -3,6 +3,8 @@ package com.multissue.wit.feature.mypage
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
@@ -40,10 +42,19 @@ import com.multissue.wit.feature.mypage.state.feed.FeedItemState
 @Composable
 fun MyPageScreen(
     modifier: Modifier = Modifier,
-    viewModel: MyPageViewModel = hiltViewModel()
+    viewModel: MyPageViewModel = hiltViewModel(),
+    onBottomNavVisibilityChanged: (Boolean) -> Unit = {},
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(uiState.myPageNav) {
+        onBottomNavVisibilityChanged(uiState.myPageNav != MyPageNav.PROFILE_EDIT)
+    }
+
+    DisposableEffect(Unit) {
+        onDispose { onBottomNavVisibilityChanged(true) }
+    }
 
     BackHandler(enabled = uiState.myPageNav != MyPageNav.HOME) {
         viewModel.onIntent(MyPageUiIntent.ClickBackButton)
