@@ -6,6 +6,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,6 +26,28 @@ fun WitCenterAlignedTopAppBar(
     CenterAlignedTopAppBar(
         modifier = modifier,
         title = { Text(text = title, style = WitTheme.typography.titleXL) },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = WitTheme.colors.containerColor,
+            titleContentColor = WitTheme.colors.text,
+            navigationIconContentColor = WitTheme.colors.iconTint,
+            actionIconContentColor = WitTheme.colors.iconTint,
+        ),
+        navigationIcon = navigationIcon,
+        actions = actions,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun WitContentTopAppBar(
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit = {},
+    navigationIcon: @Composable () -> Unit = {},
+    actions: @Composable RowScope.() -> Unit = {},
+) {
+    TopAppBar(
+        modifier = modifier,
+        title = content,
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = WitTheme.colors.containerColor,
             titleContentColor = WitTheme.colors.text,

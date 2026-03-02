@@ -36,6 +36,7 @@ import com.multissue.wit.designsystem.component.navigation.WitNavigationRail
 import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.feature.chat.navigation.ChatNavKey
 import com.multissue.wit.feature.chat.navigation.chatEntry
+import com.multissue.wit.feature.feed.navigation.FeedNavKey
 import com.multissue.wit.feature.feed.navigation.feedEntry
 import com.multissue.wit.feature.home.navigation.HomeNavKey
 import com.multissue.wit.feature.home.navigation.homeEntry
@@ -110,10 +111,10 @@ internal fun WitApp(
                     onBack = { navigator.goBack() },
                 )
             }
-            if (appState.navigationState.currentKey == HomeNavKey
-                || appState.navigationState.currentKey == ChatNavKey
-                || appState.navigationState.currentKey == MapNavKey) {
-
+//            if (appState.navigationState.currentKey == HomeNavKey
+//                || appState.navigationState.currentKey == ChatNavKey
+//                || appState.navigationState.currentKey == MapNavKey
+//            ) {
                 WitNavigationRail(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -152,7 +153,7 @@ internal fun WitApp(
                         }
                     }
                 )
-            }
+//            }
         }
     }
 }
