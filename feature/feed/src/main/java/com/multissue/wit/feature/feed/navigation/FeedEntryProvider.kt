@@ -17,7 +17,8 @@ fun EntryProviderScope<NavKey>.feedEntry(navigator: Navigator) {
         }
 
         FeedScreen(
-            viewModel = viewModel
+            viewModel = viewModel,
+            onBackButtonClicked = { navigator.goBack() },
         )
     }
 }

@@ -2,6 +2,8 @@ package com.multissue.wit.feature.feed
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -49,7 +51,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun FeedScreen(
     modifier: Modifier = Modifier,
-    viewModel: FeedViewModel = hiltViewModel()
+    viewModel: FeedViewModel = hiltViewModel(),
+    onBackButtonClicked: () -> Unit = {},
 ) {
     val feedUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -60,6 +63,7 @@ fun FeedScreen(
         reportState = feedUiState.reportState,
         onReactionItemClicked = viewModel::onReactionItemClick,
         onIntent = viewModel::onIntent,
+        onBackButtonClicked = onBackButtonClicked,
         sideEffect = viewModel.sideEffect
     )
 }
@@ -73,6 +77,7 @@ internal fun FeedScreen(
     reportState: ReportState,
     onIntent: (FeedUiIntent) -> Unit,
     onReactionItemClicked: (ReactionType) -> Unit,
+    onBackButtonClicked: () -> Unit,
     sideEffect: Flow<FeedUiSideEffect>,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -108,7 +113,7 @@ internal fun FeedScreen(
                 username = userState.username,
                 userThumbnail = userState.userThumbnailUrl,
                 isMine = true,
-                onBackButtonClicked = {  },
+                onBackButtonClicked = onBackButtonClicked,
                 onMoreButtonClicked = { onIntent(FeedUiIntent.ClickMoreButton) },
             )
         },
@@ -122,6 +127,7 @@ internal fun FeedScreen(
             modifier = Modifier
                 .background(WitTheme.background.color)
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
                 .padding(
                     top = paddingValues.calculateTopPadding() + 24.dp,
                     start = 26.dp,
