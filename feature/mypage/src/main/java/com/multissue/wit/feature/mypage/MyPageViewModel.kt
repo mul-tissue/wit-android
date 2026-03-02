@@ -25,8 +25,12 @@ class MyPageViewModel @Inject constructor(
                 setState { copy(myPageType = MyPageType.TRAVEL) }
             }
             is MyPageUiIntent.ClickFeedItem -> {
-                // TODO 아이템 가지고 갈 것?
-                setState { copy(myPageNav = MyPageNav.MAP) }
+                setState {
+                    copy(
+                        myPageNav = MyPageNav.MAP,
+                        selectedCity = intent.feedItemState.location,
+                    )
+                }
             }
             MyPageUiIntent.ClickSettingsButton -> {
                 setState { copy(myPageNav = MyPageNav.SETTINGS) }

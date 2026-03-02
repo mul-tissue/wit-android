@@ -1,4 +1,4 @@
-package com.multissue.wit.feature.mypage.map.util.marker
+package com.multissue.wit.feature.mypage.util
 
 import android.content.Context
 import android.graphics.Bitmap

@@ -12,7 +12,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.multissue.wit.feature.mypage.state.map.feed.MapFeedItem
-import com.multissue.wit.feature.mypage.map.util.marker.loadMarkerBitmap
+import com.multissue.wit.feature.mypage.util.loadMarkerBitmap
 
 @Composable
 fun MapFeedMarker(

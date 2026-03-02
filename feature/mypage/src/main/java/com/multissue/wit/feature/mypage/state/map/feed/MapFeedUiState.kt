@@ -25,6 +25,7 @@ sealed interface MapFeedUiSideEffect : UiSideEffect {
 }
 
 sealed interface MapFeedUiIntent : UiIntent {
+    data class LoadFeed(val cityName: String) : MapFeedUiIntent
     data class ClickFeedItem(val id: String) : MapFeedUiIntent
     data class ToggleLike(val id: String) : MapFeedUiIntent
 }

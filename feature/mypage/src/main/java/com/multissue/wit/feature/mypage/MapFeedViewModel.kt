@@ -1,7 +1,9 @@
-package com.multissue.wit.feature.mypage.map.feed
+package com.multissue.wit.feature.mypage
 
 import com.multissue.wit.core.ui.base.BaseViewModel
 import com.multissue.wit.feature.mypage.dummy.mapFeedDummyList
+import com.multissue.wit.feature.mypage.dummy.mapFeedTokyoDummyList
+import com.multissue.wit.feature.mypage.state.map.feed.MapFeedItem
 import com.multissue.wit.feature.mypage.state.map.feed.MapFeedUiIntent
 import com.multissue.wit.feature.mypage.state.map.feed.MapFeedUiSideEffect
 import com.multissue.wit.feature.mypage.state.map.feed.MapFeedUiState
@@ -14,6 +16,14 @@ class MapFeedViewModel @Inject constructor() :
 
     override fun onIntent(intent: MapFeedUiIntent) {
         when (intent) {
+            is MapFeedUiIntent.LoadFeed -> {
+                setState {
+                    copy(
+                        selectedCityName = intent.cityName,
+                        feedList = feedListByCity(intent.cityName),
+                    )
+                }
+            }
             is MapFeedUiIntent.ClickFeedItem -> {
                 val item = currentState.feedList.find { it.id == intent.id } ?: return
                 postSideEffect(MapFeedUiSideEffect.NavigateToLocation(item.latLng))
@@ -33,13 +43,9 @@ class MapFeedViewModel @Inject constructor() :
         }
     }
 
-    init {
-        // TODO: 선택된 마커 기반으로 피드 목록 가져오기
-        setState {
-            copy(
-                selectedCityName = "삿포로",
-                feedList = mapFeedDummyList,
-            )
-        }
+    private fun feedListByCity(cityName: String): List<MapFeedItem> = when (cityName) {
+        "삿포로" -> mapFeedDummyList
+        "도쿄" -> mapFeedTokyoDummyList
+        else -> emptyList()
     }
 }

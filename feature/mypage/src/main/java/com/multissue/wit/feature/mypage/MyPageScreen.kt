@@ -55,6 +55,7 @@ fun MyPageScreen(
         snackbarHostState = snackbarHostState,
         myPageNav = uiState.myPageNav,
         myPageType = uiState.myPageType,
+        selectedCity = uiState.selectedCity,
         userInfoState = uiState.userInfo,
         feedList = uiState.feedList,
         travelList = uiState.travelList,
@@ -69,6 +70,7 @@ internal fun MyPageScreen(
     snackbarHostState: SnackbarHostState,
     myPageNav: MyPageNav,
     myPageType: MyPageType,
+    selectedCity: String,
     userInfoState: UserInfoState,
     feedList: List<FeedItemState>,
     travelList: List<FeedItemState>,
@@ -148,6 +150,7 @@ internal fun MyPageScreen(
                     MyPageMapContent(
                         modifier = Modifier.padding(paddingValues),
                         myPageType = myPageType,
+                        cityName = selectedCity,
                     )
                 }
                 MyPageNav.SETTINGS -> {

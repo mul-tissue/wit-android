@@ -10,6 +10,7 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -24,7 +25,7 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.multissue.wit.designsystem.theme.WitTheme
-import com.multissue.wit.feature.mypage.map.feed.MapFeedViewModel
+import com.multissue.wit.feature.mypage.MapFeedViewModel
 import com.multissue.wit.feature.mypage.component.map.feed.MapFeedBottomSheetContent
 import com.multissue.wit.feature.mypage.component.map.feed.MapFeedMarker
 import com.multissue.wit.feature.mypage.state.MyPageType
@@ -36,6 +37,7 @@ import kotlinx.coroutines.launch
 fun MyPageMapContent(
     modifier: Modifier = Modifier,
     myPageType: MyPageType,
+    cityName: String = "",
 ) {
     val scope = rememberCoroutineScope()
 
@@ -46,13 +48,31 @@ fun MyPageMapContent(
         )
     )
 
+    // TODO TEST
+    val cityLatLngMap = mapOf(
+        "삿포로" to LatLng(43.0642, 141.3469),
+        "도쿄" to LatLng(35.6762, 139.6503),
+    )
+
     val cameraPositionState = rememberCameraPositionState {
-        // TODO: 선택된 마커 위치로 이동
-        position = CameraPosition.fromLatLngZoom(LatLng(43.0642, 141.3469), 11f) // 삿포로
+        position = CameraPosition.fromLatLngZoom(
+            cityLatLngMap[cityName] ?: LatLng(0.0, 0.0),
+            12f,
+        )
     }
 
     val mapFeedViewModel: MapFeedViewModel = hiltViewModel()
     val mapFeedUiState by mapFeedViewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(cityName) {
+        if (myPageType == MyPageType.FEED) {
+            mapFeedViewModel.onIntent(MapFeedUiIntent.LoadFeed(cityName))
+            cityLatLngMap[cityName]?.let {
+                cameraPositionState.animate(CameraUpdateFactory.newLatLngZoom(it, 12f))
+            }
+        }
+    }
+    // TODO mapTravel 추가 필요
 
     val sheetMaxHeight = LocalConfiguration.current.screenHeightDp.dp * 0.5f
 

@@ -17,7 +17,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.maps.model.LatLng
 import com.multissue.wit.designsystem.theme.WitTheme
-import com.multissue.wit.feature.mypage.map.feed.MapFeedViewModel
+import com.multissue.wit.feature.mypage.MapFeedViewModel
 import com.multissue.wit.feature.mypage.state.map.feed.MapFeedItem
 import com.multissue.wit.feature.mypage.state.map.feed.MapFeedUiIntent
 import com.multissue.wit.feature.mypage.state.map.feed.MapFeedUiSideEffect

@@ -11,6 +11,7 @@ data class MyPageUiState(
     val myPageType: MyPageType = MyPageType.FEED,
     val feedList: List<FeedItemState> = emptyList(),
     val travelList: List<FeedItemState> = emptyList(),
+    val selectedCity: String = "",
 ): UiState
 
 interface MyPageUiSideEffect : UiSideEffect
