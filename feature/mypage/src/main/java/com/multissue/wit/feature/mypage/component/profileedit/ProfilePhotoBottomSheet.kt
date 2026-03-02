@@ -57,24 +57,22 @@ fun ProfilePhotoBottomSheet(
                 .padding(horizontal = 26.dp, vertical = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(
+            BottomSheetButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .noRippleClickable(onClick = onSelectFromAlbum)
-                    .padding(vertical = 16.dp),
+                    .height(60.dp),
                 text = "앨범에서 선택",
-                style = WitTheme.typography.titleM,
-                color = WitTheme.colors.text,
+                textColor = WitTheme.colors.subText,
+                onClick = onSelectFromAlbum
             )
             SpH(4.dp)
-            Text(
+            BottomSheetButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .noRippleClickable(onClick = onDeleteProfilePhoto)
-                    .padding(vertical = 16.dp),
+                    .height(60.dp),
                 text = "프로필 사진 삭제하기",
-                style = WitTheme.typography.titleM,
-                color = WitTheme.colors.error,
+                textColor = WitTheme.colors.error,
+                onClick = onDeleteProfilePhoto
             )
         }
     }

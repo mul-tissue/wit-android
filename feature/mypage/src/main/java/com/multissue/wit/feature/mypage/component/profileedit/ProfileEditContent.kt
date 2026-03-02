@@ -1,19 +1,23 @@
 package com.multissue.wit.feature.mypage.component.profileedit
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,9 +35,9 @@ import com.multissue.wit.designsystem.util.noRippleClickable
 import com.multissue.wit.feature.mypage.ProfileEditViewModel
 import com.multissue.wit.feature.mypage.R
 import com.multissue.wit.feature.mypage.component.SpH
-import com.multissue.wit.feature.mypage.component.SpW
 import com.multissue.wit.feature.mypage.state.profileedit.NicknameCheckState
 import com.multissue.wit.feature.mypage.state.profileedit.ProfileEditUiIntent
+import com.multissue.wit.feature.mypage.state.profileedit.ProfileEditUiSideEffect
 
 @Composable
 fun ProfileEditContent(
@@ -42,9 +46,28 @@ fun ProfileEditContent(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+    ) { uri: Uri? ->
+        uri?.let { viewModel.onIntent(ProfileEditUiIntent.SelectImage(it)) }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.collect { effect ->
+            when (effect) {
+                ProfileEditUiSideEffect.LaunchPhotoPicker -> {
+                    photoPickerLauncher.launch(
+                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                    )
+                }
+            }
+        }
+    }
+
     ProfileEditContent(
         modifier = modifier,
         profileImageUrl = uiState.profileImageUrl,
+        selectedImageUri = uiState.selectedImageUri,
         nickname = uiState.nickname,
         nicknameCheckState = uiState.nicknameCheckState,
         showPhotoBottomSheet = uiState.showPhotoBottomSheet,
@@ -56,6 +79,7 @@ fun ProfileEditContent(
 internal fun ProfileEditContent(
     modifier: Modifier = Modifier,
     profileImageUrl: String,
+    selectedImageUri: Uri?,
     nickname: String,
     nicknameCheckState: NicknameCheckState,
     showPhotoBottomSheet: Boolean,
@@ -77,20 +101,21 @@ internal fun ProfileEditContent(
             // 프로필 이미지 + 카메라 뱃지
             Box(
                 modifier = Modifier
-                    .size(90.dp)
+                    .size(100.dp)
                     .noRippleClickable { onIntent(ProfileEditUiIntent.ClickProfileImage) },
                 contentAlignment = Alignment.BottomEnd,
             ) {
-                if (profileImageUrl.isEmpty()) {
+                val imageModel: Any? = selectedImageUri ?: profileImageUrl.ifEmpty { null }
+                if (imageModel == null) {
                     Box(
                         modifier = Modifier
-                            .size(90.dp)
+                            .size(100.dp)
                             .clip(CircleShape)
                             .background(WitTheme.colors.gray200),
                         contentAlignment = Alignment.Center,
                     ) {
                         Icon(
-                            modifier = Modifier.size(48.dp),
+                            modifier = Modifier.size(80.dp),
                             painter = painterResource(com.multissue.wit.designsystem.R.drawable.icon_user),
                             contentDescription = null,
                             tint = WitTheme.colors.disabledText,
@@ -99,23 +124,23 @@ internal fun ProfileEditContent(
                 } else {
                     AsyncImage(
                         modifier = Modifier
-                            .size(90.dp)
+                            .size(100.dp)
                             .clip(CircleShape),
-                        model = profileImageUrl,
+                        model = imageModel,
                         contentDescription = "프로필 이미지",
                         contentScale = ContentScale.Crop,
                     )
                 }
                 Box(
                     modifier = Modifier
-                        .size(26.dp)
+                        .size(24.dp)
                         .clip(CircleShape)
-                        .background(WitTheme.colors.gray1000),
+                        .background(WitTheme.colors.subText),
                     contentAlignment = Alignment.Center,
                 ) {
                     Icon(
-                        modifier = Modifier.size(16.dp),
-                        painter = painterResource(R.drawable.icon_camera),
+                        modifier = Modifier.size(12.dp),
+                        painter = painterResource(R.drawable.icon_album),
                         contentDescription = "사진 변경",
                         tint = WitTheme.colors.white100,
                     )
@@ -132,18 +157,16 @@ internal fun ProfileEditContent(
                 hint = "닉네임 입력 (2-12자)",
                 trailingIcon = {
                     WitButton(
-                        modifier = Modifier
-                            .width(72.dp)
-                            .height(34.dp),
+                        contentPadding = PaddingValues(horizontal = 16.dp),
+                        textStyle = WitTheme.typography.bodyXS,
                         title = "중복 확인",
-                        shape = RoundedCornerShape(8.dp),
                         enabled = nickname.isNotEmpty(),
                         onClick = { onIntent(ProfileEditUiIntent.ClickNicknameCheck) },
                     )
                 },
             )
 
-            SpH(8.dp)
+            SpH(12.dp)
 
             // 닉네임 상태 메시지
             when (nicknameCheckState) {
@@ -151,7 +174,7 @@ internal fun ProfileEditContent(
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = "사용 가능한 닉네임입니다",
-                        style = WitTheme.typography.bodyM,
+                        style = WitTheme.typography.bodyXS,
                         color = WitTheme.colors.success,
                     )
                 }
@@ -159,7 +182,7 @@ internal fun ProfileEditContent(
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = "사용할 수 없는 닉네임입니다",
-                        style = WitTheme.typography.bodyM,
+                        style = WitTheme.typography.bodyXS,
                         color = WitTheme.colors.error,
                     )
                 }

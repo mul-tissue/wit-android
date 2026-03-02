@@ -20,6 +20,7 @@ class ProfileEditViewModel @Inject constructor() :
             ProfileEditUiIntent.ClickNicknameCheck -> {
                 // TODO: 닉네임 중복 확인 API 호출
                 val isAvailable = currentState.nickname.length in 2..12
+                        && currentState.nickname != "parkparki"
                 setState {
                     copy(nicknameCheckState = if (isAvailable) NicknameCheckState.AVAILABLE else NicknameCheckState.UNAVAILABLE)
                 }
@@ -35,10 +36,13 @@ class ProfileEditViewModel @Inject constructor() :
             }
             ProfileEditUiIntent.ClickSelectFromAlbum -> {
                 setState { copy(showPhotoBottomSheet = false) }
-                // TODO: 갤러리 열기
+                postSideEffect(ProfileEditUiSideEffect.LaunchPhotoPicker)
             }
             ProfileEditUiIntent.ClickDeleteProfilePhoto -> {
-                setState { copy(showPhotoBottomSheet = false, profileImageUrl = "") }
+                setState { copy(showPhotoBottomSheet = false, profileImageUrl = "", selectedImageUri = null) }
+            }
+            is ProfileEditUiIntent.SelectImage -> {
+                setState { copy(selectedImageUri = intent.uri) }
             }
         }
     }

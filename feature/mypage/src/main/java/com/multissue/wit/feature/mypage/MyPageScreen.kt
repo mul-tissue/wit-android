@@ -25,8 +25,8 @@ import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.designsystem.util.addFocusCleaner
 import com.multissue.wit.feature.mypage.component.MyPageHomeContent
 import com.multissue.wit.feature.mypage.component.MyPageHomeTopAppBar
-import com.multissue.wit.feature.mypage.component.MyPageMapContent
-import com.multissue.wit.feature.mypage.component.MyPageMapTopAppBar
+import com.multissue.wit.feature.mypage.component.map.MyPageMapContent
+import com.multissue.wit.feature.mypage.component.map.MyPageMapTopAppBar
 import com.multissue.wit.feature.mypage.component.profileedit.ProfileEditContent
 import com.multissue.wit.feature.mypage.component.profileedit.ProfileEditTopAppBar
 import com.multissue.wit.feature.mypage.component.settings.MyPageSettingsContent
@@ -147,6 +147,7 @@ internal fun MyPageScreen(
                 MyPageNav.MAP -> {
                     MyPageMapContent(
                         modifier = Modifier.padding(paddingValues),
+                        myPageType = myPageType,
                     )
                 }
                 MyPageNav.SETTINGS -> {

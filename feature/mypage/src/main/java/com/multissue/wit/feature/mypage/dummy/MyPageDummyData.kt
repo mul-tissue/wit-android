@@ -1,6 +1,8 @@
 package com.multissue.wit.feature.mypage.dummy
 
+import com.google.android.gms.maps.model.LatLng
 import com.multissue.wit.feature.mypage.state.feed.FeedItemState
+import com.multissue.wit.feature.mypage.state.map.feed.MapFeedItem
 
 val feedDummyList = listOf(
     FeedItemState(
@@ -62,6 +64,63 @@ val feedDummyList = listOf(
         id = "feed_12",
         thumbnailUrl = "https://picsum.photos/id/38/400/400",
         location = "세부",
+    ),
+)
+
+val mapFeedDummyList = listOf(
+    MapFeedItem(
+        id = "map_feed_1",
+        thumbnailUrl = "https://picsum.photos/id/27/300/400",
+        isLiked = false,
+        likeCount = 132,
+        date = "April 24, 2024",
+        location = "시부야구, 도쿄",
+        latLng = LatLng(35.6580, 139.7016),
+    ),
+    MapFeedItem(
+        id = "map_feed_2",
+        thumbnailUrl = "https://picsum.photos/id/28/300/400",
+        isLiked = true,
+        likeCount = 132,
+        date = "April 24, 2024",
+        location = "시부야구, 도쿄",
+        latLng = LatLng(35.6595, 139.7004),
+    ),
+    MapFeedItem(
+        id = "map_feed_3",
+        thumbnailUrl = "https://picsum.photos/id/29/300/400",
+        isLiked = false,
+        likeCount = 56,
+        date = "March 15, 2024",
+        location = "신주쿠구, 도쿄",
+        latLng = LatLng(35.6938, 139.7034),
+    ),
+    MapFeedItem(
+        id = "map_feed_4",
+        thumbnailUrl = "https://picsum.photos/id/30/300/400",
+        isLiked = false,
+        likeCount = 89,
+        date = "March 20, 2024",
+        location = "미나토구, 도쿄",
+        latLng = LatLng(35.6581, 139.7514),
+    ),
+    MapFeedItem(
+        id = "map_feed_5",
+        thumbnailUrl = "https://picsum.photos/id/31/300/400",
+        isLiked = false,
+        likeCount = 44,
+        date = "February 10, 2024",
+        location = "신주쿠구, 도쿄",
+        latLng = LatLng(35.6960, 139.7021),
+    ),
+    MapFeedItem(
+        id = "map_feed_6",
+        thumbnailUrl = "https://picsum.photos/id/32/300/400",
+        isLiked = true,
+        likeCount = 71,
+        date = "January 5, 2024",
+        location = "미나토구, 도쿄",
+        latLng = LatLng(35.6562, 139.7489),
     ),
 )
 
