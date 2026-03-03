@@ -8,6 +8,7 @@ kotlin {
     sourceSets {
         dependencies {
             implementation(libs.androidx.compose.material3)
+            implementation(libs.accompanist.permissions)
         }
     }
 }

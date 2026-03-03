@@ -1,6 +1,5 @@
 package com.multissue.wit.ui.main
 
-import android.R.attr.entries
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -117,9 +116,9 @@ internal fun WitApp(
                     onBack = { navigator.goBack() },
                 )
             }
-            if ((appState.navigationState.currentKey == HomeNavKey
-                || appState.navigationState.currentKey is ChatNavKey
-                || appState.navigationState.currentKey == MapNavKey) && showNavRail) {
+            if (appState.navigationState.currentKey == HomeNavKey
+                || appState.navigationState.currentKey == ChatNavKey
+                || appState.navigationState.currentKey == MapNavKey  && showNavRail) {
 
                 WitNavigationRail(
                     modifier = Modifier

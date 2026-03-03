@@ -267,14 +267,14 @@ fun MapScreen(
                 },
             )
 
-            val scaffoldState = rememberBottomSheetScaffoldState(
-                bottomSheetState = rememberStandardBottomSheetState(
-                    initialValue = SheetValue.PartiallyExpanded,
-                    confirmValueChange = { newValue ->
-                        newValue != SheetValue.Hidden
-                    }
-                )
+        val scaffoldState = rememberBottomSheetScaffoldState(
+            bottomSheetState = rememberStandardBottomSheetState(
+                initialValue = SheetValue.PartiallyExpanded,
+                confirmValueChange = { newValue ->
+                    newValue != SheetValue.Hidden
+                }
             )
+        )
 
             MapBottomSheetScaffold(
                 modifier = Modifier,
