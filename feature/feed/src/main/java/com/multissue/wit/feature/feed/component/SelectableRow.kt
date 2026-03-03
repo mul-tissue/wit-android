@@ -1,6 +1,5 @@
 package com.multissue.wit.feature.feed.component
 
-import android.R
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
