@@ -64,10 +64,10 @@ fun SelectTimeDialog(
     onTimeSelected: (amPm: AmPm, hour: PickerHour, minute: PickerMinute) -> Unit,
     onUndecidedSelected: () -> Unit,
 ) {
-    var amPm by remember { mutableStateOf(selectedAmPm) }
-    var hour by remember { mutableStateOf(selectedHour) }
-    var minute by remember { mutableStateOf(selectedMinute) }
-    var undecided by remember { mutableStateOf(isUndecided) }
+    var amPm by remember(selectedAmPm) { mutableStateOf(selectedAmPm) }
+    var hour by remember(selectedHour) { mutableStateOf(selectedHour) }
+    var minute by remember(selectedMinute) { mutableStateOf(selectedMinute) }
+    var undecided by remember(isUndecided) { mutableStateOf(isUndecided) }
 
     val amPmItems = remember { AmPm.entries.map { it.name } }
     val hourItems = remember { PickerHour.entries.map { it.displayText } }

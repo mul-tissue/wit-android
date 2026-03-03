@@ -56,6 +56,7 @@ class TravelDetailViewModel @AssistedInject constructor(
     }
 
     private fun onSubmitReport() {
+        if (currentState.selectedReportType == null) return
         // TODO: 신고 API 호출
         setState { copy(isReportDialogVisible = false, selectedReportType = null) }
         postSideEffect(TravelDetailSideEffect.ShowReportSnackbar)

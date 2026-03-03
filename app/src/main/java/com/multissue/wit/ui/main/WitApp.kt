@@ -69,7 +69,11 @@ internal fun WitApp(
 ) {
     val navigator = remember { Navigator(appState.navigationState) }
     var showNavRail by remember { mutableStateOf(true) }
-
+    val centerButtonEvent = remember(witAppViewModel) {
+        witAppViewModel.sideEffect
+            .filterIsInstance<WitAppSideEffect.OpenMapSheet>()
+            .map { } // Map 모듈과 의존성이 없어 Unit으로 이벤트만 받기
+    }
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -99,9 +103,7 @@ internal fun WitApp(
                     chatEntry(navigator)
                     mapEntry(
                         navigator = navigator,
-                        centerButtonEvent = witAppViewModel.sideEffect
-                            .filterIsInstance<WitAppSideEffect.OpenMapSheet>()
-                            .map { }, // Map 모듈과 의존성이 없어 Unit으로 이벤트만 받기
+                        centerButtonEvent = centerButtonEvent,
                         onNavRailVisibilityChanged = { showNavRail = it },
                     )
                     myPageEntry(navigator)
@@ -117,8 +119,9 @@ internal fun WitApp(
                 )
             }
             if (appState.navigationState.currentKey == HomeNavKey
-                || appState.navigationState.currentKey == ChatNavKey
-                || appState.navigationState.currentKey == MapNavKey  && showNavRail) {
+                || appState.navigationState.currentKey == ChatNavKey()
+                || appState.navigationState.currentKey == MapNavKey && showNavRail
+            ) {
 
                 WitNavigationRail(
                     modifier = Modifier
@@ -135,13 +138,13 @@ internal fun WitApp(
                     },
                     navItems = {
                         MAIN_LEVEL_NAV_ITEMS.forEach { (navKey, navItem) ->
-    //                        val hasUnread = unreadNavKeys.contains(navKey) //TODO
+                            //                        val hasUnread = unreadNavKeys.contains(navKey) //TODO
                             val selected = navKey == appState.navigationState.currentTopLevelKey
                             WitNavItem(
                                 modifier = Modifier
                                     .fillMaxHeight()
                                     .aspectRatio(2f),
-    //                                .then(if (hasUnread) Modifier.notificationDot() else Modifier), //TODO
+                                //                                .then(if (hasUnread) Modifier.notificationDot() else Modifier), //TODO
                                 selected = selected,
                                 onClick = { navigator.navigate(navKey) },
                                 icon = {
