@@ -35,13 +35,12 @@ import com.multissue.wit.core.navigation.toEntries
 import com.multissue.wit.designsystem.component.navigation.WitNavItem
 import com.multissue.wit.designsystem.component.navigation.WitNavigationRail
 import com.multissue.wit.designsystem.theme.WitTheme
-import com.multissue.wit.feature.chat.navigation.ChatNavKey
 import com.multissue.wit.feature.chat.navigation.chatEntry
 import com.multissue.wit.feature.feed.navigation.feedEntry
-import com.multissue.wit.feature.home.navigation.HomeNavKey
 import com.multissue.wit.feature.home.navigation.homeEntry
 import com.multissue.wit.feature.map.navigation.MapNavKey
 import com.multissue.wit.feature.map.navigation.mapEntry
+import com.multissue.wit.feature.mypage.navigation.MyPageNavKey
 import com.multissue.wit.feature.mypage.navigation.myPageEntry
 import com.multissue.wit.feature.travel.navigation.travelEntry
 import com.multissue.wit.feature.upload.navigation.UploadNavKey
@@ -68,7 +67,7 @@ internal fun WitApp(
     witAppViewModel: WitAppViewModel,
 ) {
     val navigator = remember { Navigator(appState.navigationState) }
-    var showNavRail by remember { mutableStateOf(true) }
+    var showBottomNav by remember { mutableStateOf(true) }
     val centerButtonEvent = remember(witAppViewModel) {
         witAppViewModel.sideEffect
             .filterIsInstance<WitAppSideEffect.OpenMapSheet>()
@@ -103,13 +102,17 @@ internal fun WitApp(
                     chatEntry(navigator)
                     mapEntry(
                         navigator = navigator,
+                        navigateToMyPage = { navigator.navigate(MyPageNavKey) },
                         centerButtonEvent = centerButtonEvent,
-                        onNavRailVisibilityChanged = { showNavRail = it },
+                        onNavRailVisibilityChanged = { showBottomNav = it },
                     )
                     myPageEntry(navigator)
+                    myPageEntry(
+                        navigator,
+                        onBottomNavVisibilityChanged = { showBottomNav = it },
+                    )
                     uploadEntry(navigator)
                     feedEntry(navigator)
-                    travelEntry(navigator)
                 }
 
                 NavDisplay(
@@ -118,9 +121,10 @@ internal fun WitApp(
                     onBack = { navigator.goBack() },
                 )
             }
-            if (appState.navigationState.currentKey == HomeNavKey
+            if (appState.navigationState.currentKey != UploadNavKey
+                || appState.navigationState.currentKey == HomeNavKey
                 || appState.navigationState.currentKey == ChatNavKey()
-                || appState.navigationState.currentKey == MapNavKey && showNavRail
+                || appState.navigationState.currentKey == MapNavKey && showBottomNav
             ) {
 
                 WitNavigationRail(

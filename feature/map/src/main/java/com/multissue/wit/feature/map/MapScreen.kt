@@ -68,6 +68,7 @@ fun MapScreen(
     modifier: Modifier = Modifier,
     mapViewModel: MapViewModel = hiltViewModel(),
     travelViewModel: TravelViewModel = hiltViewModel(),
+    navigateToMyPage: () -> Unit,
     onFeedItemClicked: (feedId: Int) -> Unit,
     onTravelItemClicked: (travelId: Int) -> Unit,
     onChatRoomNavigate: (chatRoomId: Int) -> Unit,
@@ -98,6 +99,7 @@ fun MapScreen(
     MapScreen(
         modifier = modifier,
         travelUiState = travelUiState,
+        navigateToMyPage = navigateToMyPage,
         onTravelIntent = travelViewModel::onIntent,
         onFeedItemClicked = onFeedItemClicked,
         centerButtonEvent = centerButtonEvent,
@@ -111,6 +113,7 @@ fun MapScreen(
 fun MapScreen(
     modifier: Modifier = Modifier,
     travelUiState: TravelUiState,
+    navigateToMyPage: () -> Unit,
     onTravelIntent: (TravelUiIntent) -> Unit,
     onFeedItemClicked: (feedId: Int) -> Unit,
     centerButtonEvent: Flow<Unit>,
@@ -267,14 +270,14 @@ fun MapScreen(
                 },
             )
 
-        val scaffoldState = rememberBottomSheetScaffoldState(
-            bottomSheetState = rememberStandardBottomSheetState(
-                initialValue = SheetValue.PartiallyExpanded,
-                confirmValueChange = { newValue ->
-                    newValue != SheetValue.Hidden
-                }
+            val scaffoldState = rememberBottomSheetScaffoldState(
+                bottomSheetState = rememberStandardBottomSheetState(
+                    initialValue = SheetValue.PartiallyExpanded,
+                    confirmValueChange = { newValue ->
+                        newValue != SheetValue.Hidden
+                    }
+                )
             )
-        )
 
             MapBottomSheetScaffold(
                 modifier = Modifier,
@@ -329,7 +332,7 @@ fun MapScreen(
                     MapTopAppBar(
                         onBackButtonClicked = {},
                         onNotificationButtonClicked = {},
-                        onProfileButtonClicked = {},
+                        onProfileButtonClicked = navigateToMyPage,
                     )
 
                     Box(

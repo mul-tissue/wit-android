@@ -56,11 +56,6 @@ fun WitSnackBarHost(
 
             Snackbar(
                 modifier = modifier.padding(24.dp),
-//                    .border(
-//                        width = 1.dp,
-//                        color = WitTheme.colors.primary,
-//                        shape = RoundedCornerShape(8.dp)
-//                    ),
                 containerColor = WitTheme.colors.white100,
                 contentColor = WitTheme.colors.text,
                 shape = RoundedCornerShape(8.dp)

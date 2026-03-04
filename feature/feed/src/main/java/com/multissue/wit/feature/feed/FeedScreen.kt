@@ -1,7 +1,6 @@
 package com.multissue.wit.feature.feed
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Column
@@ -17,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,7 +31,7 @@ import com.multissue.wit.designsystem.component.snackbar.WitSnackBarHost
 import com.multissue.wit.designsystem.component.snackbar.WitSnackBarVisuals
 import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.feature.feed.component.FeedContentColumn
-import com.multissue.wit.feature.feed.component.MapTopAppBar
+import com.multissue.wit.feature.feed.component.FeedTopAppBar
 import com.multissue.wit.feature.feed.component.MoreBottomSheet
 import com.multissue.wit.feature.feed.component.ReactionButtonRow
 import com.multissue.wit.feature.feed.component.ReportSelectColumn
@@ -109,7 +107,7 @@ internal fun FeedScreen(
         modifier = Modifier
             .fillMaxSize(),
         topBar = {
-            MapTopAppBar(
+            FeedTopAppBar(
                 username = userState.username,
                 userThumbnail = userState.userThumbnailUrl,
                 isMine = true,
