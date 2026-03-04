@@ -119,7 +119,7 @@ internal fun WitApp(
                 )
             }
             if (appState.navigationState.currentKey == HomeNavKey
-                || appState.navigationState.currentKey == ChatNavKey()
+                || appState.navigationState.currentKey == ChatNavKey
                 || appState.navigationState.currentKey == MapNavKey && showNavRail
             ) {
 
