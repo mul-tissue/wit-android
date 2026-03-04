@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -12,20 +11,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
@@ -36,32 +37,27 @@ import com.multissue.wit.designsystem.component.navigation.WitNavigationRail
 import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.feature.chat.navigation.ChatNavKey
 import com.multissue.wit.feature.chat.navigation.chatEntry
-import com.multissue.wit.feature.feed.navigation.FeedNavKey
 import com.multissue.wit.feature.feed.navigation.feedEntry
 import com.multissue.wit.feature.home.navigation.HomeNavKey
 import com.multissue.wit.feature.home.navigation.homeEntry
-import com.multissue.wit.feature.login.navigation.LoginNavKey
-import com.multissue.wit.feature.login.navigation.loginEntry
 import com.multissue.wit.feature.map.navigation.MapNavKey
 import com.multissue.wit.feature.map.navigation.mapEntry
 import com.multissue.wit.feature.mypage.navigation.myPageEntry
-import com.multissue.wit.feature.onboarding.navigation.OnboardingNavKey
-import com.multissue.wit.feature.onboarding.navigation.onboardingEntry
-import com.multissue.wit.feature.signup.navigation.SignupNavKey
-import com.multissue.wit.feature.signup.navigation.signupEntry
+import com.multissue.wit.feature.travel.navigation.travelEntry
 import com.multissue.wit.feature.upload.navigation.UploadNavKey
 import com.multissue.wit.feature.upload.navigation.uploadEntry
 import com.multissue.wit.navigation.MAIN_LEVEL_NAV_ITEMS
-import com.multissue.wit.navigation.main.MainNavKey
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.map
 
 @Composable
 fun WitApp(
     appState: WitAppState,
-    modifier: Modifier = Modifier,
 ) {
     // TODO THEMES
     WitApp(
-        appState = appState
+        appState = appState,
+        witAppViewModel = hiltViewModel()
     )
 }
 
@@ -69,9 +65,15 @@ fun WitApp(
 @Composable
 internal fun WitApp(
     appState: WitAppState,
+    witAppViewModel: WitAppViewModel,
 ) {
     val navigator = remember { Navigator(appState.navigationState) }
-
+    var showNavRail by remember { mutableStateOf(true) }
+    val centerButtonEvent = remember(witAppViewModel) {
+        witAppViewModel.sideEffect
+            .filterIsInstance<WitAppSideEffect.OpenMapSheet>()
+            .map { } // Map 모듈과 의존성이 없어 Unit으로 이벤트만 받기
+    }
     Scaffold(
         modifier = Modifier
             .fillMaxSize()
@@ -99,10 +101,15 @@ internal fun WitApp(
                         navigateToMap = { navigator.navigate(MapNavKey) }
                     )
                     chatEntry(navigator)
-                    mapEntry(navigator)
+                    mapEntry(
+                        navigator = navigator,
+                        centerButtonEvent = centerButtonEvent,
+                        onNavRailVisibilityChanged = { showNavRail = it },
+                    )
                     myPageEntry(navigator)
                     uploadEntry(navigator)
                     feedEntry(navigator)
+                    travelEntry(navigator)
                 }
 
                 NavDisplay(
@@ -111,26 +118,33 @@ internal fun WitApp(
                     onBack = { navigator.goBack() },
                 )
             }
-//            if (appState.navigationState.currentKey == HomeNavKey
-//                || appState.navigationState.currentKey == ChatNavKey
-//                || appState.navigationState.currentKey == MapNavKey
-//            ) {
+            if (appState.navigationState.currentKey == HomeNavKey
+                || appState.navigationState.currentKey == ChatNavKey()
+                || appState.navigationState.currentKey == MapNavKey && showNavRail
+            ) {
+
                 WitNavigationRail(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(64.dp) //TODO
                         .background(color = Color.White), //TODO
 //                        .padding(bottom = WindowInsets.systemBars.asPaddingValues().calculateBottomPadding()),
-                    onCenterButtonClicked = { navigator.navigate(UploadNavKey) },
+                    onCenterButtonClicked = {
+                        if (appState.navigationState.currentKey == MapNavKey) {
+                            witAppViewModel.onIntent(WitAppUiIntent.CenterButtonClicked)
+                        } else {
+                            navigator.navigate(UploadNavKey)
+                        }
+                    },
                     navItems = {
                         MAIN_LEVEL_NAV_ITEMS.forEach { (navKey, navItem) ->
-    //                        val hasUnread = unreadNavKeys.contains(navKey) //TODO
+                            //                        val hasUnread = unreadNavKeys.contains(navKey) //TODO
                             val selected = navKey == appState.navigationState.currentTopLevelKey
                             WitNavItem(
                                 modifier = Modifier
                                     .fillMaxHeight()
                                     .aspectRatio(2f),
-    //                                .then(if (hasUnread) Modifier.notificationDot() else Modifier), //TODO
+                                //                                .then(if (hasUnread) Modifier.notificationDot() else Modifier), //TODO
                                 selected = selected,
                                 onClick = { navigator.navigate(navKey) },
                                 icon = {
@@ -153,7 +167,7 @@ internal fun WitApp(
                         }
                     }
                 )
-//            }
+            }
         }
     }
 }

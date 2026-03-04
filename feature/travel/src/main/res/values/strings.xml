@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="travel_detail_day_badge">D-Day</string>
+    <string name="travel_detail_day_badge_diff">D-%d</string>
+    <string name="travel_detail_participant">%d / %d</string>
+    <string name="travel_detail_location_none">위치 선택 X</string>
+    <string name="travel_detail_join_chat">채팅방 참여하기</string>
+    <string name="travel_detail_companion_count">%1$s님 외 %2$d명이 함께해요</string>
+    <string name="travel_detail_companion_single">%1$s님이 함께해요</string>
+    <string name="travel_detail_participants_format">%d명 이내</string>
+    <string name="travel_detail_reported_snackbar">신고가 접수되었습니다</string>
+    <string name="travel_detail_reported_button">신고</string>
+    <string name="travel_detail_reported_title">게시글 신고</string>
+    <string name="travel_detail_report_reason_inappropriate">부적절한 게시글</string>
+    <string name="travel_detail_report_reason_spam">스팸/영리목적</string>
+    <string name="travel_detail_report_reason_abuse">욕설/비하발언</string>
+    <string name="travel_detail_report_reason_privacy">개인정보노출</string>
+    <string name="travel_detail_report_reason_other">기타</string>
+    <string name="travel_detail_report_submit">신고하기</string>
+    <string name="travel_detail_report_cancel">취소</string>
+</resources>

@@ -6,6 +6,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -20,18 +21,19 @@ import com.multissue.wit.designsystem.theme.WitTheme
 fun WitCenterAlignedTopAppBar(
     modifier: Modifier = Modifier,
     title: String = "",
+    colors: TopAppBarColors = TopAppBarDefaults.topAppBarColors(
+        containerColor = WitTheme.colors.containerColor,
+        titleContentColor = WitTheme.colors.text,
+        navigationIconContentColor = WitTheme.colors.iconTint,
+        actionIconContentColor = WitTheme.colors.iconTint,
+    ),
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     CenterAlignedTopAppBar(
         modifier = modifier,
         title = { Text(text = title, style = WitTheme.typography.titleXL) },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = WitTheme.colors.containerColor,
-            titleContentColor = WitTheme.colors.text,
-            navigationIconContentColor = WitTheme.colors.iconTint,
-            actionIconContentColor = WitTheme.colors.iconTint,
-        ),
+        colors = colors,
         navigationIcon = navigationIcon,
         actions = actions,
     )

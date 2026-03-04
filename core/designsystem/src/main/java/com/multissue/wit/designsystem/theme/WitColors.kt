@@ -33,6 +33,7 @@ val red200 = Color(0xFFEF4444)
 val red300 = Color (0xFFF04248)
 val darkGray200 = Color(0xFF303746)
 val darkGray300 = Color(0xFF242c32)
+val spotColor = Color(0x0A000000)
 
 @Stable
 class WitColors(
@@ -75,7 +76,8 @@ class WitColors(
     red200: Color,
     red300: Color,
     darkGray200: Color,
-    darkGray300: Color
+    darkGray300: Color,
+    spotColor: Color
 ) {
     var primary by mutableStateOf(primary)
         private set
@@ -157,6 +159,8 @@ class WitColors(
         private set
     var darkGray300 by mutableStateOf(darkGray300)
         private set
+    var spotColor by mutableStateOf(spotColor)
+        private set
 
     fun copy(): WitColors = WitColors(
         primary = primary,
@@ -198,7 +202,8 @@ class WitColors(
         red200 = red200,
         red300 = red300,
         darkGray200 = darkGray200,
-        darkGray300 = darkGray300
+        darkGray300 = darkGray300,
+        spotColor = spotColor
     )
 
     fun update(other: WitColors) {
@@ -242,6 +247,7 @@ class WitColors(
         red300 = other.red300
         darkGray200 = other.darkGray200
         darkGray300 = other.darkGray300
+        spotColor = other.spotColor
     }
 }
 
@@ -292,7 +298,8 @@ fun lightColorScheme(): WitColors = WitColors(
     red200 = red200,
     red300 = red300,
     darkGray200 = darkGray200,
-    darkGray300 = darkGray300
+    darkGray300 = darkGray300,
+    spotColor = spotColor
 )
 
 /**
@@ -345,6 +352,7 @@ fun darkColorScheme(): WitColors = WitColors(
     red200 = red200,
     red300 = red300,
     darkGray200 = darkGray200,
-    darkGray300 = darkGray300
+    darkGray300 = darkGray300,
+    spotColor = spotColor
 )
 

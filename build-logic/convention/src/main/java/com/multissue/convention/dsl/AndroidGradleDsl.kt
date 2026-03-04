@@ -29,7 +29,7 @@ fun Project.libraryAndroidOptions(configure: LibraryAndroidComponentsExtension.(
 }
 
 fun Project.configureAndroid() {
-    android {
+    androidLibrary {
         namespace?.let {
             this.namespace = it
         }
@@ -37,7 +37,6 @@ fun Project.configureAndroid() {
 
         defaultConfig {
             minSdk = libs.version("minSdk").toInt()
-            targetSdk = libs.version("targetSdk").toInt()
         }
 
         compileOptions {

@@ -8,6 +8,8 @@ kotlin {
     sourceSets {
         dependencies {
             implementation(projects.feature.feed)
+            implementation(projects.feature.travel)
+            implementation(projects.feature.chat)
 
             implementation(libs.coil.kt)
             implementation(libs.coil.kt.compose)
