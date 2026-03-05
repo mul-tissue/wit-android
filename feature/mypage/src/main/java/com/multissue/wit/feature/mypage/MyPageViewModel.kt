@@ -32,6 +32,14 @@ class MyPageViewModel @Inject constructor(
                     )
                 }
             }
+            is MyPageUiIntent.ClickTravelItem -> {
+                setState {
+                    copy(
+                        myPageNav = MyPageNav.MAP,
+                        selectedCity = intent.travelItemState.location,
+                    )
+                }
+            }
             MyPageUiIntent.ClickSettingsButton -> {
                 setState { copy(myPageNav = MyPageNav.SETTINGS) }
             }

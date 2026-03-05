@@ -1,5 +1,6 @@
 package com.multissue.wit.feature.mypage.component.map
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.heightIn
@@ -26,10 +27,14 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.feature.mypage.MapFeedViewModel
+import com.multissue.wit.feature.mypage.MapTravelViewModel
 import com.multissue.wit.feature.mypage.component.map.feed.MapFeedBottomSheetContent
 import com.multissue.wit.feature.mypage.component.map.feed.MapFeedMarker
+import com.multissue.wit.feature.mypage.component.map.travel.MapTravelBottomSheetContent
+import com.multissue.wit.feature.mypage.component.map.travel.MapTravelMarker
 import com.multissue.wit.feature.mypage.state.MyPageType
 import com.multissue.wit.feature.mypage.state.map.feed.MapFeedUiIntent
+import com.multissue.wit.feature.mypage.state.map.travel.MapTravelUiIntent
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -52,6 +57,10 @@ fun MyPageMapContent(
     val cityLatLngMap = mapOf(
         "삿포로" to LatLng(43.0642, 141.3469),
         "도쿄" to LatLng(35.6762, 139.6503),
+        "파리" to LatLng(48.8584, 2.2945),
+        "런던" to LatLng(51.5007, -0.1246),
+        "바르셀로나" to LatLng(41.4036, 2.1744),
+        "로마" to LatLng(41.8902, 12.4922),
     )
 
     val cameraPositionState = rememberCameraPositionState {
@@ -64,15 +73,19 @@ fun MyPageMapContent(
     val mapFeedViewModel: MapFeedViewModel = hiltViewModel()
     val mapFeedUiState by mapFeedViewModel.uiState.collectAsStateWithLifecycle()
 
+    val mapTravelViewModel: MapTravelViewModel = hiltViewModel()
+    val mapTravelUiState by mapTravelViewModel.uiState.collectAsStateWithLifecycle()
+
     LaunchedEffect(cityName) {
+        cityLatLngMap[cityName]?.let {
+            cameraPositionState.animate(CameraUpdateFactory.newLatLngZoom(it, 12f))
+        }
         if (myPageType == MyPageType.FEED) {
             mapFeedViewModel.onIntent(MapFeedUiIntent.LoadFeed(cityName))
-            cityLatLngMap[cityName]?.let {
-                cameraPositionState.animate(CameraUpdateFactory.newLatLngZoom(it, 12f))
-            }
+        } else if (myPageType == MyPageType.TRAVEL) {
+            mapTravelViewModel.onIntent(MapTravelUiIntent.LoadTravel(cityName))
         }
     }
-    // TODO mapTravel 추가 필요
 
     val sheetMaxHeight = LocalConfiguration.current.screenHeightDp.dp * 0.5f
 
@@ -89,6 +102,7 @@ fun MyPageMapContent(
         sheetShadowElevation = 8.dp,
         sheetDragHandle = {
             BottomSheetDefaults.DragHandle(
+                modifier = Modifier.clickable(enabled = false){},
                 height = 3.dp,
                 color = WitTheme.colors.gray200,
             )
@@ -100,7 +114,10 @@ fun MyPageMapContent(
                         onNavigateToLocation = ::navigateToLocation,
                         viewModel = mapFeedViewModel,
                     )
-                    MyPageType.TRAVEL -> { /* TODO: 협업자가 구현 예정 */ }
+                    MyPageType.TRAVEL -> MapTravelBottomSheetContent(
+                        onNavigateToLocation = ::navigateToLocation,
+                        viewModel = mapTravelViewModel,
+                    )
                 }
             }
         },
@@ -114,12 +131,22 @@ fun MyPageMapContent(
                     zoomControlsEnabled = false,
                 ),
             ) {
-                if (myPageType == MyPageType.FEED) {
-                    mapFeedUiState.feedList.forEach { item ->
-                        MapFeedMarker(
-                            item = item,
-                            onClick = { mapFeedViewModel.onIntent(MapFeedUiIntent.ClickFeedItem(item.id)) },
-                        )
+                when (myPageType) {
+                    MyPageType.FEED -> {
+                        mapFeedUiState.feedList.forEach { item ->
+                            MapFeedMarker(
+                                item = item,
+                                onClick = { mapFeedViewModel.onIntent(MapFeedUiIntent.ClickFeedItem(item.id)) },
+                            )
+                        }
+                    }
+                    MyPageType.TRAVEL -> {
+                        mapTravelUiState.travelList.forEach { item ->
+                            MapTravelMarker(
+                                item = item,
+                                onClick = { mapTravelViewModel.onIntent(MapTravelUiIntent.ClickTravelItem(item.id)) },
+                            )
+                        }
                     }
                 }
             }

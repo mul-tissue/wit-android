@@ -2,6 +2,7 @@ package com.multissue.wit.feature.mypage.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.feature.mypage.component.feed.FeedGridItem
+import com.multissue.wit.feature.mypage.component.travel.TravelGridItem
 import com.multissue.wit.feature.mypage.state.feed.FeedItemState
 import com.multissue.wit.feature.mypage.state.MyPageType
 import com.multissue.wit.feature.mypage.state.MyPageUiIntent
@@ -30,11 +32,6 @@ fun MyPageHomeContent(
     travelList: List<FeedItemState>,
     onIntent: (MyPageUiIntent) -> Unit,
 ) {
-    val currentList = when (myPageType) {
-        MyPageType.FEED -> feedList
-        MyPageType.TRAVEL -> travelList
-    }
-
     LazyVerticalGrid(
         modifier = modifier
             .fillMaxSize()
@@ -65,19 +62,40 @@ fun MyPageHomeContent(
         item(span = { GridItemSpan(maxLineSpan) }) {
             Spacer(modifier = Modifier.height(0.dp))
         }
-        items(
-            items = currentList,
-            key = { it.id }
-        ) { feedItem ->
-            FeedGridItem(
-                modifier = Modifier.padding(
-                    start = if (currentList.indexOf(feedItem) % 2 == 0) 20.dp else 0.dp,
-                    end = if (currentList.indexOf(feedItem) % 2 != 0) 20.dp else 0.dp,
-                ),
-                feedItemState = feedItem,
-                onClick = { onIntent(MyPageUiIntent.ClickFeedItem(feedItem)) }
-            )
+
+        when (myPageType) {
+            MyPageType.FEED -> {
+                items(
+                    items = feedList,
+                    key = { it.id }
+                ) { feedItem ->
+                    FeedGridItem(
+                        modifier = Modifier.padding(
+                            start = if (feedList.indexOf(feedItem) % 2 == 0) 20.dp else 0.dp,
+                            end = if (feedList.indexOf(feedItem) % 2 != 0) 20.dp else 0.dp,
+                        ),
+                        feedItemState = feedItem,
+                        onClick = { onIntent(MyPageUiIntent.ClickFeedItem(feedItem)) }
+                    )
+                }
+            }
+            MyPageType.TRAVEL -> {
+                items(
+                    items = travelList,
+                    key = { it.id }
+                ) { travelItem ->
+                    TravelGridItem(
+                        modifier = Modifier.padding(
+                            start = if (travelList.indexOf(travelItem) % 2 == 0) 20.dp else 0.dp,
+                            end = if (travelList.indexOf(travelItem) % 2 != 0) 20.dp else 0.dp,
+                        ),
+                        travelItemState = travelItem,
+                        onClick = { onIntent(MyPageUiIntent.ClickTravelItem(travelItem)) }
+                    )
+                }
+            }
         }
+
         item(span = { GridItemSpan(maxLineSpan) }) {
             Spacer(modifier = Modifier.height(16.dp))
         }

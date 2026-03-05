@@ -20,6 +20,7 @@ sealed interface MyPageUiIntent: UiIntent {
     data object TabFeedPage: MyPageUiIntent
     data object TabTravelPage: MyPageUiIntent
     data class ClickFeedItem(val feedItemState: FeedItemState): MyPageUiIntent
+    data class ClickTravelItem(val travelItemState: FeedItemState): MyPageUiIntent
     data object ClickSettingsButton: MyPageUiIntent
     data object ClickBackButton: MyPageUiIntent
     data object NavigateToProfileEdit: MyPageUiIntent
