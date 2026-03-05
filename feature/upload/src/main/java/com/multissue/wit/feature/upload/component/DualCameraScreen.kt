@@ -51,6 +51,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.feature.upload.util.captureDualImage
+import com.multissue.wit.feature.upload.util.captureSingleImage
 import com.multissue.wit.feature.upload.util.getLocationAddress
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -74,8 +75,9 @@ fun DualCameraScreen(
     val frontImageCapture = remember { ImageCapture.Builder().build() }
     val cameraExecutor = remember { Executors.newSingleThreadExecutor() }
 
-    var backCameraInfo by remember { mutableStateOf<CameraInfo?>(null) }   // 추가
+    var backCameraInfo by remember { mutableStateOf<CameraInfo?>(null) }
     var backCameraControl by remember { mutableStateOf<CameraControl?>(null) }
+    var isDualCameraSupported by remember { mutableStateOf(false) }
     var isFlashOn by remember { mutableStateOf(false) }
     var isCapturing by remember { mutableStateOf(false) }
 
@@ -119,24 +121,41 @@ fun DualCameraScreen(
             .addUseCase(frontImageCapture) // 촬영 추가
             .build()
 
+        // 동시 촬영(전+후면) 지원 여부 확인
+        val dualSupported = cameraProvider.availableConcurrentCameraInfos.any { concurrentSet ->
+            concurrentSet.any { it.lensFacing == CameraSelector.LENS_FACING_BACK } &&
+            concurrentSet.any { it.lensFacing == CameraSelector.LENS_FACING_FRONT }
+        }
+        isDualCameraSupported = dualSupported
+
         try {
             cameraProvider.unbindAll()
             delay(100)
 
-            val backConfig = ConcurrentCamera.SingleCameraConfig(
-                CameraSelector.DEFAULT_BACK_CAMERA, backGroup, lifecycleOwner
-            )
-            val frontConfig = ConcurrentCamera.SingleCameraConfig(
-                CameraSelector.DEFAULT_FRONT_CAMERA, frontGroup, lifecycleOwner
-            )
-
-            val cameraInfos = cameraProvider.bindToLifecycle(listOf(backConfig, frontConfig))
-            val backCamera = cameraInfos.cameras.find {
-                it.cameraInfo.lensFacing == CameraSelector.LENS_FACING_BACK
+            if (dualSupported) {
+                val backConfig = ConcurrentCamera.SingleCameraConfig(
+                    CameraSelector.DEFAULT_BACK_CAMERA, backGroup, lifecycleOwner
+                )
+                val frontConfig = ConcurrentCamera.SingleCameraConfig(
+                    CameraSelector.DEFAULT_FRONT_CAMERA, frontGroup, lifecycleOwner
+                )
+                val cameraInfos = cameraProvider.bindToLifecycle(listOf(backConfig, frontConfig))
+                val backCamera = cameraInfos.cameras.find {
+                    it.cameraInfo.lensFacing == CameraSelector.LENS_FACING_BACK
+                }
+                backCameraControl = backCamera?.cameraControl
+                backCameraInfo = backCamera?.cameraInfo
+            } else {
+                // 후면 카메라만 바인딩
+                val backCamera = cameraProvider.bindToLifecycle(
+                    lifecycleOwner,
+                    CameraSelector.DEFAULT_BACK_CAMERA,
+                    backPreview,
+                    backImageCapture,
+                )
+                backCameraControl = backCamera.cameraControl
+                backCameraInfo = backCamera.cameraInfo
             }
-            backCameraControl = backCamera?.cameraControl
-            backCameraInfo = backCamera?.cameraInfo
-
         } catch (e: Exception) {
             Log.e("DualCamera", "Binding failed: ${e.message}")
         }
@@ -160,23 +179,25 @@ fun DualCameraScreen(
             }
         )
 
-        Box(
-            modifier = Modifier
-                .padding(26.dp)
-                .width(120.dp)
-                .aspectRatio(3f / 4f)
-                .clip(RoundedCornerShape(12.dp))
-                .background(Color.Black)
-                .border(
-                    width = 1.dp,
-                    color = WitTheme.colors.white100,
-                    shape = RoundedCornerShape(12.dp)
+        if (isDualCameraSupported) {
+            Box(
+                modifier = Modifier
+                    .padding(26.dp)
+                    .width(120.dp)
+                    .aspectRatio(3f / 4f)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(Color.Black)
+                    .border(
+                        width = 1.dp,
+                        color = WitTheme.colors.white100,
+                        shape = RoundedCornerShape(12.dp)
+                    )
+            ) {
+                AndroidView(
+                    modifier = Modifier.fillMaxSize(),
+                    factory = { frontPreviewView }
                 )
-        ) {
-            AndroidView(
-                modifier = Modifier.fillMaxSize(),
-                factory = { frontPreviewView }
-            )
+            }
         }
 
         Column(
@@ -209,18 +230,28 @@ fun DualCameraScreen(
                     val capturedAt = System.currentTimeMillis()
                     scope.launch {
                         val location = getLocationAddress(context)
-                        captureDualImage(
-                            context = context,
-                            backCapture = backImageCapture,
-                            frontCapture = frontImageCapture,
-                            executor = cameraExecutor,
-                            onResult = { uri ->
-                                scope.launch(Dispatchers.Main) {
-                                    isCapturing = false
-                                    onCaptureFinished(uri, location, capturedAt)
-                                }
-                            },
-                        )
+                        val onResult: (Uri?) -> Unit = { uri ->
+                            scope.launch(Dispatchers.Main) {
+                                isCapturing = false
+                                onCaptureFinished(uri, location, capturedAt)
+                            }
+                        }
+                        if (isDualCameraSupported) {
+                            captureDualImage(
+                                context = context,
+                                backCapture = backImageCapture,
+                                frontCapture = frontImageCapture,
+                                executor = cameraExecutor,
+                                onResult = onResult,
+                            )
+                        } else {
+                            captureSingleImage(
+                                context = context,
+                                backCapture = backImageCapture,
+                                executor = cameraExecutor,
+                                onResult = onResult,
+                            )
+                        }
                     }
                 },
                 onRotateButtonClicked = {  }

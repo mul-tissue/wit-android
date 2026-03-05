@@ -103,6 +103,7 @@ internal fun WitApp(
                         navigator = navigator,
                         centerButtonEvent = centerButtonEvent,
                         onNavRailVisibilityChanged = { showNavRail = it },
+                        onNavigateToUpload = { navigator.navigate(UploadNavKey) },
                     )
                     myPageEntry(navigator)
                     uploadEntry(navigator)

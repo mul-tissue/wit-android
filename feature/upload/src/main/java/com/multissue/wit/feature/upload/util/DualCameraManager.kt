@@ -125,6 +125,23 @@ private fun centerCropAndScale(source: Bitmap, targetWidth: Int, targetHeight: I
     return scaled
 }
 
+// 단일(후면) 촬영 및 저장 로직
+fun captureSingleImage(
+    context: Context,
+    backCapture: ImageCapture,
+    executor: java.util.concurrent.Executor,
+    onResult: (Uri?) -> Unit
+) {
+    backCapture.takePicture(executor, object : ImageCapture.OnImageCapturedCallback() {
+        override fun onCaptureSuccess(image: ImageProxy) {
+            val bitmap = image.toBitmap().rotateBitmap(image.imageInfo.rotationDegrees)
+            image.close()
+            val uri = saveBitmapToGallery(context, bitmap)
+            onResult(uri)
+        }
+    })
+}
+
 // 갤러리 저장 로직
 private fun saveBitmapToGallery(context: Context, bitmap: Bitmap): Uri? {
     val filename = "DualCamera_${System.currentTimeMillis()}.jpg"
