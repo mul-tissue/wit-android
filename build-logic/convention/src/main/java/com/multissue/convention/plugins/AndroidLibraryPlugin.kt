@@ -1,10 +1,8 @@
 package com.multissue.convention.plugins
 
-import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.LibraryExtension
 import com.multissue.convention.dsl.androidLibrary
 import com.multissue.convention.dsl.configureAndroid
-import com.multissue.convention.extensions.configureKotlinJvm
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -19,7 +17,7 @@ class AndroidLibraryPlugin : Plugin<Project> {
                 compileSdk = 36
             }
             androidLibrary {
-//                configureAndroid()
+                configureAndroid()
             }
         }
     }

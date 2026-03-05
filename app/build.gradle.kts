@@ -61,6 +61,7 @@ dependencies {
     implementation(projects.feature.signup)
     implementation(projects.feature.upload)
     implementation(projects.feature.feed)
+    implementation(projects.feature.travel)
     implementation(projects.core.ui)
     implementation(projects.core.designsystem)
 
@@ -88,6 +89,7 @@ dependencies {
     implementation(libs.androidx.compose.material3.adaptive.navigation)
     implementation(libs.androidx.compose.material3.adaptive.navigation3)
     implementation(libs.androidx.compose.material3.navigationSuite)
+    implementation(libs.androidx.hilt.lifecycle.viewModelCompose)
 
     //TODO for test
     api(libs.androidx.compose.material.iconsExtended)

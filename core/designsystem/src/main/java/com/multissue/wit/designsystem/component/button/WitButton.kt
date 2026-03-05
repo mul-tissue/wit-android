@@ -30,7 +30,7 @@ fun WitButton(
         disabledContainerColor = WitTheme.colors.disabledButton,
         disabledContentColor = WitTheme.colors.background
     ),
-    shape: Shape = RoundedCornerShape(12.dp),
+    shape: Shape = RoundedCornerShape(10.dp),
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
     title: String,
     textStyle: TextStyle = WitTheme.typography.titleM,
