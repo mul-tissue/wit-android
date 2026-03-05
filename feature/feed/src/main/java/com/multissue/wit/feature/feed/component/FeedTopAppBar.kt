@@ -12,7 +12,7 @@ import com.multissue.wit.designsystem.component.topbar.WitContentTopAppBar
 import com.multissue.wit.feature.feed.R
 
 @Composable
-fun MapTopAppBar(
+fun FeedTopAppBar(
     username: String,
     userThumbnail: String,
     isMine: Boolean,

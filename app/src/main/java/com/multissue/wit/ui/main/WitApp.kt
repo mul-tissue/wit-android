@@ -35,10 +35,8 @@ import com.multissue.wit.core.navigation.toEntries
 import com.multissue.wit.designsystem.component.navigation.WitNavItem
 import com.multissue.wit.designsystem.component.navigation.WitNavigationRail
 import com.multissue.wit.designsystem.theme.WitTheme
-import com.multissue.wit.feature.chat.navigation.ChatNavKey
 import com.multissue.wit.feature.chat.navigation.chatEntry
 import com.multissue.wit.feature.feed.navigation.feedEntry
-import com.multissue.wit.feature.home.navigation.HomeNavKey
 import com.multissue.wit.feature.home.navigation.homeEntry
 import com.multissue.wit.feature.map.navigation.MapNavKey
 import com.multissue.wit.feature.map.navigation.mapEntry
@@ -105,6 +103,7 @@ internal fun WitApp(
                         navigator = navigator,
                         centerButtonEvent = centerButtonEvent,
                         onNavRailVisibilityChanged = { showNavRail = it },
+                        onNavigateToUpload = { navigator.navigate(UploadNavKey) },
                     )
                     myPageEntry(navigator)
                     uploadEntry(navigator)
@@ -118,11 +117,8 @@ internal fun WitApp(
                     onBack = { navigator.goBack() },
                 )
             }
-            if (appState.navigationState.currentKey == HomeNavKey
-                || appState.navigationState.currentKey == ChatNavKey()
-                || appState.navigationState.currentKey == MapNavKey && showNavRail
-            ) {
 
+            if (appState.navigationState.currentKey != UploadNavKey && showNavRail) {
                 WitNavigationRail(
                     modifier = Modifier
                         .fillMaxWidth()

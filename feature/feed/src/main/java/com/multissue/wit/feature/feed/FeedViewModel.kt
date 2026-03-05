@@ -1,7 +1,6 @@
 package com.multissue.wit.feature.feed
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import com.multissue.wit.core.ui.base.BaseViewModel
 import com.multissue.wit.feature.feed.navigation.FeedNavKey
 import com.multissue.wit.feature.feed.state.FeedState
@@ -15,7 +14,6 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 
 @HiltViewModel(assistedFactory = FeedViewModel.Factory::class)
 class FeedViewModel @AssistedInject constructor(

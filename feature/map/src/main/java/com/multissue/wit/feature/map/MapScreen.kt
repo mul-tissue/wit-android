@@ -71,6 +71,7 @@ fun MapScreen(
     onFeedItemClicked: (feedId: Int) -> Unit,
     onTravelItemClicked: (travelId: Int) -> Unit,
     onChatRoomNavigate: (chatRoomId: Int) -> Unit,
+    onNavigateToUpload: () -> Unit = {},
     centerButtonEvent: Flow<Unit>,
     onNavRailVisibilityChanged: (Boolean) -> Unit = {},
 ) {
@@ -100,6 +101,7 @@ fun MapScreen(
         travelUiState = travelUiState,
         onTravelIntent = travelViewModel::onIntent,
         onFeedItemClicked = onFeedItemClicked,
+        onNavigateToUpload = onNavigateToUpload,
         centerButtonEvent = centerButtonEvent,
         snackbarHostState = snackbarHostState,
         onNavRailVisibilityChanged = onNavRailVisibilityChanged,
@@ -113,6 +115,7 @@ fun MapScreen(
     travelUiState: TravelUiState,
     onTravelIntent: (TravelUiIntent) -> Unit,
     onFeedItemClicked: (feedId: Int) -> Unit,
+    onNavigateToUpload: () -> Unit = {},
     centerButtonEvent: Flow<Unit>,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     onNavRailVisibilityChanged: (Boolean) -> Unit = {},
@@ -144,7 +147,7 @@ fun MapScreen(
                 centerButtonEvent.collect {
                     when (currentSelected) {
                         WitSelectType.Travel -> onTravelIntent(TravelUiIntent.ShowUploadDateSelectionSheet)
-                        WitSelectType.Feed -> { /* TODO: Feed + 버튼 동작 */ }
+                        WitSelectType.Feed -> onNavigateToUpload()
                     }
                 }
             }
