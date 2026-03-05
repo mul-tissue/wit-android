@@ -38,8 +38,10 @@ gradlePlugin {
             id = libs.plugins.com.multissue.wit.hilt.get().pluginId
             implementationClass = "com.multissue.convention.plugins.HiltPlugin"
         }
-
-
+        register("AndroidNetworkPlugin") {
+            id = libs.plugins.com.multissue.wit.network.get().pluginId
+            implementationClass = "com.multissue.convention.plugins.AndroidNetworkPlugin"
+        }
         // Bundle -> 여러 Plugin 조합하여 사용
         register("androidFeature") {
             id = libs.plugins.com.multissue.wit.feature.get().pluginId
