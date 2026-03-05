@@ -39,7 +39,7 @@ import com.multissue.wit.designsystem.util.noRippleClickable
 fun TravelListItem(
     modifier: Modifier = Modifier,
     travelItem: TravelItemState,
-    onChatClick: (Int) -> Unit,
+    onChatClick: ((Int) -> Unit)? = null,
     onItemClicked: (Int) -> Unit
 ) {
     Box(
@@ -143,26 +143,28 @@ fun TravelListItem(
             }
         }
 
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .wrapContentSize()
-                .background(
-                    color = WitTheme.colors.primaryDark,
-                    shape = RoundedCornerShape(50)
+        if (onChatClick != null) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .wrapContentSize()
+                    .background(
+                        color = WitTheme.colors.primaryDark,
+                        shape = RoundedCornerShape(50)
+                    )
+                    .noRippleClickable {
+                        onChatClick(travelItem.id)
+                    }
+                    .padding(vertical = 8.dp, horizontal = 12.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.icon_chat),
+                    contentDescription = "채팅",
+                    modifier = Modifier.size(20.dp),
+                    tint = WitTheme.colors.white100
                 )
-                .noRippleClickable {
-                    onChatClick(travelItem.id)
-                }
-                .padding(vertical = 8.dp, horizontal = 12.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.icon_chat),
-                contentDescription = "채팅",
-                modifier = Modifier.size(20.dp),
-                tint = WitTheme.colors.white100
-            )
+            }
         }
     }
 }

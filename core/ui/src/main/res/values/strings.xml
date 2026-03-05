@@ -75,4 +75,10 @@
 
     <!-- Edit -->
     <string name="post_confirm_edit_complete">수정 완료</string>
+
+    <!-- Delete -->
+    <string name="travel_delete_dialog_title">게시글을 삭제할까요?</string>
+    <string name="travel_delete_cancel">취소</string>
+    <string name="travel_delete_confirm">삭제하기</string>
+    <string name="travel_deleted_snackbar">게시글이 삭제되었어요</string>
 </resources>
