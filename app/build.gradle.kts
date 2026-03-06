@@ -64,6 +64,7 @@ dependencies {
     implementation(projects.feature.travel)
     implementation(projects.core.ui)
     implementation(projects.core.designsystem)
+    implementation(projects.core.network)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

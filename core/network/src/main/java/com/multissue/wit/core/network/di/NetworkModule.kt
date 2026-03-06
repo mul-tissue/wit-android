@@ -1,6 +1,6 @@
 package com.multissue.wit.core.network.di
 
-import com.multissue.wit.core.network.BuildConfig
+import com.multissue.wit.core.network.config.NetworkConfig
 import com.multissue.wit.core.network.interceptor.AuthInterceptor
 import dagger.Module
 import dagger.Provides
@@ -28,9 +28,11 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor =
+    fun provideHttpLoggingInterceptor(
+        networkConfig: NetworkConfig,
+    ): HttpLoggingInterceptor =
         HttpLoggingInterceptor().apply {
-            level = if (BuildConfig.DEBUG) {
+            level = if (networkConfig.isDebug) {
                 HttpLoggingInterceptor.Level.BODY
             } else {
                 HttpLoggingInterceptor.Level.NONE
@@ -52,8 +54,9 @@ object NetworkModule {
     fun provideRetrofit(
         okHttpClient: OkHttpClient,
         json: Json,
+        networkConfig: NetworkConfig,
     ): Retrofit = Retrofit.Builder()
-        .baseUrl(BuildConfig.BASE_URL)
+        .baseUrl(networkConfig.baseUrl)
         .client(okHttpClient)
         .addConverterFactory(json.asConverterFactory("application/json; charset=UTF-8".toMediaType()))
         .build()
