@@ -12,6 +12,7 @@ class AndroidNetworkPlugin : Plugin<Project> {
             apply(plugin = "com.multissue.wit.library")
             apply(plugin = "com.multissue.wit.kotlin")
             apply(plugin = "com.multissue.wit.hilt")
+            apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
 
             dependencies {
                 "implementation"(libs.findBundle("network").get())
