@@ -22,7 +22,7 @@ object NetworkConfigModule {
         val isDebug = context.applicationInfo.flags and FLAG_DEBUGGABLE != 0
         return object : NetworkConfig {
             override val baseUrl: String =
-                if (isDebug) "https://dev.api.example.com/"
+                if (isDebug) "https://dev-api.multissue.com/"
                 else "https://api.example.com/"
             override val isDebug: Boolean = isDebug
         }
