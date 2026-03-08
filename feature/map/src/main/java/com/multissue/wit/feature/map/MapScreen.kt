@@ -40,20 +40,21 @@ import com.multissue.wit.feature.map.component.MapBottomSheetScaffold
 import com.multissue.wit.feature.map.component.MapTest
 import com.multissue.wit.feature.map.component.MapTopAppBar
 import com.multissue.wit.feature.map.component.feed.FeedBottomSheetContent
-import com.multissue.wit.feature.map.component.travel.ActivityTypeBottomSheet
-import com.multissue.wit.feature.map.component.travel.AddLocationBottomSheet
-import com.multissue.wit.feature.map.component.travel.AgeGenderBottomSheet
-import com.multissue.wit.feature.map.component.travel.CalendarDateSelectionScreen
-import com.multissue.wit.feature.map.component.travel.DateSelectionBottomSheet
-import com.multissue.wit.feature.map.component.travel.OptionBottomSheet
-import com.multissue.wit.feature.map.component.travel.PostConfirmBottomSheet
-import com.multissue.wit.feature.map.component.travel.SearchScreen
-import com.multissue.wit.feature.map.component.travel.SelectTimeDialog
-import com.multissue.wit.feature.map.component.travel.TravelBottomSheetContent
-import com.multissue.wit.feature.map.component.travel.TravelPostCardScreen
-import com.multissue.wit.feature.map.component.travel.UploadCalendarDateSelectionScreen
-import com.multissue.wit.feature.map.component.travel.UploadDateSelectionBottomSheet
-import com.multissue.wit.feature.map.component.travel.UploadTravelBottomSheet
+import com.multissue.wit.core.ui.travel.component.ActivityTypeBottomSheet
+import com.multissue.wit.core.ui.travel.component.AddLocationBottomSheet
+import com.multissue.wit.core.ui.travel.component.AgeGenderBottomSheet
+import com.multissue.wit.core.ui.travel.component.CalendarDateSelectionScreen
+import com.multissue.wit.core.ui.travel.component.DateSelectionBottomSheet
+import com.multissue.wit.core.ui.travel.component.OptionBottomSheet
+import com.multissue.wit.core.ui.travel.component.PostConfirmBottomSheet
+import com.multissue.wit.core.ui.travel.component.SearchScreen
+import com.multissue.wit.core.ui.travel.component.SelectTimeDialog
+import com.multissue.wit.core.ui.travel.component.TravelBottomSheetContent
+import com.multissue.wit.core.ui.travel.component.TravelPostCardScreen
+import com.multissue.wit.core.ui.travel.component.UploadCalendarDateSelectionScreen
+import com.multissue.wit.core.ui.travel.component.UploadDateSelectionBottomSheet
+import com.multissue.wit.core.ui.travel.component.UploadTravelBottomSheet
+import com.multissue.wit.core.ui.travel.component.TravelPostCardMapThumbnail
 import com.multissue.wit.feature.map.dummy.placeDummyList
 import com.multissue.wit.feature.map.state.FeedFilterType
 import com.multissue.wit.feature.map.state.travel.TravelSideEffect
@@ -68,6 +69,7 @@ fun MapScreen(
     modifier: Modifier = Modifier,
     mapViewModel: MapViewModel = hiltViewModel(),
     travelViewModel: TravelViewModel = hiltViewModel(),
+    navigateToMyPage: () -> Unit,
     onFeedItemClicked: (feedId: Int) -> Unit,
     onTravelItemClicked: (travelId: Int) -> Unit,
     onChatRoomNavigate: (chatRoomId: Int) -> Unit,
@@ -99,6 +101,7 @@ fun MapScreen(
     MapScreen(
         modifier = modifier,
         travelUiState = travelUiState,
+        navigateToMyPage = navigateToMyPage,
         onTravelIntent = travelViewModel::onIntent,
         onFeedItemClicked = onFeedItemClicked,
         onNavigateToUpload = onNavigateToUpload,
@@ -113,6 +116,7 @@ fun MapScreen(
 fun MapScreen(
     modifier: Modifier = Modifier,
     travelUiState: TravelUiState,
+    navigateToMyPage: () -> Unit,
     onTravelIntent: (TravelUiIntent) -> Unit,
     onFeedItemClicked: (feedId: Int) -> Unit,
     onNavigateToUpload: () -> Unit = {},
@@ -270,14 +274,14 @@ fun MapScreen(
                 },
             )
 
-        val scaffoldState = rememberBottomSheetScaffoldState(
-            bottomSheetState = rememberStandardBottomSheetState(
-                initialValue = SheetValue.PartiallyExpanded,
-                confirmValueChange = { newValue ->
-                    newValue != SheetValue.Hidden
-                }
+            val scaffoldState = rememberBottomSheetScaffoldState(
+                bottomSheetState = rememberStandardBottomSheetState(
+                    initialValue = SheetValue.PartiallyExpanded,
+                    confirmValueChange = { newValue ->
+                        newValue != SheetValue.Hidden
+                    }
+                )
             )
-        )
 
             MapBottomSheetScaffold(
                 modifier = Modifier,
@@ -332,7 +336,7 @@ fun MapScreen(
                     MapTopAppBar(
                         onBackButtonClicked = {},
                         onNotificationButtonClicked = {},
-                        onProfileButtonClicked = {},
+                        onProfileButtonClicked = navigateToMyPage,
                     )
 
                     Box(
@@ -375,6 +379,14 @@ fun MapScreen(
                         travelItem = item,
                         onBack = { onTravelIntent(TravelUiIntent.HideTravelPostCard) },
                         onMoreClick = { onTravelIntent(TravelUiIntent.ShowOptionSheet) },
+                        mapPreview = if (item.lat != 0.0 || item.lng != 0.0) {
+                            {
+                                TravelPostCardMapThumbnail(
+                                    lat = item.lat,
+                                    lng = item.lng,
+                                )
+                            }
+                        } else null,
                     )
                 }
             }

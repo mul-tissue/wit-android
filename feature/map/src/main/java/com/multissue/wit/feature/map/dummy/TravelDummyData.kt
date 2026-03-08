@@ -1,6 +1,6 @@
 package com.multissue.wit.feature.map.dummy
 
-import com.multissue.wit.feature.map.state.travel.TravelItemState
+import com.multissue.wit.core.ui.travel.state.TravelItemState
 
 val travelDummyData = listOf(
     TravelItemState(

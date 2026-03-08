@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "WebSearch",
-      "WebFetch(domain:dev-api.multissue.com)"
+      "WebFetch(domain:dev-api.multissue.com)",
+      "Bash(find /mnt/c/Users/skdi6/Desktop/wit -path \"*/*/state/*\" -name \"*Intent*\" -o -path \"*/*/state/*\" -name \"*SideEffect*\" 2>/dev/null | head -20)",
+      "Bash(find /mnt/c/Users/skdi6/Desktop/wit/feature/map/src/main/res -name \"*.xml\" 2>/dev/null | head -20)"
     ]
   }
 }

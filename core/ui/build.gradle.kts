@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.com.multissue.wit.compose)
 }
 
 android{
@@ -12,14 +12,20 @@ kotlin {
     sourceSets {
         dependencies {
             api(libs.androidx.metrics)
+            implementation(projects.core.designsystem)
 
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
-            implementation(platform(libs.androidx.compose.bom))
-            implementation(libs.androidx.compose.ui)
-            implementation(libs.androidx.compose.ui.graphics)
-            implementation(libs.androidx.compose.material3)
+            implementation(libs.coil.kt)
+            implementation(libs.coil.kt.compose)
+            implementation(libs.accompanist.permissions)
+
+            implementation(libs.maps.compose)
+            implementation(libs.maps.utils)
+            implementation(libs.maps.utils.ktx)
+            implementation(libs.androidx.vectordrawable)
+            implementation(libs.play.services.location)
         }
     }
 }

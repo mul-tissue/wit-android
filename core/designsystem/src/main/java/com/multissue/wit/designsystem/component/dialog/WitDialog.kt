@@ -102,15 +102,21 @@ fun WitDialogScope.WitDialogOnlyTitle(
 
 @Composable
 fun WitDialogScope.WitDialogMessage(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    centerAlignedContent: Boolean
 ) {
     val dialogMessage = message ?: return
     Text(
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier = if (!centerAlignedContent) {
+            modifier
+                .fillMaxWidth()
+        } else {
+            modifier
+        },
         style = WitTheme.typography.bodyXS,
         color = WitTheme.colors.subText,
-        text = dialogMessage
+        text = dialogMessage,
+        textAlign = if (centerAlignedContent) TextAlign.Center else TextAlign.Unspecified
     )
 }
 
@@ -155,7 +161,9 @@ fun WitDialogScope.WitDialogLeftButton(
 }
 
 @Composable
-fun WitDialogScope.WitDialogDefaultLayout() {
+fun WitDialogScope.WitDialogDefaultLayout(
+    centerAlignedContent: Boolean = false,
+) {
     Column(
         modifier = Modifier
         .padding(top = 30.dp, bottom = 20.dp, start = 20.dp, end = 20.dp),
@@ -165,7 +173,7 @@ fun WitDialogScope.WitDialogDefaultLayout() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             WitDialogTitle()
-            WitDialogMessage()
+            WitDialogMessage(centerAlignedContent = centerAlignedContent)
             bodyContent()
         }
         Spacer(modifier = Modifier.height(26.dp))

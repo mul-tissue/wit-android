@@ -5,10 +5,13 @@ import com.multissue.wit.core.navigation.Navigator
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ChatNavKey(
-    val chatRoomId: Int? = null,
+object ChatNavKey : NavKey
+
+@Serializable
+data class ChatRoomNavKey(
+    val chatRoomId: Int
 ) : NavKey
 
 fun Navigator.navigateToChatRoom(chatRoomId: Int) {
-    navigate(ChatNavKey(chatRoomId))
+    navigate(ChatRoomNavKey(chatRoomId))
 }

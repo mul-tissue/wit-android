@@ -1,6 +1,6 @@
 package com.multissue.wit.feature.map.dummy
 
-import com.multissue.wit.feature.map.state.travel.SearchResultItemState
+import com.multissue.wit.core.ui.travel.state.SearchResultItemState
 
 val searchDummyList = listOf(
     SearchResultItemState(1, "도쿄 스카이트리", "일본 도쿄도 스미다구 오시아게 1-1-2", lat = 35.7101, lng = 139.8107),
