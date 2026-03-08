@@ -14,6 +14,7 @@ fun EntryProviderScope<NavKey>.mapEntry(
     navigateToMyPage: () -> Unit,
     centerButtonEvent: Flow<Unit>,
     onNavRailVisibilityChanged: (Boolean) -> Unit,
+    onNavigateToUpload: () -> Unit = {},
 ) {
     // TODO SnackBar
     entry<MapNavKey> {
@@ -21,6 +22,7 @@ fun EntryProviderScope<NavKey>.mapEntry(
             navigateToMyPage = navigateToMyPage,
             onFeedItemClicked = navigator::navigateToFeed,
             onTravelItemClicked = navigator::navigateToTravel,
+            onNavigateToUpload = onNavigateToUpload,
             centerButtonEvent = centerButtonEvent,
             onChatRoomNavigate = navigator::navigateToChatRoom,
             onNavRailVisibilityChanged = onNavRailVisibilityChanged,

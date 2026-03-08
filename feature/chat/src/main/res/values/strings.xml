@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title">채팅</string>
+    <string name="chat_empty_title">아직 대화가 시작되지 않았어요</string>
+    <string name="chat_empty_subtitle">지금 있는 장소 주변에서 새로운 동행을 만나보세요</string>
+
+    <string name="chat_room_input_placeholder">메세지를 입력하세요</string>
+    <string name="chat_room_send">전송</string>
+    <string name="chat_room_back">뒤로가기</string>
+    <string name="chat_room_more_info">더보기</string>
+
+    <string name="chat_exit_dialog_title">채팅방을 나갈까요?</string>
+    <string name="chat_exit_dialog_cancel">취소</string>
+    <string name="chat_exit_dialog_exit">나가기</string>
+    <string name="chat_room_message_placeholder">메세지를 입력하세요</string>
+</resources>
