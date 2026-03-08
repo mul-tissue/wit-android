@@ -22,14 +22,14 @@ class WitActivity : ComponentActivity() {
         enableEdgeToEdge()
         WindowCompat.getInsetsController(window, window.decorView)
             .isAppearanceLightStatusBars = true //TODO 다크모드 대응 시 교체 필요
-        setNavigationBarColorCompat(
-            color = Color.White.toArgb(),
-            isLightBar = true
-        )
-        setStatusBarColorCompat(
-            color = Color.White.toArgb(),
-            isLightBar = true
-        )
+//        setNavigationBarColorCompat(
+//            color = Color.White.toArgb(),
+//            isLightBar = true
+//        )
+//        setStatusBarColorCompat(
+//            color = Color.White.toArgb(),
+//            isLightBar = true
+//        )
 
         setContent {
             val appState = rememberRootAppState()
