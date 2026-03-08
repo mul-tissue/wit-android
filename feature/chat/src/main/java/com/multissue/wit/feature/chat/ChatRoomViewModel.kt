@@ -52,6 +52,7 @@ class ChatRoomViewModel @AssistedInject constructor(
         val text = currentState.inputText.trim()
         if (text.isEmpty()) return
 
+        // TODO("나중에 실제로 API로 변경")
         val newMessage = ChatRoomMessageItem.SentMessage(
             id = currentState.messages.size + 1,
             message = text,
