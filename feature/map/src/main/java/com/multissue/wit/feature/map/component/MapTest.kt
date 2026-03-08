@@ -3,11 +3,8 @@ package com.multissue.wit.feature.map.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,19 +23,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.Circle
 import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.rememberCameraPositionState
-import com.multissue.wit.designsystem.component.button.WitButton
+import com.multissue.wit.core.ui.map.PlaceMarker
+import com.multissue.wit.core.ui.map.WitMarker
 import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.feature.map.R
 import com.multissue.wit.feature.map.dummy.deoksu
-import com.multissue.wit.feature.map.util.location.distanceMeters
-import com.multissue.wit.feature.map.util.location.getCurrentLocation
+import com.multissue.wit.core.ui.map.util.distanceMeters
+import com.multissue.wit.core.ui.map.util.getCurrentLocation
 import kotlinx.coroutines.launch
 
 const val initialZoomLevel = 12f

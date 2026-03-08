@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 
 fun EntryProviderScope<NavKey>.mapEntry(
     navigator: Navigator,
+    navigateToMyPage: () -> Unit,
     centerButtonEvent: Flow<Unit>,
     onNavRailVisibilityChanged: (Boolean) -> Unit,
     onNavigateToUpload: () -> Unit = {},
@@ -18,6 +19,7 @@ fun EntryProviderScope<NavKey>.mapEntry(
     // TODO SnackBar
     entry<MapNavKey> {
         MapScreen(
+            navigateToMyPage = navigateToMyPage,
             onFeedItemClicked = navigator::navigateToFeed,
             onTravelItemClicked = navigator::navigateToTravel,
             onNavigateToUpload = onNavigateToUpload,

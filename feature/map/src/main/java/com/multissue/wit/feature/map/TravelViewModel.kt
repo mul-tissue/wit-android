@@ -2,15 +2,15 @@ package com.multissue.wit.feature.map
 
 import androidx.lifecycle.viewModelScope
 import com.multissue.wit.core.ui.base.BaseViewModel
-import com.multissue.wit.feature.map.state.travel.AmPm
-import com.multissue.wit.feature.map.state.travel.PickerHour
-import com.multissue.wit.feature.map.state.travel.PickerMinute
+import com.multissue.wit.core.ui.travel.state.AmPm
+import com.multissue.wit.core.ui.travel.state.PickerHour
+import com.multissue.wit.core.ui.travel.state.PickerMinute
+import com.multissue.wit.core.ui.travel.state.SearchResultItemState
+import com.multissue.wit.core.ui.travel.state.TravelItemState
+import com.multissue.wit.core.ui.travel.state.UploadTravelData
 import com.multissue.wit.feature.map.state.travel.TravelSideEffect
 import com.multissue.wit.feature.map.state.travel.TravelUiIntent
 import com.multissue.wit.feature.map.state.travel.TravelUiState
-import com.multissue.wit.feature.map.state.travel.TravelItemState
-import com.multissue.wit.feature.map.state.travel.UploadTravelData
-import com.multissue.wit.feature.map.state.travel.SearchResultItemState
 import com.multissue.wit.feature.map.dummy.searchDummyList
 import com.multissue.wit.feature.map.dummy.travelDummyData
 import dagger.hilt.android.lifecycle.HiltViewModel
