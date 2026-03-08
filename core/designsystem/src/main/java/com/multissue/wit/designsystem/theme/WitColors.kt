@@ -45,6 +45,7 @@ class WitColors(
     gradientBackground: Brush,
     pointColor: Color,
     background: Color,
+    backgroundLighter: Color,
     containerColor: Color,
     iconTint: Color,
     iconTintConverse: Color,
@@ -92,6 +93,8 @@ class WitColors(
     var gradientBackground by mutableStateOf(gradientBackground)
         private set
     var background by mutableStateOf(background)
+        private set
+    var backgroundLighter by mutableStateOf(backgroundLighter)
         private set
     var pointColor by mutableStateOf(pointColor)
         private set
@@ -171,6 +174,7 @@ class WitColors(
         gradientBackground = gradientBackground,
         pointColor = pointColor,
         background = background,
+        backgroundLighter = backgroundLighter,
         containerColor = containerColor,
         iconTint = iconTint,
         iconTintConverse = iconTintConverse,
@@ -215,6 +219,7 @@ class WitColors(
         gradientBackground = other.gradientBackground
         pointColor = other.pointColor
         background = other.background
+        backgroundLighter = other.backgroundLighter
         containerColor = other.containerColor
         iconTint = other.iconTint
         iconTintConverse = other.iconTintConverse
@@ -267,6 +272,7 @@ fun lightColorScheme(): WitColors = WitColors(
     ),
     pointColor = mint,
     background = white100,
+    backgroundLighter = white200,
     containerColor = white100,
     iconTint = black100,
     iconTintConverse = white100,
@@ -321,6 +327,7 @@ fun darkColorScheme(): WitColors = WitColors(
     ),
     pointColor = mint,
     background = white100,
+    backgroundLighter = white200,
     containerColor = white100,
     iconTint = black100,
     iconTintConverse = white100,

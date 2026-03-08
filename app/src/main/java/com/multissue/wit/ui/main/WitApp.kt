@@ -35,6 +35,7 @@ import com.multissue.wit.core.navigation.toEntries
 import com.multissue.wit.designsystem.component.navigation.WitNavItem
 import com.multissue.wit.designsystem.component.navigation.WitNavigationRail
 import com.multissue.wit.designsystem.theme.WitTheme
+import com.multissue.wit.feature.chat.navigation.ChatRoomNavKey
 import com.multissue.wit.feature.chat.navigation.chatEntry
 import com.multissue.wit.feature.feed.navigation.feedEntry
 import com.multissue.wit.feature.home.navigation.homeEntry
@@ -118,7 +119,7 @@ internal fun WitApp(
                 )
             }
 
-            if (appState.navigationState.currentKey != UploadNavKey && showNavRail) {
+            if (appState.navigationState.currentKey != UploadNavKey && appState.navigationState.currentKey !is ChatRoomNavKey && showNavRail) {
                 WitNavigationRail(
                     modifier = Modifier
                         .fillMaxWidth()
