@@ -40,6 +40,8 @@ const val initialZoomLevel = 12f
 @Composable
 fun MapTest(
     modifier: Modifier = Modifier,
+    initialLat: Double? = null,
+    initialLng: Double? = null,
     locationButtonPadding: Dp,
 ) {
     val context = LocalContext.current
@@ -48,14 +50,34 @@ fun MapTest(
 
     val scope = rememberCoroutineScope()
 
+    val cameraPositionState = rememberCameraPositionState()
+
     LaunchedEffect(Unit) {
+        if (initialLat != null && initialLng != null) {
+            cameraPositionState.position = com.google.android.gms.maps.model.CameraPosition.fromLatLngZoom(
+                LatLng(initialLat, initialLng),
+                initialZoomLevel
+            )
+        }
+        
         getCurrentLocation(
             context = context,
-            onLocation = { myLocation = it }
+            onLocation = { location ->
+                myLocation = location
+                // 초기 위치가 지정되지 않은 경우에만 현재 위치로 애니메이션
+                if (initialLat == null || initialLng == null) {
+                    scope.launch {
+                        cameraPositionState.animate(
+                            CameraUpdateFactory.newLatLngZoom(
+                                location,
+                                initialZoomLevel
+                            )
+                        )
+                    }
+                }
+            }
         )
     }
-
-    val cameraPositionState = rememberCameraPositionState()
 
     LaunchedEffect(cameraPositionState.isMoving) {
         if (!cameraPositionState.isMoving && myLocation != null) {
@@ -79,15 +101,6 @@ fun MapTest(
             )
         ) {
             myLocation?.let { location ->
-                LaunchedEffect(location) {
-                    cameraPositionState.animate(
-                        CameraUpdateFactory.newLatLngZoom(
-                            location,
-                            12f
-                        )
-                    )
-                }
-
                 WitMarker(location)
             }
 

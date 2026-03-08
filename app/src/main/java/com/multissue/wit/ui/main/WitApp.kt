@@ -41,6 +41,7 @@ import com.multissue.wit.feature.feed.navigation.feedEntry
 import com.multissue.wit.feature.home.navigation.homeEntry
 import com.multissue.wit.feature.map.navigation.MapNavKey
 import com.multissue.wit.feature.map.navigation.mapEntry
+import com.multissue.wit.feature.map.navigation.navigateToMap
 import com.multissue.wit.feature.mypage.navigation.MyPageNavKey
 import com.multissue.wit.feature.mypage.navigation.myPageEntry
 import com.multissue.wit.feature.travel.navigation.travelEntry
@@ -97,8 +98,10 @@ internal fun WitApp(
 
                 val entryProvider = entryProvider {
                     homeEntry(
-                        navigator,
-                        navigateToMap = { navigator.navigate(MapNavKey) }
+                        navigateToMap = { lat, lng ->
+                            navigator.navigateToMap(lat, lng)
+                        },
+                        navigateToMyPage = { navigator.navigate(MyPageNavKey) }
                     )
                     chatEntry(navigator)
                     mapEntry(
@@ -132,7 +135,7 @@ internal fun WitApp(
                         .background(color = Color.White), //TODO
 //                        .padding(bottom = WindowInsets.systemBars.asPaddingValues().calculateBottomPadding()),
                     onCenterButtonClicked = {
-                        if (appState.navigationState.currentKey == MapNavKey) {
+                        if (appState.navigationState.currentKey is MapNavKey) {
                             witAppViewModel.onIntent(WitAppUiIntent.CenterButtonClicked)
                         } else {
                             navigator.navigate(UploadNavKey)
