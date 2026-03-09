@@ -30,6 +30,13 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         manifestPlaceholders["MAPS_API_KEY"] = localProperties.getProperty("MAPS_API_KEY")
+        manifestPlaceholders["KAKAO_NATIVE_APP_KEY"] = localProperties.getProperty("KAKAO_NATIVE_APP_KEY", "")
+
+        buildConfigField(
+            "String",
+            "KAKAO_NATIVE_APP_KEY",
+            "\"${localProperties.getProperty("KAKAO_NATIVE_APP_KEY", "")}\""
+        )
     }
 
     buildTypes {
@@ -47,6 +54,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -94,6 +102,8 @@ dependencies {
     implementation(libs.androidx.compose.material3.adaptive.navigation3)
     implementation(libs.androidx.compose.material3.navigationSuite)
     implementation(libs.androidx.hilt.lifecycle.viewModelCompose)
+
+    implementation(libs.kakao.user)
 
     //TODO for test
     api(libs.androidx.compose.material.iconsExtended)

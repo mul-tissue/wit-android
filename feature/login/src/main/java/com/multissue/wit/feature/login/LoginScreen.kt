@@ -1,5 +1,6 @@
 package com.multissue.wit.feature.login
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,24 +12,70 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.multissue.wit.designsystem.component.background.WitGradientBackground
 import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.designsystem.theme.white100
 import com.multissue.wit.designsystem.theme.yellow
 import com.multissue.wit.feature.login.component.SocialLoginButton
+import com.multissue.wit.feature.login.social.SocialLoginClient
+import com.multissue.wit.feature.login.state.LoginSideEffect
+import com.multissue.wit.feature.login.state.LoginUiIntent
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun LoginScreen(
-    modifier: Modifier = Modifier,
+    viewModel: LoginViewModel = hiltViewModel(),
     navigateToSignUp: () -> Unit,
+    navigateToMain: () -> Unit,
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.sideEffect.collect { effect ->
+            when (effect) {
+                is LoginSideEffect.LoginSuccess -> {
+                    // TODO: status에 따른 분기 처리 (ACTIVE → Main, 그 외 → SignUp 등)
+                }
+                is LoginSideEffect.LoginError -> {
+                    Log.e("LoginScreen", effect.message)
+                    // TODO: 에러 UI 표시 (Snackbar 등)
+                }
+            }
+        }
+    }
+
+    LoginScreen(
+        isLoading = uiState.isLoading,
+        onKakaoLogin = { token ->
+            viewModel.onIntent(LoginUiIntent.KakaoLoginClicked(token))
+        },
+    )
+}
+
+@Composable
+private fun LoginScreen(
+    isLoading: Boolean,
+    onKakaoLogin: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+
     WitGradientBackground {
         Column(
             modifier = modifier
@@ -36,19 +83,30 @@ internal fun LoginScreen(
                 .statusBarsPadding()
                 .navigationBarsPadding()
                 .padding(horizontal = 26.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(80.dp))
+
+            Text(
+                text = "혼자일 때보다 안전하게",
+                style = WitTheme.typography.titleXXL
+            )
+            Text(
+                text = "함께라서 더 즐겁게!",
+                style = WitTheme.typography.titleXXL
+            )
+
+            Spacer(modifier = Modifier.height(183.dp))
 
             Image(
                 modifier = Modifier
-                    .width(200.dp)
-                    .height(146.dp),
+                    .width(95.dp)
+                    .wrapContentHeight()
+                    .align(Alignment.CenterHorizontally),
                 painter = painterResource(R.drawable.image_login_logo),
                 contentDescription = "지구 이미지"
             )
 
-            Spacer(modifier = Modifier.height(156.dp))
+            Spacer(modifier = Modifier.weight(1f))
 
             SocialLoginButton(
                 modifier = Modifier
@@ -69,12 +127,18 @@ internal fun LoginScreen(
                     contentColor = WitTheme.colors.text
                 )
             ) {
-                navigateToSignUp()
-                // TODO("카카오 로그인")
+                if (!isLoading) {
+                    scope.launch {
+                        runCatching { SocialLoginClient.loginWithKakao(context) }
+                            .onSuccess(onKakaoLogin)
+                            .onFailure { Log.e("LoginScreen", "카카오 로그인 실패", it) }
+                    }
+                }
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
+            // TODO: Google 로그인 버튼 추가
             SocialLoginButton(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -94,10 +158,9 @@ internal fun LoginScreen(
                     contentColor = WitTheme.colors.text
                 )
             ) {
-                navigateToSignUp()
-                // TODO("구글 로그인")
+                // TODO: Google 로그인 구현
             }
-            
+
             Spacer(modifier = Modifier.height(26.dp))
         }
     }

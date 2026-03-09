@@ -51,7 +51,7 @@ fun SignupRoute(
     modifier: Modifier = Modifier,
     signupViewModel: SignupViewModel = hiltViewModel(),
     navigateToLogin: () -> Unit,
-    navigateToHome: () -> Unit
+    navigateToHome: () -> Unit,
 ) {
     val uiState by signupViewModel.uiState.collectAsStateWithLifecycle()
 
@@ -60,7 +60,7 @@ fun SignupRoute(
         signupUiState = uiState,
         onIntent = signupViewModel::onIntent,
         navigateToMain = navigateToHome,
-        navigateToLogin = navigateToLogin
+        navigateToLogin = navigateToLogin,
     )
 }
 

@@ -28,16 +28,13 @@ fun AuthApp(
     val navigator = remember { Navigator(authState.navigationState) }
     val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>()
 
-//    LaunchedEffect(Unit) {
-//        navigateToMain()
-//    }
-
     val entryProvider = entryProvider {
         onboardingEntry {
             navigator.navigate(LoginNavKey)
         }
         loginEntry(
-            navigateToSignUp = { navigator.navigate(SignupNavKey) }
+            navigateToSignUp = { navigator.navigate(SignupNavKey) },
+            navigateToMain = navigateToMain,
         )
         signupEntry(
             navigateToLogin = { navigator.navigate(LoginNavKey) },
