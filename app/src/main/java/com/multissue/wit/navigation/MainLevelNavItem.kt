@@ -72,6 +72,6 @@ val MAIN_LEVEL_NAV_ITEMS = mapOf(
 val SUB_LEVEL_NAV_ITEMS = mapOf(
     UploadNavKey to UPLOAD,
     MyPageNavKey to MYPAGE,
-    MapNavKey to MAP,
+    MapNavKey() to MAP,
     FeedNavKey(null) to FEED,
 )

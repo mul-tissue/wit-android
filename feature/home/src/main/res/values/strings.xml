@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_logo_description">wit 로고</string>
+    <string name="home_notification">알림</string>
+    <string name="home_profile">프로필</string>
+
+    <string name="home_tab_feed">피드</string>
+    <string name="home_tab_travel">동행</string>
+    <string name="home_search_placeholder">어디로 떠날까요?</string>
+
+    <string name="home_banner_prefix">아시아 내에</string>
+    <string name="home_banner_highlight">%d명의 트래블러</string>
+    <string name="home_banner_suffix">가 활동하고 있어요</string>
+
+    <string name="home_country_selection_title">국가 선택</string>
+    <string name="home_popular_destinations">지금 많이 찾는 여행지</string>
+    <string name="home_country_collapse">접기</string>
+    <string name="home_country_expand">펼치기</string>
+    <string name="home_back">뒤로</string>
+</resources>
