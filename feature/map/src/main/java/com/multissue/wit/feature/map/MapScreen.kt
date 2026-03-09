@@ -57,6 +57,8 @@ import com.multissue.wit.core.ui.travel.component.UploadTravelBottomSheet
 import com.multissue.wit.core.ui.travel.component.TravelPostCardMapThumbnail
 import com.multissue.wit.feature.map.dummy.placeDummyList
 import com.multissue.wit.feature.map.state.FeedFilterType
+import com.multissue.wit.feature.map.state.feed.FeedUiIntent
+import com.multissue.wit.feature.map.state.feed.FeedUiState
 import com.multissue.wit.feature.map.state.travel.TravelSideEffect
 import com.multissue.wit.feature.map.state.travel.TravelUiIntent
 import com.multissue.wit.feature.map.state.travel.TravelUiState
@@ -67,7 +69,7 @@ import java.time.YearMonth
 @Composable
 fun MapScreen(
     modifier: Modifier = Modifier,
-    mapViewModel: MapViewModel = hiltViewModel(),
+    feedViewModel: FeedViewModel = hiltViewModel(),
     travelViewModel: TravelViewModel = hiltViewModel(),
     navigateToMyPage: () -> Unit,
     onFeedItemClicked: (feedId: Int) -> Unit,
@@ -77,6 +79,7 @@ fun MapScreen(
     centerButtonEvent: Flow<Unit>,
     onNavRailVisibilityChanged: (Boolean) -> Unit = {},
 ) {
+    val feedUiState by feedViewModel.uiState.collectAsStateWithLifecycle()
     val travelUiState by travelViewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
     val deletedSnackbarMessage = stringResource(R.string.travel_deleted_snackbar)
@@ -100,8 +103,10 @@ fun MapScreen(
 
     MapScreen(
         modifier = modifier,
+        feedUiState = feedUiState,
         travelUiState = travelUiState,
         navigateToMyPage = navigateToMyPage,
+        onFeedIntent = feedViewModel::onIntent,
         onTravelIntent = travelViewModel::onIntent,
         onFeedItemClicked = onFeedItemClicked,
         onNavigateToUpload = onNavigateToUpload,
@@ -115,8 +120,10 @@ fun MapScreen(
 @Composable
 fun MapScreen(
     modifier: Modifier = Modifier,
+    feedUiState: FeedUiState,
     travelUiState: TravelUiState,
     navigateToMyPage: () -> Unit,
+    onFeedIntent: (FeedUiIntent) -> Unit,
     onTravelIntent: (TravelUiIntent) -> Unit,
     onFeedItemClicked: (feedId: Int) -> Unit,
     onNavigateToUpload: () -> Unit = {},

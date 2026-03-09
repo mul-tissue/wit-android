@@ -7,6 +7,7 @@ plugins {
 kotlin {
     sourceSets {
         dependencies {
+            implementation(projects.core.domain)
             implementation(projects.feature.feed)
             implementation(projects.feature.travel)
             implementation(projects.feature.chat)
