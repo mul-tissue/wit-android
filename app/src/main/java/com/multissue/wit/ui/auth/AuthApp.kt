@@ -28,9 +28,9 @@ fun AuthApp(
     val navigator = remember { Navigator(authState.navigationState) }
     val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>()
 
-    LaunchedEffect(Unit) {
-        navigateToMain()
-    }
+//    LaunchedEffect(Unit) {
+//        navigateToMain()
+//    }
 
     val entryProvider = entryProvider {
         onboardingEntry {

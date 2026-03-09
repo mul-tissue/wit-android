@@ -13,6 +13,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:network"))
     implementation(libs.datastore)
     implementation(libs.datastore.preferences)
     implementation(libs.kotlinx.coroutines.core)

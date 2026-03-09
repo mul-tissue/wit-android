@@ -104,6 +104,8 @@ kspGradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtoo
 
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-kotlin-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
 
 androidx-vectordrawable = { group = "androidx.vectordrawable", name = "vectordrawable", version.ref = "vectordrawable" }
@@ -127,6 +129,7 @@ com-multissue-wit-compose = { id = "com.multissue.wit.compose" }
 com-multissue-wit-kotlin = { id = "com.multissue.wit.kotlin" }
 com-multissue-wit-library = { id = "com.multissue.wit.library" }
 com-multissue-wit-hilt = { id = "com.multissue.wit.hilt" }
+com-multissue-wit-network = { id = "com.multissue.wit.network" }
 
 # Bundle Plugin
 com-multissue-wit-feature = { id = "com.multissue.wit.feature" }
@@ -138,4 +141,11 @@ plugins = [
     "kotlinxSerializationGradlePlugin",
     "composeCompilerGradlePlugin",
     "kspGradlePlugin"
+]
+network = [
+    "retrofit-core",
+    "retrofit-kotlin-serialization",
+    "okhttp",
+    "okhttp-logging",
+    "kotlinx-serialization-json",
 ]

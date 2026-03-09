@@ -1,6 +1,9 @@
 package com.multissue.wit.feature.feed
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
+import com.multissue.wit.core.domain.exception.WitException
+import com.multissue.wit.core.domain.usecase.feed.GetDistrictFeedsUseCase
 import com.multissue.wit.core.ui.base.BaseViewModel
 import com.multissue.wit.feature.feed.navigation.FeedNavKey
 import com.multissue.wit.feature.feed.state.FeedState
@@ -14,11 +17,13 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 
 @HiltViewModel(assistedFactory = FeedViewModel.Factory::class)
 class FeedViewModel @AssistedInject constructor(
     private val savedStateHandle: SavedStateHandle,
-    @Assisted val key: FeedNavKey
+    @Assisted val key: FeedNavKey,
+    private val getDistrictFeedsUseCase: GetDistrictFeedsUseCase,
 ) : BaseViewModel<FeedUiState, FeedUiSideEffect, FeedUiIntent>(FeedUiState()) {
     private val selectedFeedIdKey = "selectedFeedIdKey"
 
@@ -26,6 +31,22 @@ class FeedViewModel @AssistedInject constructor(
         key = selectedFeedIdKey,
         initialValue = key.feedId
     )
+
+    private fun loadDistrictFeeds(districtId: String) {
+        viewModelScope.launch {
+            getDistrictFeedsUseCase(districtId = districtId)
+                .onSuccess { feeds ->
+                    // TODO: map to UiState
+                }
+                .onFailure { throwable ->
+                    when (throwable) {
+                        is WitException.HttpException -> { /* throwable.code */ }
+                        is WitException.NetworkException -> { /* network error */ }
+                        else -> { }
+                    }
+                }
+        }
+    }
 
     override fun onIntent(intent: FeedUiIntent) {
         when(intent) {

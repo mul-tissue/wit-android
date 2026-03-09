@@ -1,11 +1,8 @@
 plugins {
-    alias(libs.plugins.jetbrains.kotlin.jvm)
+    alias(libs.plugins.com.multissue.wit.network)
+    alias(libs.plugins.kotlin.serialization)
 }
 
-kotlin {
-    sourceSets {
-        dependencies {
-
-        }
-    }
+android {
+    namespace = "com.multissue.wit.core.network"
 }
