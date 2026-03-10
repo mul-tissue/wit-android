@@ -8,5 +8,6 @@ fun SocialLoginResponse.toDomain() = LoginResult(
     status = runCatching {
         AuthStatus.valueOf(status)
     }.getOrDefault(AuthStatus.PENDING_AGREEMENT),
-    // TODO: 서버 응답에 따라 필요한 필드 매핑 추가
+    nickname = nickname,
+    profileImagePath = profileImagePath,
 )

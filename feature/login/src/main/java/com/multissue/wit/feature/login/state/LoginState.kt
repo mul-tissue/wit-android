@@ -11,7 +11,7 @@ data class LoginUiState(
 
 sealed class LoginUiIntent : UiIntent {
     data class KakaoLoginClicked(val token: String) : LoginUiIntent()
-    // TODO: Google 로그인 Intent 추가
+    data class GoogleLoginClicked(val token: String) : LoginUiIntent()
 }
 
 sealed interface LoginSideEffect : UiSideEffect {

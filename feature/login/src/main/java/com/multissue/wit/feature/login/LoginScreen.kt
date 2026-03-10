@@ -26,7 +26,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.multissue.wit.core.domain.model.auth.AuthStatus
 import com.multissue.wit.designsystem.component.background.WitGradientBackground
 import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.designsystem.theme.white100
@@ -49,7 +51,10 @@ internal fun LoginScreen(
         viewModel.sideEffect.collect { effect ->
             when (effect) {
                 is LoginSideEffect.LoginSuccess -> {
-                    // TODO: status에 따른 분기 처리 (ACTIVE → Main, 그 외 → SignUp 등)
+                    when (effect.status) {
+                        AuthStatus.ACTIVE -> navigateToMain()
+                        else -> navigateToSignUp()
+                    }
                 }
                 is LoginSideEffect.LoginError -> {
                     Log.e("LoginScreen", effect.message)
@@ -64,6 +69,9 @@ internal fun LoginScreen(
         onKakaoLogin = { token ->
             viewModel.onIntent(LoginUiIntent.KakaoLoginClicked(token))
         },
+        onGoogleLogin = { token ->
+            viewModel.onIntent(LoginUiIntent.GoogleLoginClicked(token))
+        },
     )
 }
 
@@ -71,6 +79,7 @@ internal fun LoginScreen(
 private fun LoginScreen(
     isLoading: Boolean,
     onKakaoLogin: (String) -> Unit,
+    onGoogleLogin: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val scope = rememberCoroutineScope()
@@ -87,11 +96,11 @@ private fun LoginScreen(
             Spacer(modifier = Modifier.height(80.dp))
 
             Text(
-                text = "혼자일 때보다 안전하게",
+                text = stringResource(R.string.login_title_first),
                 style = WitTheme.typography.titleXXL
             )
             Text(
-                text = "함께라서 더 즐겁게!",
+                text = stringResource(R.string.login_title_second),
                 style = WitTheme.typography.titleXXL
             )
 
@@ -138,7 +147,6 @@ private fun LoginScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // TODO: Google 로그인 버튼 추가
             SocialLoginButton(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -158,7 +166,16 @@ private fun LoginScreen(
                     contentColor = WitTheme.colors.text
                 )
             ) {
-                // TODO: Google 로그인 구현
+                if (!isLoading) {
+                    scope.launch {
+                        runCatching { SocialLoginClient.loginWithGoogle(context) }
+                            .onSuccess(onGoogleLogin)
+                            .onFailure {
+                                if (it is GetCredentialCancellationException) return@launch
+                                Log.e("LoginScreen", "구글 로그인 실패", it)
+                            }
+                    }
+                }
             }
 
             Spacer(modifier = Modifier.height(26.dp))

@@ -19,7 +19,7 @@ class LoginViewModel @Inject constructor(
     override fun onIntent(intent: LoginUiIntent) {
         when (intent) {
             is LoginUiIntent.KakaoLoginClicked -> login(SocialType.KAKAO, intent.token)
-            // TODO: Google 로그인 처리
+            is LoginUiIntent.GoogleLoginClicked -> login(SocialType.GOOGLE, intent.token)
         }
     }
 
