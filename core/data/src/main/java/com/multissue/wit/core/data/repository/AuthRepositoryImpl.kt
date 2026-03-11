@@ -33,7 +33,7 @@ class AuthRepositoryImpl @Inject constructor(
         )
         when (val response = safeApiCall { authService.socialLogin(request) }) {
             is ApiResponse.Success -> {
-                val data = response.data.data
+                val data = response.data.data!!
                 storage.writeValue(WitStorageKeys.ACCESS_TOKEN, data.accessToken)
                 storage.writeValue(WitStorageKeys.REFRESH_TOKEN, data.refreshToken)
                 Result.success(data.toDomain())

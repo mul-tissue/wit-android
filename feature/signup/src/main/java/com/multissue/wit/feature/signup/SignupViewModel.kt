@@ -1,5 +1,8 @@
 package com.multissue.wit.feature.signup
 
+import androidx.lifecycle.viewModelScope
+import com.multissue.wit.core.domain.exception.toUserMessage
+import com.multissue.wit.core.domain.usecase.user.CheckNicknameDuplicateUseCase
 import com.multissue.wit.core.ui.base.BaseViewModel
 import com.multissue.wit.feature.signup.state.agreement.AgreementType
 import com.multissue.wit.feature.signup.state.GenderType
@@ -7,11 +10,12 @@ import com.multissue.wit.feature.signup.state.SignupSideEffect
 import com.multissue.wit.feature.signup.state.SignupUiIntent
 import com.multissue.wit.feature.signup.state.SignupUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
-
+    private val checkNicknameDuplicateUseCase: CheckNicknameDuplicateUseCase,
 ) : BaseViewModel<SignupUiState, SignupSideEffect, SignupUiIntent>(
     initialState = SignupUiState()
 ) {
@@ -29,6 +33,7 @@ class SignupViewModel @Inject constructor(
             is SignupUiIntent.ShowTermsDialog -> onShowTermsDialog()
             is SignupUiIntent.HideTermsDialog -> onHideTermsDialog()
             is SignupUiIntent.SignupComplete -> onSignupComplete()
+            is SignupUiIntent.DismissError -> onDismissError()
         }
     }
 
@@ -43,12 +48,19 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun onCheckNickNameDuplicate() {
-        // TODO("서버에서 NickName check")
-        setState {
-            copy(
-                isNickNameDuplicated = false,
-                isCheckedNickname = true
-            )
+        viewModelScope.launch {
+            checkNicknameDuplicateUseCase(currentState.nickname)
+                .onSuccess { isAvailable ->
+                    setState {
+                        copy(
+                            isNickNameDuplicated = !isAvailable,
+                            isCheckedNickname = true
+                        )
+                    }
+                }
+                .onFailure {
+                    setState { copy(errorMessage = it.toUserMessage()) }
+                }
         }
     }
 
@@ -151,6 +163,14 @@ class SignupViewModel @Inject constructor(
             copy(
                 showAgreementBottomSheet = false,
                 signupComplete = true
+            )
+        }
+    }
+
+    private fun onDismissError() {
+        setState {
+            copy(
+                errorMessage = null
             )
         }
     }

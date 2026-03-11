@@ -40,6 +40,7 @@ import com.multissue.wit.feature.signup.component.NicknamePage
 import com.multissue.wit.feature.signup.component.SelectDateDialog
 import com.multissue.wit.feature.signup.component.SignupAgreementBottomSheet
 import com.multissue.wit.feature.signup.component.TermsDialog
+import com.multissue.wit.designsystem.component.dialog.WitErrorDialog
 import com.multissue.wit.feature.signup.state.SignUpStep
 import com.multissue.wit.feature.signup.state.SignupUiIntent
 import com.multissue.wit.feature.signup.state.SignupUiState
@@ -61,6 +62,11 @@ fun SignupRoute(
         onIntent = signupViewModel::onIntent,
         navigateToMain = navigateToHome,
         navigateToLogin = navigateToLogin,
+    )
+
+    WitErrorDialog(
+        errorMessage = uiState.errorMessage,
+        onDismiss = { signupViewModel.onIntent(SignupUiIntent.DismissError) },
     )
 }
 

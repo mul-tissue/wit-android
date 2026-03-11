@@ -19,7 +19,8 @@ data class SignupUiState(
     val showAgreementBottomSheet: Boolean = false,
     val agreementState: AgreementState = AgreementState(),
     val showTermsDialog: Boolean = false,
-    val signupComplete: Boolean = false
+    val signupComplete: Boolean = false,
+    val errorMessage: String? = null
 ) : UiState {
     val hasBirthDate: Boolean
         get() = birthYear != 0 && birthMonth != 0 && birthDay != 0
@@ -56,6 +57,7 @@ sealed class SignupUiIntent : UiIntent {
     data object ShowTermsDialog : SignupUiIntent()
     data object HideTermsDialog : SignupUiIntent()
     data object SignupComplete : SignupUiIntent()
+    data object DismissError : SignupUiIntent()
 }
 
 sealed interface SignupSideEffect : UiSideEffect

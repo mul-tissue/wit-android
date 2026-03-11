@@ -82,7 +82,7 @@ fun NicknamePage(
 
             SignupBottomButton(
                 modifier = Modifier.padding(bottom = 22.dp),
-                enabled = isCheckedNickname && nickName.isNotBlank(),
+                enabled = isCheckedNickname && isNickNameDuplicated == false && nickName.isNotBlank(),
                 onClick = {
                     scope.launch {
                         pagerState.animateScrollToPage(
