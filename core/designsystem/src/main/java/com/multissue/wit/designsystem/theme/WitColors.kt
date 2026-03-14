@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 val blue = Color(0xFF74B1FF)
 val blueDarker = Color(0xFF539FFF)
 val blueLighter = Color(0xFFD5E8FF)
+val gradientColor1 = Color(0xFFBDDAFF)
 val gradientColor2 = Color(0xFFF7FBFF)
 val gradientColor3 = Color(0xFFEFF6FF)
 val mint = Color(0xFF6BDDD2)
@@ -264,7 +265,7 @@ fun lightColorScheme(): WitColors = WitColors(
     gradientColor3 = gradientColor3,
     gradientBackground = Brush.linearGradient(
         colorStops = arrayOf(
-            0.0f to blueLighter,
+            0.0f to gradientColor1,
             0.52f to gradientColor2,
             0.96f to gradientColor3,
             1.0f to gradientColor3,

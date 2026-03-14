@@ -17,8 +17,10 @@ fun EntryProviderScope<NavKey>.mapEntry(
     onNavigateToUpload: () -> Unit = {},
 ) {
     // TODO SnackBar
-    entry<MapNavKey> {
+    entry<MapNavKey> { navKey ->
         MapScreen(
+            initialLat = navKey.latitude,
+            initialLng = navKey.longitude,
             navigateToMyPage = navigateToMyPage,
             onFeedItemClicked = navigator::navigateToFeed,
             onTravelItemClicked = navigator::navigateToTravel,

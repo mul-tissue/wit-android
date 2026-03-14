@@ -71,6 +71,8 @@ fun MapScreen(
     modifier: Modifier = Modifier,
     feedViewModel: FeedViewModel = hiltViewModel(),
     travelViewModel: TravelViewModel = hiltViewModel(),
+    initialLat: Double? = null,
+    initialLng: Double? = null,
     navigateToMyPage: () -> Unit,
     onFeedItemClicked: (feedId: Int) -> Unit,
     onTravelItemClicked: (travelId: Int) -> Unit,
@@ -104,6 +106,8 @@ fun MapScreen(
     MapScreen(
         modifier = modifier,
         feedUiState = feedUiState,
+        initialLat = initialLat,
+        initialLng = initialLng,
         travelUiState = travelUiState,
         navigateToMyPage = navigateToMyPage,
         onFeedIntent = feedViewModel::onIntent,
@@ -121,6 +125,8 @@ fun MapScreen(
 fun MapScreen(
     modifier: Modifier = Modifier,
     feedUiState: FeedUiState,
+    initialLat: Double? = null,
+    initialLng: Double? = null,
     travelUiState: TravelUiState,
     navigateToMyPage: () -> Unit,
     onFeedIntent: (FeedUiIntent) -> Unit,
@@ -350,6 +356,8 @@ fun MapScreen(
                         modifier = Modifier.weight(1f)
                     ) {
                         MapTest(
+                            initialLat = initialLat,
+                            initialLng = initialLng,
                             locationButtonPadding = paddingValues.calculateBottomPadding()
                         )
 
