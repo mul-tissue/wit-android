@@ -5,11 +5,13 @@ import androidx.navigation3.runtime.NavKey
 import com.multissue.wit.feature.login.LoginScreen
 
 fun EntryProviderScope<NavKey>.loginEntry(
-    navigateToSignUp: () -> Unit
+    navigateToSignUp: () -> Unit,
+    navigateToMain: () -> Unit,
 ) {
     entry<LoginNavKey> {
         LoginScreen(
-            navigateToSignUp = navigateToSignUp
+            navigateToSignUp = navigateToSignUp,
+            navigateToMain = navigateToMain,
         )
     }
 }

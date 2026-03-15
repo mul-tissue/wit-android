@@ -1,5 +1,7 @@
 package com.multissue.wit.core.network.interceptor
 
+import com.multissue.wit.core.network.interceptor.Constant.AUTHORIZATION
+import com.multissue.wit.core.network.interceptor.Constant.BEARER_PREFIX
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
@@ -12,7 +14,7 @@ class AuthInterceptor @Inject constructor(
         val token = tokenProvider.getAccessToken()
         val request = if (token != null) {
             chain.request().newBuilder()
-                .header("Authorization", "Bearer $token")
+                .header(AUTHORIZATION, "$BEARER_PREFIX $token")
                 .build()
         } else {
             chain.request()

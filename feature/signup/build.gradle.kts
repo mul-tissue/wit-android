@@ -9,6 +9,7 @@ kotlin {
         dependencies {
             implementation(libs.androidx.compose.material3)
             implementation(libs.kotlinx.datetime)
+            implementation(projects.core.domain)
         }
     }
 }

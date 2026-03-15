@@ -19,8 +19,6 @@ package com.multissue.wit.navigation
 import com.multissue.wit.feature.login.navigation.LoginNavKey
 import com.multissue.wit.feature.onboarding.navigation.OnboardingNavKey
 import com.multissue.wit.feature.signup.navigation.SignupNavKey
-import com.multissue.wit.navigation.auth.AuthNavKey
-import com.multissue.wit.navigation.main.MainNavKey
 
 data object AuthLevelNavItem
 

@@ -6,3 +6,7 @@ plugins {
 android {
     namespace = "com.multissue.wit.core.network"
 }
+
+dependencies {
+    implementation(libs.kotlinx.serialization.json)
+}

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="login_title_first">혼자일 때보다 안전하게</string>
+    <string name="login_title_second">함께라서 더 즐겁게!</string>
     <string name="kakao_login">카카오 로그인</string>
     <string name="google_login">구글 로그인</string>
 </resources>

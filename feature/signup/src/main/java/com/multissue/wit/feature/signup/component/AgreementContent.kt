@@ -8,35 +8,24 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.multissue.wit.core.domain.model.terms.TermItem
 import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.feature.signup.R
-import com.multissue.wit.feature.signup.state.SignupUiState
-import com.multissue.wit.feature.signup.state.agreement.AgreementType
 
 @Composable
 fun AgreementContent(
-    state: SignupUiState.AgreementState,
-    onStateChange: (AgreementType, Boolean) -> Unit,
-    onShowTermsDialog: () -> Unit,
-    onConfirm: () -> Unit
+    termItems: List<TermItem>,
+    agreedTermIds: Set<String>,
+    isAllAgreed: Boolean,
+    isRequiredAgreed: Boolean,
+    onToggleTerm: (String) -> Unit,
+    onToggleAll: () -> Unit,
+    onShowTermsContent: (String) -> Unit,
+    onConfirm: () -> Unit,
 ) {
-    val terms by rememberUpdatedState(state.terms)
-    val location by rememberUpdatedState(state.location)
-    val marketing by rememberUpdatedState(state.marketing)
-
-    val isAllChecked by remember {
-        derivedStateOf {
-            terms && location && marketing
-        }
-    }
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -52,8 +41,8 @@ fun AgreementContent(
         AgreementAllItem(
             modifier = Modifier.padding(vertical = 12.dp),
             title = stringResource(R.string.agreement_all_title),
-            checked = isAllChecked,
-            onCheckedChange = { onStateChange(AgreementType.ALL, it) }
+            checked = isAllAgreed,
+            onCheckedChange = { onToggleAll() }
         )
 
         HorizontalDivider(
@@ -63,43 +52,26 @@ fun AgreementContent(
 
         Spacer(Modifier.height(20.dp))
 
-        AgreementItem(
-            modifier = Modifier.padding(vertical = 8.dp),
-            title = stringResource(R.string.agreement_terms_title),
-            checked = state.terms,
-            onShowAgreementDescription = {
-                // TODO("API 연결 시 약관 Type에 따라 분기")
-                onShowTermsDialog()
-            },
-            onCheckedChange = { onStateChange(AgreementType.TERMS, it) }
-        )
+        termItems.forEach { term ->
+            val label = if (term.required) {
+                "${term.title} (${stringResource(R.string.agreement_required)})"
+            } else {
+                "${term.title} (${stringResource(R.string.agreement_optional)})"
+            }
 
-        AgreementItem(
-            modifier = Modifier.padding(vertical = 8.dp),
-            title = stringResource(R.string.agreement_location_title),
-            checked = state.location,
-            onShowAgreementDescription = {
-                // TODO("API 연결 시 약관 Type에 따라 분기")
-                onShowTermsDialog()
-            },
-            onCheckedChange = { onStateChange(AgreementType.LOCATION, it) }
-        )
-
-        AgreementItem(
-            modifier = Modifier.padding(vertical = 8.dp),
-            title = stringResource(R.string.agreement_marketing_title),
-            checked = state.marketing,
-            onShowAgreementDescription = {
-                // TODO("API 연결 시 약관 Type에 따라 분기")
-                onShowTermsDialog()
-            },
-            onCheckedChange = { onStateChange(AgreementType.MARKETING, it) }
-        )
+            AgreementItem(
+                modifier = Modifier.padding(vertical = 8.dp),
+                title = label,
+                checked = term.id in agreedTermIds,
+                onShowAgreementDescription = { term.contentUrl?.let(onShowTermsContent) },
+                onCheckedChange = { onToggleTerm(term.id) }
+            )
+        }
 
         Spacer(Modifier.height(36.dp))
 
         SignupBottomButton(
-            enabled = state.isRequiredAccepted,
+            enabled = isRequiredAgreed,
             onClick = onConfirm
         )
 

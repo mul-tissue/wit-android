@@ -54,11 +54,13 @@ import kotlinx.coroutines.flow.map
 @Composable
 fun WitApp(
     appState: WitAppState,
+    onNavigateToAuth: () -> Unit = {},
 ) {
     // TODO THEMES
     WitApp(
         appState = appState,
-        witAppViewModel = hiltViewModel()
+        witAppViewModel = hiltViewModel(),
+        onNavigateToAuth = onNavigateToAuth,
     )
 }
 
@@ -67,6 +69,7 @@ fun WitApp(
 internal fun WitApp(
     appState: WitAppState,
     witAppViewModel: WitAppViewModel,
+    onNavigateToAuth: () -> Unit = {},
 ) {
     val navigator = remember { Navigator(appState.navigationState) }
     var showNavRail by remember { mutableStateOf(true) }
@@ -112,8 +115,8 @@ internal fun WitApp(
                         onNavigateToUpload = { navigator.navigate(UploadNavKey) },
                     )
                     myPageEntry(
-                        navigator,
                         onBottomNavVisibilityChanged = { showNavRail = it },
+                        onNavigateToAuth = onNavigateToAuth,
                     )
                     uploadEntry(navigator)
                     feedEntry(navigator)

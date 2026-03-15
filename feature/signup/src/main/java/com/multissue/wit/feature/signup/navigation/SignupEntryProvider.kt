@@ -11,7 +11,7 @@ fun EntryProviderScope<NavKey>.signupEntry(
     entry<SignupNavKey> {
         SignupRoute(
             navigateToLogin = navigateToLogin,
-            navigateToHome = navigateToMain
+            navigateToHome = navigateToMain,
         )
     }
 }

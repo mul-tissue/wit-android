@@ -1,9 +1,9 @@
 package com.multissue.wit.feature.signup.state
 
+import com.multissue.wit.core.domain.model.terms.TermItem
 import com.multissue.wit.core.ui.base.UiIntent
 import com.multissue.wit.core.ui.base.UiSideEffect
 import com.multissue.wit.core.ui.base.UiState
-import com.multissue.wit.feature.signup.state.agreement.AgreementType
 
 data class SignupUiState(
     val nickname: String = "",
@@ -17,21 +17,20 @@ data class SignupUiState(
 
     val gender: GenderType = GenderType.NONE,
     val showAgreementBottomSheet: Boolean = false,
-    val agreementState: AgreementState = AgreementState(),
-    val showTermsDialog: Boolean = false,
-    val signupComplete: Boolean = false
+    val termItems: List<TermItem> = emptyList(),
+    val agreedTermIds: Set<String> = emptySet(),
+    val termsContentUrl: String = "",
+    val signupComplete: Boolean = false,
+    val errorMessage: String? = null
 ) : UiState {
     val hasBirthDate: Boolean
         get() = birthYear != 0 && birthMonth != 0 && birthDay != 0
 
-    data class AgreementState(
-        val terms: Boolean = false,       // 필수
-        val location: Boolean = false,    // 필수
-        val marketing: Boolean = false    // 선택
-    ) {
-        val isRequiredAccepted: Boolean
-            get() = terms && location
-    }
+    val isAllTermsAgreed: Boolean
+        get() = termItems.isNotEmpty() && termItems.all { it.id in agreedTermIds }
+
+    val isRequiredTermsAgreed: Boolean
+        get() = termItems.filter { it.required }.all { it.id in agreedTermIds }
 }
 
 sealed class SignupUiIntent : UiIntent {
@@ -48,14 +47,13 @@ sealed class SignupUiIntent : UiIntent {
     data class SetGender(val gender: GenderType) : SignupUiIntent()
     data object ShowAgreementBottomSheet : SignupUiIntent()
     data object HideAgreementBottomSheet : SignupUiIntent()
-    data class CheckAgreement(
-        val type: AgreementType,
-        val checked: Boolean
-    ) : SignupUiIntent()
+    data class ToggleTermAgreement(val termId: String) : SignupUiIntent()
+    data object ToggleAllTerms : SignupUiIntent()
 
-    data object ShowTermsDialog : SignupUiIntent()
-    data object HideTermsDialog : SignupUiIntent()
-    data object SignupComplete : SignupUiIntent()
+    data class ShowTermsContent(val contentUrl: String) : SignupUiIntent()
+    data object HideTermsContent : SignupUiIntent()
+    data object SubmitAgreement : SignupUiIntent()
+    data object DismissError : SignupUiIntent()
 }
 
 sealed interface SignupSideEffect : UiSideEffect

@@ -11,10 +11,12 @@ data class SettingsUiState(
     val showLogoutDialog: Boolean = false,
     val showWithdrawDialog: Boolean = false,
     val showWithdrawCompleteDialog: Boolean = false,
+    val errorMessage: String? = null,
 ) : UiState
 
 sealed interface SettingsUiSideEffect : UiSideEffect {
     data object NavigateToProfileEdit : SettingsUiSideEffect
+    data object NavigateToAuth : SettingsUiSideEffect
 }
 
 sealed interface SettingsUiIntent : UiIntent {
@@ -27,4 +29,5 @@ sealed interface SettingsUiIntent : UiIntent {
     data object DismissWithdrawDialog : SettingsUiIntent
     data object ConfirmWithdraw : SettingsUiIntent
     data object DismissWithdrawCompleteDialog : SettingsUiIntent
+    data object DismissErrorDialog : SettingsUiIntent
 }

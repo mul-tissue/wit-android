@@ -23,6 +23,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.multissue.wit.designsystem.component.dialog.WitDialog
 import com.multissue.wit.designsystem.component.dialog.WitDialogDefaultLayout
+import com.multissue.wit.designsystem.component.dialog.WitErrorDialog
 import com.multissue.wit.designsystem.component.dialog.WitDialogMessage
 import com.multissue.wit.designsystem.component.dialog.WitDialogOnlyTitle
 import com.multissue.wit.designsystem.component.dialog.WitDialogRightButton
@@ -39,6 +40,7 @@ import com.multissue.wit.feature.mypage.state.settings.SettingsUiSideEffect
 fun MyPageSettingsContent(
     modifier: Modifier = Modifier,
     onNavigateToProfileEdit: () -> Unit = {},
+    onNavigateToAuth: () -> Unit = {},
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -47,6 +49,7 @@ fun MyPageSettingsContent(
         viewModel.sideEffect.collect { effect ->
             when (effect) {
                 SettingsUiSideEffect.NavigateToProfileEdit -> onNavigateToProfileEdit()
+                SettingsUiSideEffect.NavigateToAuth -> onNavigateToAuth()
             }
         }
     }
@@ -58,6 +61,7 @@ fun MyPageSettingsContent(
         showLogoutDialog = uiState.showLogoutDialog,
         showWithdrawDialog = uiState.showWithdrawDialog,
         showWithdrawCompleteDialog = uiState.showWithdrawCompleteDialog,
+        errorMessage = uiState.errorMessage,
         onIntent = viewModel::onIntent,
     )
 }
@@ -70,6 +74,7 @@ internal fun MyPageSettingsContent(
     showLogoutDialog: Boolean,
     showWithdrawDialog: Boolean,
     showWithdrawCompleteDialog: Boolean,
+    errorMessage: String? = null,
     onIntent: (SettingsUiIntent) -> Unit,
 ) {
     Column(
@@ -189,4 +194,9 @@ internal fun MyPageSettingsContent(
             )
         }
     }
+
+    WitErrorDialog(
+        errorMessage = errorMessage,
+        onDismiss = { onIntent(SettingsUiIntent.DismissErrorDialog) }
+    )
 }

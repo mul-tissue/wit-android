@@ -40,6 +40,7 @@ import com.multissue.wit.feature.signup.component.NicknamePage
 import com.multissue.wit.feature.signup.component.SelectDateDialog
 import com.multissue.wit.feature.signup.component.SignupAgreementBottomSheet
 import com.multissue.wit.feature.signup.component.TermsDialog
+import com.multissue.wit.designsystem.component.dialog.WitErrorDialog
 import com.multissue.wit.feature.signup.state.SignUpStep
 import com.multissue.wit.feature.signup.state.SignupUiIntent
 import com.multissue.wit.feature.signup.state.SignupUiState
@@ -51,7 +52,7 @@ fun SignupRoute(
     modifier: Modifier = Modifier,
     signupViewModel: SignupViewModel = hiltViewModel(),
     navigateToLogin: () -> Unit,
-    navigateToHome: () -> Unit
+    navigateToHome: () -> Unit,
 ) {
     val uiState by signupViewModel.uiState.collectAsStateWithLifecycle()
 
@@ -60,7 +61,12 @@ fun SignupRoute(
         signupUiState = uiState,
         onIntent = signupViewModel::onIntent,
         navigateToMain = navigateToHome,
-        navigateToLogin = navigateToLogin
+        navigateToLogin = navigateToLogin,
+    )
+
+    WitErrorDialog(
+        errorMessage = uiState.errorMessage,
+        onDismiss = { signupViewModel.onIntent(SignupUiIntent.DismissError) },
     )
 }
 
@@ -184,18 +190,16 @@ fun SignupScreen(
                     }
                 }
                 SignupAgreementBottomSheet(
-                    state = signupUiState.agreementState,
-                    onStateChange = { type, checked ->
-                        onIntent(SignupUiIntent.CheckAgreement(type, checked))
-                    },
-                    onShowTermsDialog = {
-                        onIntent(SignupUiIntent.ShowTermsDialog)
-                    },
-                    onConfirm = {
-                        onIntent(SignupUiIntent.SignupComplete)
-                    },
+                    visible = signupUiState.showAgreementBottomSheet,
+                    termItems = signupUiState.termItems,
+                    agreedTermIds = signupUiState.agreedTermIds,
+                    isAllAgreed = signupUiState.isAllTermsAgreed,
+                    isRequiredAgreed = signupUiState.isRequiredTermsAgreed,
+                    onToggleTerm = { onIntent(SignupUiIntent.ToggleTermAgreement(it)) },
+                    onToggleAll = { onIntent(SignupUiIntent.ToggleAllTerms) },
+                    onShowTermsContent = { onIntent(SignupUiIntent.ShowTermsContent(it)) },
+                    onConfirm = { onIntent(SignupUiIntent.SubmitAgreement) },
                     onDismiss = { onIntent(SignupUiIntent.HideAgreementBottomSheet) },
-                    visible = signupUiState.showAgreementBottomSheet
                 )
             }
 
@@ -213,9 +217,9 @@ fun SignupScreen(
             )
 
             TermsDialog(
-                showDialog = signupUiState.showTermsDialog,
+                contentUrl = signupUiState.termsContentUrl,
                 onDismiss = {
-                    onIntent(SignupUiIntent.HideTermsDialog)
+                    onIntent(SignupUiIntent.HideTermsContent)
                 }
             )
         }

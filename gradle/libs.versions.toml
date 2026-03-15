@@ -39,6 +39,9 @@ googleMapsUtils = "4.0.0"
 googleMapsUtilsKtx = "6.0.0"
 datastore = "1.2.0"
 runner = "1.7.0"
+kakaoSdk = "2.23.2"
+credentials = "1.5.0"
+googleid = "1.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -114,6 +117,11 @@ play-services-location = { group = "com.google.android.gms", name = "play-servic
 maps-compose = { group = "com.google.maps.android", name = "maps-compose", version.ref = "googleMaps" }
 maps-utils = { group = "com.google.maps.android", name = "android-maps-utils", version.ref = "googleMapsUtils" }
 maps-utils-ktx = { group = "com.google.maps.android", name = "maps-utils-ktx", version.ref = "googleMapsUtilsKtx" }
+
+kakao-user = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakaoSdk" }
+credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials" }
+credentials-play-services = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentials" }
+googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

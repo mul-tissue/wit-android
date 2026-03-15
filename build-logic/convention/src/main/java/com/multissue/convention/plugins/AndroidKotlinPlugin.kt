@@ -23,6 +23,8 @@ class AndroidKotlinPlugin : Plugin<Project> {
                     freeCompilerArgs.addAll(
                         listOf(
                             "-opt-in=kotlin.RequiresOptIn",
+                            "-opt-in=kotlinx.serialization.InternalSerializationApi",
+                            "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
                         ),
                     )
                     jvmTarget.set(JvmTarget.JVM_17)
