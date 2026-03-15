@@ -3,6 +3,7 @@ package com.multissue.wit.core.network.service
 import com.multissue.wit.core.network.model.BaseResponse
 import com.multissue.wit.core.network.model.user.request.OnboardingRequest
 import com.multissue.wit.core.network.model.user.response.OnboardingResponse
+import com.multissue.wit.core.network.model.user.response.UserInfoResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
@@ -19,4 +20,7 @@ interface UserService {
     suspend fun completeOnboarding(
         @Body request: OnboardingRequest,
     ): BaseResponse<OnboardingResponse>
+
+    @GET("v1/users/me")
+    suspend fun getMyInfo(): BaseResponse<UserInfoResponse>
 }
