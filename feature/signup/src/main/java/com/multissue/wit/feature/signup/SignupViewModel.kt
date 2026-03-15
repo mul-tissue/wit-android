@@ -5,6 +5,7 @@ import com.multissue.wit.core.domain.exception.toUserMessage
 import com.multissue.wit.core.domain.usecase.terms.AgreeTermsUseCase
 import com.multissue.wit.core.domain.usecase.terms.GetActiveTermsUseCase
 import com.multissue.wit.core.domain.usecase.user.CheckNicknameDuplicateUseCase
+import com.multissue.wit.core.domain.usecase.user.CompleteOnboardingUseCase
 import com.multissue.wit.core.ui.base.BaseViewModel
 import com.multissue.wit.feature.signup.state.GenderType
 import com.multissue.wit.feature.signup.state.SignupSideEffect
@@ -19,6 +20,7 @@ class SignupViewModel @Inject constructor(
     private val checkNicknameDuplicateUseCase: CheckNicknameDuplicateUseCase,
     private val getActiveTermsUseCase: GetActiveTermsUseCase,
     private val agreeTermsUseCase: AgreeTermsUseCase,
+    private val completeOnboardingUseCase: CompleteOnboardingUseCase,
 ) : BaseViewModel<SignupUiState, SignupSideEffect, SignupUiIntent>(
     initialState = SignupUiState()
 ) {
@@ -137,16 +139,30 @@ class SignupViewModel @Inject constructor(
             }
             agreeTermsUseCase(agreements)
                 .onSuccess {
-                    setState {
-                        copy(
-                            showAgreementBottomSheet = false,
-                            signupComplete = true
-                        )
-                    }
+                    setState { copy(showAgreementBottomSheet = false) }
+                    completeOnboarding()
                 }
                 .onFailure {
                     setState { copy(errorMessage = it.toUserMessage()) }
                 }
         }
+    }
+
+    private suspend fun completeOnboarding() {
+        val state = currentState
+        val birthDate = "%04d-%02d-%02d".format(state.birthYear, state.birthMonth, state.birthDay)
+        val gender = state.gender.name
+        completeOnboardingUseCase(
+            nickname = state.nickname,
+            gender = gender,
+            birthDate = birthDate,
+            profileImagePath = null,
+        )
+            .onSuccess {
+                setState { copy(signupComplete = true) }
+            }
+            .onFailure {
+                setState { copy(errorMessage = it.toUserMessage()) }
+            }
     }
 }

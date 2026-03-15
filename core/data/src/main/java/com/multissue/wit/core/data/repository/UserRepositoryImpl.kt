@@ -5,6 +5,7 @@ import com.multissue.wit.core.domain.repository.UserRepository
 import com.multissue.wit.core.network.Dispatcher
 import com.multissue.wit.core.network.WitDispatchers
 import com.multissue.wit.core.network.model.ApiResponse
+import com.multissue.wit.core.network.model.user.request.OnboardingRequest
 import com.multissue.wit.core.network.service.UserService
 import com.multissue.wit.core.network.util.safeApiCall
 import kotlinx.coroutines.CoroutineDispatcher
@@ -26,4 +27,27 @@ class UserRepositoryImpl @Inject constructor(
                 )
             }
         }
+
+    override suspend fun completeOnboarding(
+        nickname: String,
+        gender: String,
+        birthDate: String,
+        profileImagePath: String?,
+    ): Result<Unit> = withContext(ioDispatcher) {
+        val request = OnboardingRequest(
+            nickname = nickname,
+            gender = gender,
+            birthDate = birthDate,
+            profileImagePath = profileImagePath,
+        )
+        when (val response = safeApiCall { userService.completeOnboarding(request) }) {
+            is ApiResponse.Success -> Result.success(Unit)
+            is ApiResponse.Failure -> Result.failure(
+                WitException.HttpException(response.code, response.message)
+            )
+            is ApiResponse.NetworkError -> Result.failure(
+                WitException.NetworkException(response.throwable)
+            )
+        }
+    }
 }
