@@ -20,7 +20,9 @@ fun RootApp(
 
     val entryProvider = entryProvider {
         authEntry(navigator)
-        mainEntry(navigator)
+        mainEntry(
+            onNavigateToAuth = appState::navigateToAuth
+        )
     }
 
     NavDisplay(

@@ -1,15 +1,21 @@
 package com.multissue.wit.feature.mypage
 
+import androidx.lifecycle.viewModelScope
+import com.multissue.wit.core.domain.exception.toUserMessage
+import com.multissue.wit.core.domain.usecase.auth.LogoutUseCase
 import com.multissue.wit.core.ui.base.BaseViewModel
+import com.multissue.wit.feature.mypage.state.UserInfoState
 import com.multissue.wit.feature.mypage.state.settings.SettingsUiIntent
 import com.multissue.wit.feature.mypage.state.settings.SettingsUiSideEffect
 import com.multissue.wit.feature.mypage.state.settings.SettingsUiState
-import com.multissue.wit.feature.mypage.state.UserInfoState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SettingsViewModel @Inject constructor() :
+class SettingsViewModel @Inject constructor(
+    private val logoutUseCase: LogoutUseCase,
+) :
     BaseViewModel<SettingsUiState, SettingsUiSideEffect, SettingsUiIntent>(SettingsUiState()) {
 
     override fun onIntent(intent: SettingsUiIntent) {
@@ -28,7 +34,11 @@ class SettingsViewModel @Inject constructor() :
             }
             SettingsUiIntent.ConfirmLogout -> {
                 setState { copy(showLogoutDialog = false) }
-                // TODO 로그아웃 처리
+                viewModelScope.launch {
+                    logoutUseCase()
+                        .onSuccess { postSideEffect(SettingsUiSideEffect.NavigateToAuth) }
+                        .onFailure { setState { copy(errorMessage = it.toUserMessage()) } }
+                }
             }
             SettingsUiIntent.ClickWithdraw -> {
                 setState { copy(showWithdrawDialog = true) }
@@ -43,6 +53,9 @@ class SettingsViewModel @Inject constructor() :
             SettingsUiIntent.DismissWithdrawCompleteDialog -> {
                 setState { copy(showWithdrawCompleteDialog = false) }
                 // TODO 탈퇴 완료 후 로그인 화면 이동
+            }
+            SettingsUiIntent.DismissErrorDialog -> {
+                setState { copy(errorMessage = null) }
             }
         }
     }

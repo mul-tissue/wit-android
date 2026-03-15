@@ -47,6 +47,21 @@ class AuthRepositoryImpl @Inject constructor(
 
     override fun hasAccessToken(): Boolean = tokenProvider.getAccessToken() != null
 
+    override suspend fun logout(): Result<Unit> = withContext(ioDispatcher) {
+        when (val response = safeApiCall { authService.logout() }) {
+            is ApiResponse.Success -> {
+                tokenProvider.clearTokens()
+                Result.success(Unit)
+            }
+            is ApiResponse.Failure -> {
+                Result.failure(WitException.HttpException(response.code, response.message))
+            }
+            is ApiResponse.NetworkError -> {
+                Result.failure(WitException.NetworkException(response.throwable))
+            }
+        }
+    }
+
     override suspend fun clearTokens() {
         tokenProvider.clearTokens()
     }

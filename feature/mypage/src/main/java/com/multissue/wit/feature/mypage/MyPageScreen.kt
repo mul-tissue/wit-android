@@ -60,6 +60,7 @@ fun MyPageScreen(
     modifier: Modifier = Modifier,
     viewModel: MyPageViewModel = hiltViewModel(),
     onBottomNavVisibilityChanged: (Boolean) -> Unit = {},
+    onNavigateToAuth: () -> Unit = {},
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -87,6 +88,7 @@ fun MyPageScreen(
         feedList = uiState.feedList,
         travelList = uiState.travelList,
         onBottomNavVisibilityChanged = onBottomNavVisibilityChanged,
+        onNavigateToAuth = onNavigateToAuth,
     )
 }
 
@@ -103,6 +105,7 @@ internal fun MyPageScreen(
     feedList: List<FeedItemState>,
     travelList: List<FeedItemState>,
     onBottomNavVisibilityChanged: (Boolean) -> Unit = {},
+    onNavigateToAuth: () -> Unit = {},
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -205,6 +208,7 @@ internal fun MyPageScreen(
                         MyPageSettingsContent(
                             modifier = Modifier.padding(paddingValues),
                             onNavigateToProfileEdit = { onIntent(MyPageUiIntent.NavigateToProfileEdit) },
+                            onNavigateToAuth = onNavigateToAuth,
                         )
                     }
                     MyPageNav.PROFILE_EDIT -> {
