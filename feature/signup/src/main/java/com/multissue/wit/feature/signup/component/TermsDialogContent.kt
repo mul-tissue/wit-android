@@ -47,12 +47,7 @@ fun TermsDialogContent(
                     }
                 }
             )
-            Spacer(modifier = Modifier.height(24.dp))
-
             content()
-
-            Spacer(modifier = Modifier.height(24.dp))
-
         }
     }
 }
