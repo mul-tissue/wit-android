@@ -7,35 +7,46 @@ import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
+import androidx.activity.viewModels
+import androidx.compose.runtime.getValue
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.multissue.wit.designsystem.component.dialog.WitReLoginDialog
 import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.ui.root.RootApp
+import com.multissue.wit.ui.root.RootViewModel
+import com.multissue.wit.ui.root.StartDestination
 import com.multissue.wit.ui.root.rememberRootAppState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class WitActivity : ComponentActivity() {
+
+    private val rootViewModel: RootViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         WindowCompat.getInsetsController(window, window.decorView)
             .isAppearanceLightStatusBars = true //TODO 다크모드 대응 시 교체 필요
-//        setNavigationBarColorCompat(
-//            color = Color.White.toArgb(),
-//            isLightBar = true
-//        )
-//        setStatusBarColorCompat(
-//            color = Color.White.toArgb(),
-//            isLightBar = true
-//        )
 
         setContent {
-            val appState = rememberRootAppState()
+            val startDestination by rootViewModel.startDestination.collectAsStateWithLifecycle()
+            val showReLoginDialog by rootViewModel.showReLoginDialog.collectAsStateWithLifecycle()
 
             WitTheme {
-                RootApp(appState)
+                val appState = rememberRootAppState(
+                    startFromMain = startDestination == StartDestination.Main
+                )
+                RootApp(appState = appState)
+
+                WitReLoginDialog(
+                    visible = showReLoginDialog,
+                    onConfirm = {
+                        rootViewModel.onReLoginConfirmed()
+                        appState.navigateToAuth()
+                    }
+                )
             }
         }
     }

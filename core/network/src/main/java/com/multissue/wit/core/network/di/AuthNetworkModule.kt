@@ -16,4 +16,10 @@ object AuthNetworkModule {
     @Singleton
     fun provideAuthService(retrofit: Retrofit): AuthService =
         retrofit.create(AuthService::class.java)
+
+    @Provides
+    @Singleton
+    @TokenRefresh
+    fun provideTokenRefreshAuthService(@TokenRefresh retrofit: Retrofit): AuthService =
+        retrofit.create(AuthService::class.java)
 }

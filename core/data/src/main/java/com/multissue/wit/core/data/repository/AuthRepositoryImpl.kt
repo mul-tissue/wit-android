@@ -1,14 +1,13 @@
 package com.multissue.wit.core.data.repository
 
 import com.multissue.wit.core.data.mapper.toDomain
-import com.multissue.wit.core.datastore.storage.Storage
-import com.multissue.wit.core.datastore.token.WitStorageKeys
 import com.multissue.wit.core.domain.exception.WitException
 import com.multissue.wit.core.domain.model.auth.LoginResult
 import com.multissue.wit.core.domain.model.auth.SocialType
 import com.multissue.wit.core.domain.repository.AuthRepository
 import com.multissue.wit.core.network.Dispatcher
 import com.multissue.wit.core.network.WitDispatchers
+import com.multissue.wit.core.network.interceptor.TokenProvider
 import com.multissue.wit.core.network.model.ApiResponse
 import com.multissue.wit.core.network.model.auth.request.SocialLoginRequest
 import com.multissue.wit.core.network.service.AuthService
@@ -19,7 +18,7 @@ import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val authService: AuthService,
-    private val storage: Storage,
+    private val tokenProvider: TokenProvider,
     @Dispatcher(WitDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : AuthRepository {
 
@@ -34,8 +33,7 @@ class AuthRepositoryImpl @Inject constructor(
         when (val response = safeApiCall { authService.socialLogin(request) }) {
             is ApiResponse.Success -> {
                 val data = response.data.data!!
-                storage.writeValue(WitStorageKeys.ACCESS_TOKEN, data.accessToken)
-                storage.writeValue(WitStorageKeys.REFRESH_TOKEN, data.refreshToken)
+                tokenProvider.saveTokens(data.accessToken, data.refreshToken)
                 Result.success(data.toDomain())
             }
             is ApiResponse.Failure -> Result.failure(
@@ -45,5 +43,11 @@ class AuthRepositoryImpl @Inject constructor(
                 WitException.NetworkException(response.throwable)
             )
         }
+    }
+
+    override fun hasAccessToken(): Boolean = tokenProvider.getAccessToken() != null
+
+    override suspend fun clearTokens() {
+        tokenProvider.clearTokens()
     }
 }

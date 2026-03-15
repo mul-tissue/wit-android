@@ -5,17 +5,21 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import com.multissue.wit.core.navigation.NavigationState
+import com.multissue.wit.core.navigation.Navigator
 import com.multissue.wit.core.navigation.rememberNavigationState
 import com.multissue.wit.navigation.ROOT_LEVEL_NAV_ITEMS
 import com.multissue.wit.navigation.auth.AuthNavKey
+import com.multissue.wit.navigation.main.MainNavKey
 import com.multissue.wit.ui.main.NavigationTrackingSideEffect
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
 fun rememberRootAppState(
+    startFromMain: Boolean,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
 ): RootAppState {
-    val navigationState = rememberNavigationState(AuthNavKey, ROOT_LEVEL_NAV_ITEMS.keys)
+    val startKey = if (startFromMain) MainNavKey else AuthNavKey
+    val navigationState = rememberNavigationState(startKey, ROOT_LEVEL_NAV_ITEMS.keys)
 
     NavigationTrackingSideEffect(navigationState)
 
@@ -35,5 +39,9 @@ class RootAppState(
     val navigationState: NavigationState,
     coroutineScope: CoroutineScope,
 ) {
-    // TODO 구현할 거 있으면
+    val navigator = Navigator(navigationState)
+
+    fun navigateToAuth() {
+        navigator.navigate(AuthNavKey)
+    }
 }
