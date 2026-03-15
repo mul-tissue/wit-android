@@ -2,9 +2,10 @@ package com.multissue.wit.feature.signup
 
 import androidx.lifecycle.viewModelScope
 import com.multissue.wit.core.domain.exception.toUserMessage
+import com.multissue.wit.core.domain.usecase.terms.AgreeTermsUseCase
+import com.multissue.wit.core.domain.usecase.terms.GetActiveTermsUseCase
 import com.multissue.wit.core.domain.usecase.user.CheckNicknameDuplicateUseCase
 import com.multissue.wit.core.ui.base.BaseViewModel
-import com.multissue.wit.feature.signup.state.agreement.AgreementType
 import com.multissue.wit.feature.signup.state.GenderType
 import com.multissue.wit.feature.signup.state.SignupSideEffect
 import com.multissue.wit.feature.signup.state.SignupUiIntent
@@ -16,6 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SignupViewModel @Inject constructor(
     private val checkNicknameDuplicateUseCase: CheckNicknameDuplicateUseCase,
+    private val getActiveTermsUseCase: GetActiveTermsUseCase,
+    private val agreeTermsUseCase: AgreeTermsUseCase,
 ) : BaseViewModel<SignupUiState, SignupSideEffect, SignupUiIntent>(
     initialState = SignupUiState()
 ) {
@@ -23,16 +26,17 @@ class SignupViewModel @Inject constructor(
         when (intent) {
             is SignupUiIntent.SetNickname -> onNicknameChange(intent.nickname)
             is SignupUiIntent.CheckNickNameDuplicate -> onCheckNickNameDuplicate()
-            is SignupUiIntent.ShowBirthSelectDialog -> onShowBirthSettingDialog()
-            is SignupUiIntent.HideBirthSelectDialog -> onHideBirthSettingDialog()
+            is SignupUiIntent.ShowBirthSelectDialog -> onShowBirthSelectDialog()
+            is SignupUiIntent.HideBirthSelectDialog -> onHideBirthSelectDialog()
             is SignupUiIntent.SelectBirthDate -> onSelectBirthDate(intent.year, intent.month, intent.day)
             is SignupUiIntent.SetGender -> onGenderChange(intent.gender)
             is SignupUiIntent.ShowAgreementBottomSheet -> onShowAgreementBottomSheet()
             is SignupUiIntent.HideAgreementBottomSheet -> onHideAgreementBottomSheet()
-            is SignupUiIntent.CheckAgreement -> onCheckAgreement(intent.type, intent.checked)
-            is SignupUiIntent.ShowTermsDialog -> onShowTermsDialog()
-            is SignupUiIntent.HideTermsDialog -> onHideTermsDialog()
-            is SignupUiIntent.SignupComplete -> onSignupComplete()
+            is SignupUiIntent.ToggleTermAgreement -> onToggleTermAgreement(intent.termId)
+            is SignupUiIntent.ToggleAllTerms -> onToggleAllTerms()
+            is SignupUiIntent.ShowTermsContent -> onShowTermsContent(intent.contentUrl)
+            is SignupUiIntent.HideTermsContent -> onHideTermsContent()
+            is SignupUiIntent.SubmitAgreement -> onSubmitAgreement()
             is SignupUiIntent.DismissError -> onDismissError()
         }
     }
@@ -64,26 +68,16 @@ class SignupViewModel @Inject constructor(
         }
     }
 
-    private fun onSelectBirthDate(
-        year: Int,
-        month: Int,
-        day: Int
-    ) {
-        setState {
-            copy(
-                birthYear = year,
-                birthMonth = month,
-                birthDay = day
-            )
-        }
-    }
-
-    private fun onShowBirthSettingDialog() {
+    private fun onShowBirthSelectDialog() {
         setState { copy(showBirthSelectDialog = true) }
     }
 
-    private fun onHideBirthSettingDialog() {
+    private fun onHideBirthSelectDialog() {
         setState { copy(showBirthSelectDialog = false) }
+    }
+
+    private fun onSelectBirthDate(year: Int, month: Int, day: Int) {
+        setState { copy(birthYear = year, birthMonth = month, birthDay = day) }
     }
 
     private fun onGenderChange(gender: GenderType) {
@@ -91,87 +85,68 @@ class SignupViewModel @Inject constructor(
     }
 
     private fun onShowAgreementBottomSheet() {
-        setState { copy(showAgreementBottomSheet = true) }
+        if (currentState.termItems.isEmpty()) {
+            loadTerms()
+        }
+    }
+
+    private fun loadTerms() {
+        viewModelScope.launch {
+            getActiveTermsUseCase()
+                .onSuccess { terms ->
+                    setState { copy(termItems = terms, showAgreementBottomSheet = true) }
+                }
+                .onFailure {
+                    setState { copy(errorMessage = it.toUserMessage()) }
+                }
+        }
     }
 
     private fun onHideAgreementBottomSheet() {
         setState { copy(showAgreementBottomSheet = false) }
     }
 
-    private fun onCheckAgreement(
-        type: AgreementType,
-        checked: Boolean
-    ) {
-        when (type) {
-            AgreementType.ALL -> setState {
-                copy(
-                    agreementState = agreementState.copy(
-                        terms = checked,
-                        location = checked,
-                        marketing = checked,
-                    )
-                )
-            }
-            AgreementType.TERMS -> {
-                setState {
-                    copy(
-                        agreementState = agreementState.copy(
-                            terms = checked,
-                        )
-                    )
-                }
-            }
-            AgreementType.LOCATION -> {
-                setState {
-                    copy(
-                        agreementState = agreementState.copy(
-                            location = checked,
-                        )
-                    )
-                }
-            }
-            AgreementType.MARKETING -> {
-                setState {
-                    copy(
-                        agreementState = agreementState.copy(
-                            marketing = checked,
-                        )
-                    )
-                }
-            }
-        }
+    private fun onShowTermsContent(contentUrl: String) {
+        setState { copy(termsContentUrl = contentUrl) }
     }
 
-    private fun onShowTermsDialog() {
-        setState {
-            copy(
-                showTermsDialog = true
-            )
-        }
+    private fun onHideTermsContent() {
+        setState { copy(termsContentUrl = "") }
     }
 
-    private fun onHideTermsDialog() {
-        setState {
-            copy(
-                showTermsDialog = false
-            )
-        }
+    private fun onToggleTermAgreement(termId: String) {
+        val current = currentState.agreedTermIds
+        val updated = if (termId in current) current - termId else current + termId
+        setState { copy(agreedTermIds = updated) }
     }
 
-    private fun onSignupComplete() {
-        setState {
-            copy(
-                showAgreementBottomSheet = false,
-                signupComplete = true
-            )
-        }
+    private fun onToggleAllTerms() {
+        val allIds = currentState.termItems.map { it.id }.toSet()
+        val updated = if (currentState.isAllTermsAgreed) emptySet<String>() else allIds
+        setState { copy(agreedTermIds = updated) }
     }
 
     private fun onDismissError() {
-        setState {
-            copy(
-                errorMessage = null
-            )
+        setState { copy(errorMessage = null) }
+    }
+
+    private fun onSubmitAgreement() {
+        viewModelScope.launch {
+            val agreements = currentState.termItems.map { term ->
+                term.id to (term.id in currentState.agreedTermIds)
+            }
+            agreeTermsUseCase(agreements)
+                .onSuccess {
+                    setState {
+                        copy(
+                            showAgreementBottomSheet = false,
+                            signupComplete = true
+                        )
+                    }
+                }
+                .onFailure {
+                    setState { copy(errorMessage = it.toUserMessage()) }
+                }
         }
     }
 }

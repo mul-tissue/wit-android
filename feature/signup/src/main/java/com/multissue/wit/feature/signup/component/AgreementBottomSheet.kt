@@ -15,17 +15,20 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.multissue.wit.core.domain.model.terms.TermItem
 import com.multissue.wit.designsystem.theme.WitTheme
-import com.multissue.wit.feature.signup.state.SignupUiState
-import com.multissue.wit.feature.signup.state.agreement.AgreementType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignupAgreementBottomSheet(
-    state: SignupUiState.AgreementState,
     visible: Boolean,
-    onStateChange: (AgreementType, Boolean) -> Unit,
-    onShowTermsDialog: () -> Unit,
+    termItems: List<TermItem>,
+    agreedTermIds: Set<String>,
+    isAllAgreed: Boolean,
+    isRequiredAgreed: Boolean,
+    onToggleTerm: (String) -> Unit,
+    onToggleAll: () -> Unit,
+    onShowTermsContent: (String) -> Unit,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -54,10 +57,14 @@ fun SignupAgreementBottomSheet(
         }
     ) {
         AgreementContent(
-            state = state,
-            onStateChange = onStateChange,
-            onShowTermsDialog = onShowTermsDialog,
-            onConfirm = onConfirm
+            termItems = termItems,
+            agreedTermIds = agreedTermIds,
+            isAllAgreed = isAllAgreed,
+            isRequiredAgreed = isRequiredAgreed,
+            onToggleTerm = onToggleTerm,
+            onToggleAll = onToggleAll,
+            onShowTermsContent = onShowTermsContent,
+            onConfirm = onConfirm,
         )
     }
 }

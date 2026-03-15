@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import com.multissue.wit.designsystem.theme.WitTheme
 import com.multissue.wit.designsystem.util.noRippleClickable
 import com.multissue.wit.feature.signup.R
-import com.multissue.wit.feature.signup.state.agreement.AgreementType
 
 @Composable
 fun AgreementAllItem(

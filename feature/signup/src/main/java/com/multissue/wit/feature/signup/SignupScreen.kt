@@ -190,18 +190,16 @@ fun SignupScreen(
                     }
                 }
                 SignupAgreementBottomSheet(
-                    state = signupUiState.agreementState,
-                    onStateChange = { type, checked ->
-                        onIntent(SignupUiIntent.CheckAgreement(type, checked))
-                    },
-                    onShowTermsDialog = {
-                        onIntent(SignupUiIntent.ShowTermsDialog)
-                    },
-                    onConfirm = {
-                        onIntent(SignupUiIntent.SignupComplete)
-                    },
+                    visible = signupUiState.showAgreementBottomSheet,
+                    termItems = signupUiState.termItems,
+                    agreedTermIds = signupUiState.agreedTermIds,
+                    isAllAgreed = signupUiState.isAllTermsAgreed,
+                    isRequiredAgreed = signupUiState.isRequiredTermsAgreed,
+                    onToggleTerm = { onIntent(SignupUiIntent.ToggleTermAgreement(it)) },
+                    onToggleAll = { onIntent(SignupUiIntent.ToggleAllTerms) },
+                    onShowTermsContent = { onIntent(SignupUiIntent.ShowTermsContent(it)) },
+                    onConfirm = { onIntent(SignupUiIntent.SubmitAgreement) },
                     onDismiss = { onIntent(SignupUiIntent.HideAgreementBottomSheet) },
-                    visible = signupUiState.showAgreementBottomSheet
                 )
             }
 
@@ -219,9 +217,9 @@ fun SignupScreen(
             )
 
             TermsDialog(
-                showDialog = signupUiState.showTermsDialog,
+                contentUrl = signupUiState.termsContentUrl,
                 onDismiss = {
-                    onIntent(SignupUiIntent.HideTermsDialog)
+                    onIntent(SignupUiIntent.HideTermsContent)
                 }
             )
         }

@@ -5,13 +5,9 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -24,10 +20,10 @@ import com.multissue.wit.designsystem.component.topbar.WitCenterAlignedTopAppBar
 @Composable
 fun TermsDialogContent(
     onDismiss: () -> Unit,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable () -> Unit
 ) {
     AnimatedVisibility(
-        visible = true, // TODO("API 연결 시 하드 코딩 변경")
+        visible = true,
         enter = slideInVertically(
             initialOffsetY = { it },
             animationSpec = tween(800)
@@ -51,18 +47,12 @@ fun TermsDialogContent(
                     }
                 }
             )
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 26.dp)
-            ) {
-                Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-                content()
+            content()
 
-                Spacer(modifier = Modifier.height(24.dp))
-            }
+            Spacer(modifier = Modifier.height(24.dp))
+
         }
     }
 }
