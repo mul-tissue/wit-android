@@ -2,6 +2,7 @@ package com.multissue.wit.core.data.repository
 
 import com.multissue.wit.core.data.mapper.toDomain
 import com.multissue.wit.core.domain.exception.WitException
+import com.multissue.wit.core.domain.model.auth.AuthStatus
 import com.multissue.wit.core.domain.model.auth.LoginResult
 import com.multissue.wit.core.domain.model.auth.SocialType
 import com.multissue.wit.core.domain.repository.AuthRepository
@@ -34,6 +35,7 @@ class AuthRepositoryImpl @Inject constructor(
             is ApiResponse.Success -> {
                 val data = response.data.data!!
                 tokenProvider.saveTokens(data.accessToken, data.refreshToken)
+                tokenProvider.saveUserStatus(data.status)
                 Result.success(data.toDomain())
             }
             is ApiResponse.Failure -> Result.failure(
@@ -46,6 +48,14 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override fun hasAccessToken(): Boolean = tokenProvider.getAccessToken() != null
+
+    override fun getUserStatus(): AuthStatus? = tokenProvider.getUserStatus()?.let { status ->
+        runCatching { AuthStatus.valueOf(status) }.getOrNull()
+    }
+
+    override suspend fun saveUserStatus(status: AuthStatus) {
+        tokenProvider.saveUserStatus(status.name)
+    }
 
     override suspend fun logout(): Result<Unit> = withContext(ioDispatcher) {
         when (val response = safeApiCall { authService.logout() }) {

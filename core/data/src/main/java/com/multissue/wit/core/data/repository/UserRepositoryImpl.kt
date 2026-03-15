@@ -7,6 +7,7 @@ import com.multissue.wit.core.domain.repository.UserRepository
 import com.multissue.wit.core.network.Dispatcher
 import com.multissue.wit.core.network.WitDispatchers
 import com.multissue.wit.core.network.model.ApiResponse
+import com.multissue.wit.core.network.interceptor.TokenProvider
 import com.multissue.wit.core.network.model.user.request.OnboardingRequest
 import com.multissue.wit.core.network.service.UserService
 import com.multissue.wit.core.network.util.safeApiCall
@@ -16,6 +17,7 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val userService: UserService,
+    private val tokenProvider: TokenProvider,
     @Dispatcher(WitDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : UserRepository {
 
@@ -43,7 +45,10 @@ class UserRepositoryImpl @Inject constructor(
             profileImagePath = profileImagePath,
         )
         when (val response = safeApiCall { userService.completeOnboarding(request) }) {
-            is ApiResponse.Success -> Result.success(Unit)
+            is ApiResponse.Success -> {
+                response.data.data?.userStatus?.let { tokenProvider.saveUserStatus(it) }
+                Result.success(Unit)
+            }
             is ApiResponse.Failure -> Result.failure(
                 WitException.HttpException(response.code, response.message)
             )

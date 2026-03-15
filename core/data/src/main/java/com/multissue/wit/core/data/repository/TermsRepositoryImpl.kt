@@ -7,6 +7,7 @@ import com.multissue.wit.core.domain.repository.TermsRepository
 import com.multissue.wit.core.network.Dispatcher
 import com.multissue.wit.core.network.WitDispatchers
 import com.multissue.wit.core.network.model.ApiResponse
+import com.multissue.wit.core.network.interceptor.TokenProvider
 import com.multissue.wit.core.network.model.terms.request.AgreeTermsRequest
 import com.multissue.wit.core.network.model.terms.request.TermAgreement
 import com.multissue.wit.core.network.service.TermsService
@@ -17,6 +18,7 @@ import javax.inject.Inject
 
 class TermsRepositoryImpl @Inject constructor(
     private val termsService: TermsService,
+    private val tokenProvider: TokenProvider,
     @Dispatcher(WitDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : TermsRepository {
 
@@ -46,6 +48,7 @@ class TermsRepositoryImpl @Inject constructor(
             when (val response = safeApiCall { termsService.agreeTerms(request) }) {
                 is ApiResponse.Success -> {
                     val userStatus = response.data.data?.userStatus ?: ""
+                    tokenProvider.saveUserStatus(userStatus)
                     Result.success(userStatus)
                 }
                 is ApiResponse.Failure -> Result.failure(
