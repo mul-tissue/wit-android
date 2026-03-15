@@ -9,3 +9,9 @@ data class BaseResponse<T>(
     val data: T? = null,
     val timestamp: String,
 )
+
+@Serializable
+data class ErrorData(
+    val code: String,
+    val message: String,
+)
