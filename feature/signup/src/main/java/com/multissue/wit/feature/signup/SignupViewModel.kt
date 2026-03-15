@@ -1,6 +1,7 @@
 package com.multissue.wit.feature.signup
 
 import androidx.lifecycle.viewModelScope
+import com.multissue.wit.core.domain.exception.WitException
 import com.multissue.wit.core.domain.exception.toUserMessage
 import com.multissue.wit.core.domain.usecase.terms.AgreeTermsUseCase
 import com.multissue.wit.core.domain.usecase.terms.GetActiveTermsUseCase
@@ -64,8 +65,12 @@ class SignupViewModel @Inject constructor(
                         )
                     }
                 }
-                .onFailure {
-                    setState { copy(errorMessage = it.toUserMessage()) }
+                .onFailure { error ->
+                    if (error is WitException.HttpException && error.code == 409) {
+                        setState { copy(isNickNameDuplicated = true, isCheckedNickname = true) }
+                    } else {
+                        setState { copy(errorMessage = error.toUserMessage()) }
+                    }
                 }
         }
     }
